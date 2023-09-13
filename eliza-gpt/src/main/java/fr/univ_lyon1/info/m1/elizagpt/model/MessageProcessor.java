@@ -49,6 +49,8 @@ public class MessageProcessor {
     protected static final List<Verb> VERBS = Arrays.asList(
             new Verb("suis", "êtes"),
             new Verb("vais", "allez"),
+            new Verb("peux", "pouvez"),
+            new Verb("dois", "devez"),  
             new Verb("dis", "dites"),
             new Verb("ai", "avez"),
             new Verb("fais", "faites"),
