@@ -128,6 +128,16 @@ public class JfxView {
             replyToUser(startQuestion + processor.firstToSecondPerson(matcher.group(1)) + " ?");
             return;
         }
+        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()){
+            final String startQuestion = processor.pickRandom(new String[] {
+                    "Je vous renvoie la question ",
+                    "Ici, c'est moi qui pose les\n" +  "questions. ",
+            });
+            replyToUser(startQuestion);
+            return;
+        }
         // Nothing clever to say, answer randomly
         if (random.nextBoolean()) {
             replyToUser("Il faut beau aujourd'hui, vous ne trouvez pas ?");
