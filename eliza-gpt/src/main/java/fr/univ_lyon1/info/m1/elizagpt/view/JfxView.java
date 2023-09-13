@@ -74,7 +74,9 @@ public class JfxView {
         label.setStyle(USER_STYLE);
         hBox.setAlignment(Pos.BASELINE_LEFT);
         dialog.getChildren().add(hBox);
-        // TODO: a click on this hbox should delete the message.
+        hBox.setOnMouseClicked(e -> {
+            dialog.getChildren().remove(hBox);
+        });
     }
     
     private void sendMessage(final String text) {
