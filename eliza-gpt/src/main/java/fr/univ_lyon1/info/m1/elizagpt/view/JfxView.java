@@ -210,26 +210,23 @@ public class JfxView {
 
     private void searchText(final TextField text) {
 
-        String currentSearchText = processor.normalize(text.getText());
+        String currentSearchText = text.getText();
 
         Pattern pattern;
         Matcher matcher;
         pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(currentSearchText);
+
         if (currentSearchText == null) {
             searchTextLabel.setText("No active search");
-        }
-        else if(matcher.matches()){
+        } else {
             searchTextLabel.setText("Searching for: " + currentSearchText);
-        }
-        else {
-            searchTextLabel.setText("Not found");
         }
         List<HBox> toDelete = new ArrayList<>();
         for (Node hBox : dialog.getChildren()) {
             for (Node label : ((HBox) hBox).getChildren()) {
                 String t = ((Label) label).getText();
-                if (!t.contains(matcher.group())) {
+                matcher = pattern.matcher(t);
+                if (!matcher.find()) {
                     // Can delete it right now, we're iterating over the list.
                     toDelete.add((HBox) hBox);
                 }
