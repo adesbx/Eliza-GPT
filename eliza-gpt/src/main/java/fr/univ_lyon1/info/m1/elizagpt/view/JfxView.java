@@ -226,7 +226,7 @@ public class JfxView {
             for (Node label : ((HBox) hBox).getChildren()) {
                 String t = ((Label) label).getText();
                 matcher = pattern.matcher(t);
-                if (!matcher.find()) {
+                if (!matcher.matches()) {
                     // Can delete it right now, we're iterating over the list.
                     toDelete.add((HBox) hBox);
                 }
