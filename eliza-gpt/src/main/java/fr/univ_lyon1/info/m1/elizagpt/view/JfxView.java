@@ -34,7 +34,7 @@ public class JfxView {
      * Create the main view of the application.
      */
         // TODO: style error in the following line. Check that checkstyle finds it, and then fix it.
-        public JfxView(final Stage stage, final int width, final int height){
+        public JfxView(final Stage stage, final int width, final int height) {
         stage.setTitle("Eliza GPT");
 
         final VBox root = new VBox(10);
@@ -74,7 +74,9 @@ public class JfxView {
         label.setStyle(USER_STYLE);
         hBox.setAlignment(Pos.BASELINE_LEFT);
         dialog.getChildren().add(hBox);
-        // TODO: a click on this hbox should delete the message.
+        hBox.setOnMouseClicked(e -> {
+            dialog.getChildren().remove(hBox);
+        });
     }
     
     private void sendMessage(final String text) {
@@ -126,6 +128,16 @@ public class JfxView {
                 "Êtes-vous sûr que ",
             });
             replyToUser(startQuestion + processor.firstToSecondPerson(matcher.group(1)) + " ?");
+            return;
+        }
+        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+            final String startQuestion = processor.pickRandom(new String[] {
+                    "Je vous renvoie la question ",
+                    "Ici, c'est moi qui pose les\n" +  "questions. ",
+            });
+            replyToUser(startQuestion);
             return;
         }
         // Nothing clever to say, answer randomly
@@ -197,7 +209,13 @@ public class JfxView {
     }
 
     private void searchText(final TextField text) {
+
         String currentSearchText = text.getText();
+
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
+
         if (currentSearchText == null) {
             searchTextLabel.setText("No active search");
         } else {
@@ -207,7 +225,8 @@ public class JfxView {
         for (Node hBox : dialog.getChildren()) {
             for (Node label : ((HBox) hBox).getChildren()) {
                 String t = ((Label) label).getText();
-                if (!t.contains(text.getText())) {
+                matcher = pattern.matcher(t);
+                if (!matcher.matches()) {
                     // Can delete it right now, we're iterating over the list.
                     toDelete.add((HBox) hBox);
                 }
