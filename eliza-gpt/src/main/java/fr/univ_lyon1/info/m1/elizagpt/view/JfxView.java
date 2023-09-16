@@ -209,7 +209,13 @@ public class JfxView {
     }
 
     private void searchText(final TextField text) {
+
         String currentSearchText = text.getText();
+
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
+
         if (currentSearchText == null) {
             searchTextLabel.setText("No active search");
         } else {
@@ -219,7 +225,8 @@ public class JfxView {
         for (Node hBox : dialog.getChildren()) {
             for (Node label : ((HBox) hBox).getChildren()) {
                 String t = ((Label) label).getText();
-                if (!t.contains(text.getText())) {
+                matcher = pattern.matcher(t);
+                if (!matcher.find()) {
                     // Can delete it right now, we're iterating over the list.
                     toDelete.add((HBox) hBox);
                 }
