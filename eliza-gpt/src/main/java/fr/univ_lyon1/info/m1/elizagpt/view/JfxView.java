@@ -34,7 +34,7 @@ public class JfxView {
      * Create the main view of the application.
      */
         // TODO: style error in the following line. Check that checkstyle finds it, and then fix it.
-        public JfxView(final Stage stage, final int width, final int height){
+        public JfxView(final Stage stage, final int width, final int height) {
         stage.setTitle("Eliza GPT");
 
         final VBox root = new VBox(10);
@@ -132,7 +132,7 @@ public class JfxView {
         }
         pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             final String startQuestion = processor.pickRandom(new String[] {
                     "Je vous renvoie la question ",
                     "Ici, c'est moi qui pose les\n" +  "questions. ",
