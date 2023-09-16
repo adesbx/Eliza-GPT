@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>ELIZA-GPT</name>
-    <url>https://forge.univ-lyon1.fr/matthieu.moy/mif01</url>
+    <url>https://forge.univ-lyon1.fr/p2003442/mif-01-chat-ptdr</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
