@@ -1,8 +1,12 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import javafx.scene.control.Label;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Logic to process a message (and probably reply to it).
@@ -83,6 +87,15 @@ public class MessageProcessor {
         return processedText;
     }
 
+    public String getMatchName(String text) {
+        Pattern pattern = Pattern.compile("Je m'appelle (.*)\\.",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
     /** Pick an element randomly in the array. */
     public <T> T pickRandom(final T[] array) {
         return array[random.nextInt(array.length)];

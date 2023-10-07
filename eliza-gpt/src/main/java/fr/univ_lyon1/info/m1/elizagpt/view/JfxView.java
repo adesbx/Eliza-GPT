@@ -33,7 +33,6 @@ public class JfxView {
     /**
      * Create the main view of the application.
      */
-        // TODO: style error in the following line. Check that checkstyle finds it, and then fix it.
         public JfxView(final Stage stage, final int width, final int height) {
         stage.setTitle("Eliza GPT");
 
@@ -170,13 +169,7 @@ public class JfxView {
         for (Node hBox : dialog.getChildren()) {
             for (Node label : ((HBox) hBox).getChildren()) {
                 if (((Label) label).getStyle().equals("-fx-background-color: #A0E0A0;")) {
-                    String text = ((Label) label).getText();
-                    Pattern pattern = Pattern.compile("Je m'appelle (.*)\\.",
-                                                      Pattern.CASE_INSENSITIVE);
-                    Matcher matcher = pattern.matcher(text);
-                    if (matcher.matches()) {
-                        return matcher.group(1);
-                    }
+                    processor.getMatchName(((Label) label).getText());
                 }
             }
         }
