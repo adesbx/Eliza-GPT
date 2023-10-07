@@ -1,6 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import javafx.scene.control.Label;
+//import javafx.scene.control.Label;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +87,12 @@ public class MessageProcessor {
         return processedText;
     }
 
-    public String getMatchName(String text) {
+    /**
+     * Get the name.
+     * @param text
+     * @return The name if found
+     */
+    public String getMatchName(final String text) {
         Pattern pattern = Pattern.compile("Je m'appelle (.*)\\.",
                 Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
