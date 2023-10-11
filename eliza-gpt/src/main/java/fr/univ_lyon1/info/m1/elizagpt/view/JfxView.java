@@ -28,13 +28,15 @@ public class JfxView {
     private TextField text = null;
     private TextField searchText = null;
     private Label searchTextLabel = null;
-    private MessageProcessor processor = new MessageProcessor();
+    private MessageProcessor processor = null;
     private final Random random = new Random();
     /**
      * Create the main view of the application.
      */
-        public JfxView(final Stage stage, final int width, final int height) {
+        public JfxView(final Stage stage, final int width, final int height, MessageProcessor processor_) {
         stage.setTitle("Eliza GPT");
+
+        processor = processor_;
 
         final VBox root = new VBox(10);
 
