@@ -9,9 +9,18 @@ public class Controller {
 
     JfxView viewPtr;
 
+    /**
+     * constructeur du controleur avec l'instance de la vue
+     * @param view
+     */
     public Controller(JfxView view){
         viewPtr=view;
+    }
 
+    /**
+     * detection de l'action utilisateur
+     */
+    private final void actionButton(){
 
     }
 }
