@@ -117,11 +117,11 @@ email, ce fichier en contient une copie.
 
 * [TD1-design-patterns](http://matthieu-moy.fr/cours/mif01/TD1-patterns/TD-design-patterns.html)
 
-* Salles :
-  - Groupe A : Nautibus TD 2 : Matthieu Moy
-  - Groupe B : Nautibus TD 3 : Joel Felderhoff
-  - Groupe C : Nautibus TD12 : Lionel Medini
-  - Groupe D : Nautibus TD13 : Mathieu Hilaire
+* Salles : cf. TOMUSS et mail envoyé pour les étudiants.
+  - Nautibus TD 2 : Matthieu Moy
+  - Nautibus TD 3 : Joel Felderhoff
+  - Nautibus TD12 : Lionel Medini
+  - Nautibus TD13 : Mathieu Hilaire
 
 ## CM 5 (11/10/2023, 8h) : Métaprogrammation, spécifications et cas d'utilisation
 
@@ -129,8 +129,8 @@ email, ce fichier en contient une copie.
 
 * Vidéo : <a target="_blank" title="Métaprogrammation" href="https://myvideo.univ-lyon1.fr/permalink/v126648320fc5hrmy3g1/iframe/"><img src="https://myvideo.univ-lyon1.fr/public/videos/v125f5e59e89b1kkvlmtrymwi6ngkv/thumb_link.png" alt="Métaprogrammation"/></a>
 
-* Transparents [07-metaprogramming-slides.pdf](http://matthieu-moy.fr/cours/mif01/07-metaprogramming-slides.pdf)
-  (version imprimable : [07-metaprogramming-handout.pdf](http://matthieu-moy.fr/cours/mif01/07-metaprogramming-handout.pdf))
+* Transparents [04-metaprogramming-slides.pdf](http://matthieu-moy.fr/cours/mif01/04-metaprogramming-slides.pdf)
+  (version imprimable : [04-metaprogramming-handout.pdf](http://matthieu-moy.fr/cours/mif01/04-metaprogramming-handout.pdf))
 
 ### Spécifications
 
