@@ -1,8 +1,12 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+//import javafx.scene.control.Label;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Logic to process a message (and probably reply to it).
@@ -61,7 +65,7 @@ public class MessageProcessor {
      * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
      * The result is not capitalized to allow forming a new sentence.
      *
-     * TODO: does not deal with all 3rd group verbs.
+     *
      *
      * @param text
      * @return The 2nd-person sentence.
@@ -83,6 +87,20 @@ public class MessageProcessor {
         return processedText;
     }
 
+    /**
+     * Get the name.
+     * @param text
+     * @return The name if found
+     */
+    public String getMatchName(final String text) {
+        Pattern pattern = Pattern.compile("Je m'appelle (.*)\\.",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
     /** Pick an element randomly in the array. */
     public <T> T pickRandom(final T[] array) {
         return array[random.nextInt(array.length)];
