@@ -88,12 +88,12 @@ public class JfxView {
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
         });
-    
+
         String normalizedText = processor.normalize(text);
-    
+
         Pattern pattern;
         Matcher matcher;
-    
+
         // First, try to answer specifically to what the user said
         pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText);
@@ -162,14 +162,14 @@ public class JfxView {
 
     /**
     * Extract the name of the user from the dialog.
-    * TODO: this totally breaks the MVC pattern, never, ever, EVER do that.
+    *
     * @return
     */
     private String getName() {
         for (Node hBox : dialog.getChildren()) {
             for (Node label : ((HBox) hBox).getChildren()) {
                 if (((Label) label).getStyle().equals("-fx-background-color: #A0E0A0;")) {
-                    processor.getMatchName(((Label) label).getText());
+                    return  processor.getMatchName(((Label) label).getText());
                 }
             }
         }

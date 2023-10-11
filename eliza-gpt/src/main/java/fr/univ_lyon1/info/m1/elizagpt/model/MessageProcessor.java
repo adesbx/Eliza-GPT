@@ -65,7 +65,7 @@ public class MessageProcessor {
      * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
      * The result is not capitalized to allow forming a new sentence.
      *
-     * TODO: does not deal with all 3rd group verbs.
+     *
      *
      * @param text
      * @return The 2nd-person sentence.
