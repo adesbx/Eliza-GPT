@@ -75,7 +75,7 @@ public class MessageProcessor {
         pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText);
         if (matcher.matches()) {
-
+            name = matcher.group(1);
             dataList.add(new Data(("Bonjour " + matcher.group(1) + "."), true));
             notifyObservers();
 
