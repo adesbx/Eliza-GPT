@@ -23,7 +23,8 @@ import java.util.Random;
 
 
 /**
- * Main class of the View (GUI) of the application.
+ * Main class of the View (GUI) of the application,
+ * Using Observer to know when a message as been sent.
  */
 public class JfxView implements ProcessorObserver {
     private final VBox dialog;
@@ -31,17 +32,23 @@ public class JfxView implements ProcessorObserver {
     private TextField searchText = null;
     private Label searchTextLabel = null;
     private MessageProcessor processor = null;
-    private final Random random = new Random();
-
     private Controller ctrl = null;
+
+    private final Random random = new Random();
     /**
      * Create the main view of the application.
      */
-        public JfxView(final Stage stage, final int width, final int height, MessageProcessor processor_, Controller ctrl_) {
+        public JfxView(
+                final Stage stage,
+                final int width,
+                final int height,
+                final MessageProcessor newProcessor,
+                final Controller newCtrl
+        ) {
         stage.setTitle("Eliza GPT");
+        processor = newProcessor;
+        ctrl = newCtrl;
 
-        processor = processor_;
-        ctrl = ctrl_;
         final VBox root = new VBox(10);
 
         final Pane search = createSearchWidget();
@@ -78,8 +85,7 @@ public class JfxView implements ProcessorObserver {
         replyToUser();
     }
     /**
-     *  la réponse de eliza
-     *
+     *  La réponse de eliza.
      */
     private void replyToUser() {
         String text = processor.lastResponse();
@@ -95,7 +101,7 @@ public class JfxView implements ProcessorObserver {
     }
 
     /**
-     * construction de la phrase utilisateur
+     * Construction de la phrase utilisateur.
      * @param text
      */
     private void buttonSend(final String text) {

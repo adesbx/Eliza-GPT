@@ -17,23 +17,30 @@ import java.util.regex.Pattern;
 
 public class MessageProcessor {
     private final Random random = new Random();
-    List<Data> dataList = new ArrayList<>(); // Créez une liste de Data
-
+    private final List<Data> dataList = new ArrayList<>(); // Liste de message
     private ProcessorObserver observer = null;
-
-    // ...
-
-    public void attachObserver(ProcessorObserver observer_) {
-        observer = observer_;
-    }
-
-    public void notifyObservers() {
-            observer.processorUpdated();
-    }
     private String name = null; //variable tmp pour stocker le nom.
+
+    /**
+     * Créé un nouveau observer.
+     *
+     * @param newObserver
+     */
+    public void attachObserver(final ProcessorObserver newObserver) {
+        observer = newObserver;
+    }
+
+    /**
+     * Met a jour l'observer.
+     *
+     */
+    public void notifyObservers() {
+        observer.processorUpdated();
+    }
+
     /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
-     *        notifyObservers();
+     *
      * @param text
      * @return normalized text.
      */
@@ -44,11 +51,20 @@ public class MessageProcessor {
                 .replaceAll("[^\\.!?:]$", "$0.");
     }
 
-    public String lastResponse(){
-        return dataList.get(dataList.size()-1).getMessage();
+    /**
+     * Recupère la dernière réponse du robot.
+     *
+     * @return réponse du robot.
+     */
+    public String lastResponse() {
+        return dataList.get(dataList.size() - 1).getMessage();
     }
 
-    public void easyAnswer(String normalizedText){
+    /**
+     * Traite le message envoyé par l'utilisateur.
+     * @param normalizedText
+     */
+    public void easyAnswer(final String normalizedText) {
 
         dataList.add(new Data(normalizedText, false));
 
@@ -80,7 +96,10 @@ public class MessageProcessor {
         pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText);
         if (matcher.matches()) {
-            dataList.add(new Data(("Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !"), true));
+            dataList.add(new Data(
+                    ("Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !"),
+                    true)
+            );
             notifyObservers();
             return;
         }
@@ -92,7 +111,10 @@ public class MessageProcessor {
                     "Pourquoi pensez-vous que ",
                     "Êtes-vous sûr que ",
             });
-            dataList.add(new Data((startQuestion + firstToSecondPerson(matcher.group(1)) + " ?"), true));
+            dataList.add(new Data(
+                    (startQuestion + firstToSecondPerson(matcher.group(1)) + " ?"),
+                    true)
+            );
             notifyObservers();
             return;
         }
@@ -129,7 +151,10 @@ public class MessageProcessor {
             dataList.add(new Data(("Qu'est-ce qui vous fait dire cela, " + name + " ?"), true));
             notifyObservers();
         } else {
-            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela ?"), true));
+            dataList.add(new Data(
+                    ("Qu'est-ce qui vous fait dire cela ?"),
+                    true)
+            );
             notifyObservers();
         }
     }
