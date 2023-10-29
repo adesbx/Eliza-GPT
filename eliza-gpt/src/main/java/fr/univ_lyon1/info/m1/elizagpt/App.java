@@ -17,8 +17,9 @@ public class App extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
         MessageProcessor msgProc = new MessageProcessor();
-        JfxView view = new JfxView(stage, 600, 600, msgProc);
-        Controller ctrl = new Controller(view);
+        Controller ctrl = new Controller(msgProc);
+        JfxView view = new JfxView(stage, 600, 600, msgProc, ctrl);
+        msgProc.attachObserver(view);
         // Second view (uncomment to activate)
         // new JfxView(new Stage(), 400, 400);
     }

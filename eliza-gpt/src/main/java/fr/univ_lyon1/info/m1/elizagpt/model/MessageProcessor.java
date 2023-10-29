@@ -1,7 +1,10 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
 //import javafx.scene.control.Label;
+import fr.univ_lyon1.info.m1.elizagpt.data.Data;
+import fr.univ_lyon1.info.m1.elizagpt.observer.ProcessorObserver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -11,10 +14,26 @@ import java.util.regex.Pattern;
 /**
  * Logic to process a message (and probably reply to it).
  */
+
 public class MessageProcessor {
     private final Random random = new Random();
+    List<Data> dataList = new ArrayList<>(); // Créez une liste de Data
+
+    private ProcessorObserver observer = null;
+
+    // ...
+
+    public void attachObserver(ProcessorObserver observer_) {
+        observer = observer_;
+    }
+
+    public void notifyObservers() {
+            observer.processorUpdated();
+    }
+    private String name = null; //variable tmp pour stocker le nom.
     /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
+     *        notifyObservers();
      * @param text
      * @return normalized text.
      */
@@ -23,6 +42,96 @@ public class MessageProcessor {
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
                 .replaceAll("[^\\.!?:]$", "$0.");
+    }
+
+    public String lastResponse(){
+        return dataList.get(dataList.size()-1).getMessage();
+    }
+
+    public void easyAnswer(String normalizedText){
+
+        dataList.add(new Data(normalizedText, false));
+
+        Pattern pattern;
+        Matcher matcher;
+
+        // First, try to answer specifically to what the user said
+        pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+
+            dataList.add(new Data(("Bonjour " + matcher.group(1) + "."), true));
+            notifyObservers();
+
+            return;
+        }
+        pattern = Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+            if (name != null) {
+                dataList.add(new Data(("Votre nom est " + name + "."), true));
+                notifyObservers();
+            } else {
+                dataList.add(new Data(("Je ne connais pas votre nom."), true));
+                notifyObservers();
+            }
+            return;
+        }
+        pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+            dataList.add(new Data(("Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !"), true));
+            notifyObservers();
+            return;
+        }
+        pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+            final String startQuestion = pickRandom(new String[] {
+                    "Pourquoi dites-vous que ",
+                    "Pourquoi pensez-vous que ",
+                    "Êtes-vous sûr que ",
+            });
+            dataList.add(new Data((startQuestion + firstToSecondPerson(matcher.group(1)) + " ?"), true));
+            notifyObservers();
+            return;
+        }
+        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(normalizedText);
+        if (matcher.matches()) {
+            final String startQuestion = pickRandom(new String[] {
+                    "Je vous renvoie la question ",
+                    "Ici, c'est moi qui pose les\n" +  "questions. ",
+            });
+
+            dataList.add(new Data((startQuestion), true));
+            notifyObservers();
+            return;
+        }
+        // Nothing clever to say, answer randomly
+        if (random.nextBoolean()) {
+            dataList.add(new Data(("Il faut beau aujourd'hui, vous ne trouvez pas ?"), true));
+            notifyObservers();
+            return;
+        }
+        if (random.nextBoolean()) {
+            dataList.add(new Data(("Je ne comprends pas."), true));
+            notifyObservers();
+            return;
+        }
+        if (random.nextBoolean()) {
+            dataList.add(new Data(("Hmmm, hmm ..."), true));
+            notifyObservers();
+            return;
+        }
+        // Default answer
+        if (name != null) {
+            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela, " + name + " ?"), true));
+            notifyObservers();
+        } else {
+            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela ?"), true));
+            notifyObservers();
+        }
     }
 
     /**
@@ -54,7 +163,7 @@ public class MessageProcessor {
             new Verb("suis", "êtes"),
             new Verb("vais", "allez"),
             new Verb("peux", "pouvez"),
-            new Verb("dois", "devez"),  
+            new Verb("dois", "devez"),
             new Verb("dis", "dites"),
             new Verb("ai", "avez"),
             new Verb("fais", "faites"),
@@ -97,10 +206,12 @@ public class MessageProcessor {
                 Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if (matcher.matches()) {
+            name = matcher.group(1);
             return matcher.group(1);
         }
         return null;
     }
+
     /** Pick an element randomly in the array. */
     public <T> T pickRandom(final T[] array) {
         return array[random.nextInt(array.length)];

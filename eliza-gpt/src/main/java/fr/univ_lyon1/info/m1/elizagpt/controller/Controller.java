@@ -1,26 +1,28 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
-import fr.univ_lyon1.info.m1.elizagpt.view.JfxView;
+
+import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Main class of the Controller (GUI) of the application.
  */
 public class Controller {
 
-    JfxView viewPtr;
+    private MessageProcessor processor = null;
 
     /**
      * constructeur du controleur avec l'instance de la vue
-     * @param view
+     * @param
      */
-    public Controller(JfxView view){
-        viewPtr=view;
+    public Controller(MessageProcessor processor_){
+        processor = processor_;
     }
 
-    /**
-     * detection de l'action utilisateur
-     */
-    private final void actionButton(){
-
+    public void treatMessage(String text) {
+        String normalizedText = processor.normalize(text);
+        processor.easyAnswer(normalizedText);
     }
 }
