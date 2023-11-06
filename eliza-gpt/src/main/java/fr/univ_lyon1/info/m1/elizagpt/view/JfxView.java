@@ -119,22 +119,6 @@ public class JfxView implements ProcessorObserver {
         ctrl.treatMessage(text);
     }
 
-    /**
-    * Extract the name of the user from the dialog.
-    *
-    * @return
-    */
-    private String getName() {
-        for (Node hBox : dialog.getChildren()) {
-            for (Node label : ((HBox) hBox).getChildren()) {
-                if (((Label) label).getStyle().equals("-fx-background-color: #A0E0A0;")) {
-                    return  processor.getMatchName(((Label) label).getText());
-                }
-            }
-        }
-        return null;
-    }
-
     private Pane createSearchWidget() {
         final HBox firstLine = new HBox();
         final HBox secondLine = new HBox();
