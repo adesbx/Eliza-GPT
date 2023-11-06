@@ -20,6 +20,7 @@ public class App extends Application {
         Controller ctrl = new Controller(msgProc);
         JfxView view = new JfxView(stage, 600, 600, msgProc, ctrl);
         msgProc.attachObserver(view);
+        msgProc.beginConversation();
         // Second view (uncomment to activate)
         // new JfxView(new Stage(), 400, 400);
     }

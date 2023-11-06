@@ -39,6 +39,14 @@ public class MessageProcessor {
     }
 
     /**
+     * constructor of processor
+     */
+    public void beginConversation() {
+        dataList.add(new Data("Bonjour", true));
+        notifyObservers();
+    }
+
+    /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
      *
      * @param text

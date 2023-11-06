@@ -64,7 +64,6 @@ public class JfxView implements ProcessorObserver {
 
         final Pane input = createInputWidget();
         root.getChildren().add(input);
-        //replyToUser("Bonjour"); //TODO dire boujour
 
         // Everything's ready: add it to the scene and display it
         final Scene scene = new Scene(root, width, height);
