@@ -45,7 +45,10 @@ public class MessageProcessor {
 
     public void removeFromDataList(final int id) {
         Optional<Data> objFind = dataList.stream().filter(objet -> objet.getHashCode() == id).findFirst();
-        dataList.remove(objFind);
+        objFind.ifPresent(obj -> {
+            //System.out.println("Object to remove : " + obj.getMessage());
+            dataList.remove(obj);
+        });
     }
 
     /**
@@ -67,10 +70,17 @@ public class MessageProcessor {
      * @return réponse du robot.
      */
     public String lastResponse() {
+//        for (Data data : dataList) {
+//            System.out.println(data.getMessage());
+//            System.out.println("\n");
+//        }
         return dataList.get(dataList.size() - 1).getMessage();
     }
 
-    public int getSize() {
+    public int getSize() {for (Data data : dataList) {
+            System.out.println(data.getMessage());
+            System.out.println("\n");
+        }
         return dataList.size();
     }
 
