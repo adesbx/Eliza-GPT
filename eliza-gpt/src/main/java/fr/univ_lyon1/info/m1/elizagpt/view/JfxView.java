@@ -6,6 +6,8 @@ import java.util.List;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
 import fr.univ_lyon1.info.m1.elizagpt.observer.ProcessorObserver;
+import fr.univ_lyon1.info.m1.elizagpt.data.Data;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -87,15 +89,16 @@ public class JfxView implements ProcessorObserver {
      *  La réponse de eliza.
      */
     private void replyToUser() {
-        String text = processor.lastResponse();
+        Data data = processor.lastResponse();
         HBox hBox = new HBox();
-        final Label label = new Label(text);
+        final Label label = new Label(data.getMessage());
         hBox.getChildren().add(label);
         label.setStyle(USER_STYLE);
         hBox.setAlignment(Pos.BASELINE_LEFT);
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
+            ctrl.removeMessage(data.getHashCode());
         });
     }
 
@@ -103,10 +106,10 @@ public class JfxView implements ProcessorObserver {
      * Construction de la phrase utilisateur.
      * @param text
      */
-    private void buttonSend(final String text) {
+    private void buttonSend(final Data text) {
         //création de la phrase utilisateur
         HBox hBox = new HBox();
-        final Label label = new Label(text);
+        final Label label = new Label(text.getMessage());
         hBox.getChildren().add(label);
         label.setStyle(ELIZA_STYLE);
         hBox.setAlignment(Pos.BASELINE_RIGHT);
@@ -115,9 +118,9 @@ public class JfxView implements ProcessorObserver {
         //fonctionnalité pour supprimer le message
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(label.hashCode());
+            ctrl.removeMessage(text.getHashCode());
         });
-        ctrl.treatMessage(text, label.hashCode());
+        ctrl.treatMessage(text);
     }
 
     private Pane createSearchWidget() {
@@ -137,6 +140,7 @@ public class JfxView implements ProcessorObserver {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
+
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
         final VBox input = new VBox();
@@ -199,12 +203,12 @@ public class JfxView implements ProcessorObserver {
         final Pane input = new HBox();
         text = new TextField();
         text.setOnAction(e -> {
-            buttonSend(text.getText());
+            buttonSend(new Data(text.getText(), true, processor.getSize()+1));
             text.setText("");
         });
         final Button send = new Button("Send");
         send.setOnAction(e -> {
-            buttonSend(text.getText());
+            buttonSend(new Data(text.getText(), false, processor.getSize()+1));
             text.setText("");
         });
         input.getChildren().addAll(text, send);

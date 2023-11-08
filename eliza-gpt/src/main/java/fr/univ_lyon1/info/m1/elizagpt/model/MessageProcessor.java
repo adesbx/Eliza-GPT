@@ -39,14 +39,14 @@ public class MessageProcessor {
      * constructor of processor
      */
     public void beginConversation() {
-        dataList.add(new Data("Bonjour", true, -1));//TODO le hashCode n'est pas Bon là
+        dataList.add(new Data("Bonjour", true, dataList.size()+1));//TODO le hashCode n'est pas Bon là
         notifyObservers();
     }
 
     public void removeFromDataList(final int id) {
         Optional<Data> objFind = dataList.stream().filter(objet -> objet.getHashCode() == id).findFirst();
         objFind.ifPresent(obj -> {
-            //System.out.println("Object to remove : " + obj.getMessage());
+            System.out.println("Object to remove : " + obj.getMessage());
             dataList.remove(obj);
         });
     }
@@ -57,11 +57,11 @@ public class MessageProcessor {
      * @param text
      * @return normalized text.
      */
-    public String normalize(final String text) {
-        return text.replaceAll("\\s+", " ")
+    public Data normalize(final Data text) {
+        return new Data(text.getMessage().replaceAll("\\s+", " ")
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
-                .replaceAll("[^\\.!?:]$", "$0.");
+                .replaceAll("[^\\.!?:]$", "$0."), text.getIsAnswer(), text.getHashCode());
     }
 
     /**
@@ -69,12 +69,12 @@ public class MessageProcessor {
      *
      * @return réponse du robot.
      */
-    public String lastResponse() {
-//        for (Data data : dataList) {
-//            System.out.println(data.getMessage());
-//            System.out.println("\n");
-//        }
-        return dataList.get(dataList.size() - 1).getMessage();
+    public Data lastResponse() {
+        for (Data data : dataList) {
+            System.out.println(data.getMessage());
+            System.out.println("\n");
+        }
+        return dataList.get(dataList.size() - 1);
     }
 
     public int getSize() {for (Data data : dataList) {
@@ -92,96 +92,105 @@ public class MessageProcessor {
      * Traite le message envoyé par l'utilisateur.
      * @param normalizedText
      */
-    public void easyAnswer(final String normalizedText, final int hashCode) {
-
-        dataList.add(new Data(normalizedText, false, hashCode));
+    public void easyAnswer(final Data normalizedText) {
+        System.out.println("id normalizedText model" + normalizedText.getHashCode());
+        dataList.add(new Data(normalizedText.getMessage(), false, normalizedText.getHashCode()));
 
         Pattern pattern;
         Matcher matcher;
 
         // First, try to answer specifically to what the user said
         pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
+        matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
             name = matcher.group(1);
-            dataList.add(new Data(("Bonjour " + matcher.group(1) + "."), true, hashCode));
+            final String answer = "Bonjour " + matcher.group(1) + ".";
+            dataList.add(new Data(answer, true, dataList.size()+1));
             notifyObservers();
 
             return;
         }
         pattern = Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
+        matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
             if (name != null) {
-                dataList.add(new Data(("Votre nom est " + name + "."), true, hashCode));
+                final String answer = "Votre nom est " + name + ".";
+                dataList.add(new Data(answer, true, dataList.size()+1));
                 notifyObservers();
             } else {
-                dataList.add(new Data(("Je ne connais pas votre nom."), true, hashCode));
+                final String answer = "Je ne connais pas votre nom.";
+                dataList.add(new Data(answer, true, dataList.size()+1));
                 notifyObservers();
             }
             return;
         }
         pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
+        matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
+            final String answer = "Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !";
             dataList.add(new Data(
-                    ("Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !"),
-                    true, hashCode)
+                    answer,
+                    true, dataList.size()+1)
             );
             notifyObservers();
             return;
         }
         pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
+        matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
             final String startQuestion = pickRandom(new String[] {
                     "Pourquoi dites-vous que ",
                     "Pourquoi pensez-vous que ",
                     "Êtes-vous sûr que ",
             });
+            final String answer = startQuestion + firstToSecondPerson(matcher.group(1)) + " ?";
             dataList.add(new Data(
-                    (startQuestion + firstToSecondPerson(matcher.group(1)) + " ?"),
-                    true, hashCode)
+                    answer,
+                    true, dataList.size()+1)
             );
             notifyObservers();
             return;
         }
         pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
+        matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
             final String startQuestion = pickRandom(new String[] {
                     "Je vous renvoie la question ",
                     "Ici, c'est moi qui pose les\n" +  "questions. ",
             });
-
-            dataList.add(new Data((startQuestion), true, hashCode));
+            dataList.add(new Data((startQuestion), true, dataList.size()+1));
             notifyObservers();
             return;
         }
         // Nothing clever to say, answer randomly
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Il faut beau aujourd'hui, vous ne trouvez pas ?"), true, hashCode));
+            final String answer = "Il faut beau aujourd'hui, vous ne trouvez pas ?";
+            dataList.add(new Data(answer, true, dataList.size()+1));
             notifyObservers();
             return;
         }
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Je ne comprends pas."), true, hashCode));
+            final String answer = "Je ne comprends pas.";
+            dataList.add(new Data(answer, true, dataList.size()+1));
             notifyObservers();
             return;
         }
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Hmmm, hmm ..."), true, hashCode));
+            final String answer = "Hmmm, hmm ...";
+            dataList.add(new Data(answer, true, dataList.size()+1));
             notifyObservers();
             return;
         }
         // Default answer
         if (name != null) {
-            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela, " + name + " ?"), true, hashCode));
+            final String answer = "Qu'est-ce qui vous fait dire cela, " + name + " ?";
+            dataList.add(new Data(answer, true, dataList.size()+1));
             notifyObservers();
         } else {
+            final String answer = "Qu'est-ce qui vous fait dire cela ?";
             dataList.add(new Data(
-                    ("Qu'est-ce qui vous fait dire cela ?"),
-                    true, hashCode)
+                    answer,
+                    true, dataList.size()+1)
             );
             notifyObservers();
         }

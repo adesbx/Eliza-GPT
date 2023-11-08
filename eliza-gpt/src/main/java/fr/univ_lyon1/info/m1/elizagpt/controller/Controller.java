@@ -1,5 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
+import fr.univ_lyon1.info.m1.elizagpt.data.Data;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
 /**
  * Main class of the Controller (GUI) of the application.
@@ -18,13 +19,13 @@ public class Controller {
      * fonction qui appelle le model pour répondre au message de l'utilisateur.
      * @param text
      */
-    public void treatMessage(final String text, final int hashCode) {
-        String normalizedText = processor.normalize(text);
-        processor.easyAnswer(normalizedText, hashCode);
+    public void treatMessage(final Data text) {
+        Data normalizedText = processor.normalize(text);
+        processor.easyAnswer(normalizedText);
     }
 
     public void removeMessage(final int id) {
-        System.out.println(id);
+        System.out.println("id du removeMessage"+id);
         processor.removeFromDataList(id);
     }
 }
