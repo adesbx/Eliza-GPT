@@ -18,8 +18,13 @@ public class Controller {
      * fonction qui appelle le model pour répondre au message de l'utilisateur.
      * @param text
      */
-    public void treatMessage(final String text) {
+    public void treatMessage(final String text, final int hashCode) {
         String normalizedText = processor.normalize(text);
-        processor.easyAnswer(normalizedText);
+        processor.easyAnswer(normalizedText, hashCode);
+    }
+
+    public void removeMessage(final int id) {
+        System.out.println(id);
+        processor.removeFromDataList(id);
     }
 }

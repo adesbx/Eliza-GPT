@@ -4,10 +4,7 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 import fr.univ_lyon1.info.m1.elizagpt.data.Data;
 import fr.univ_lyon1.info.m1.elizagpt.observer.ProcessorObserver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,8 +39,13 @@ public class MessageProcessor {
      * constructor of processor
      */
     public void beginConversation() {
-        dataList.add(new Data("Bonjour", true));
+        dataList.add(new Data("Bonjour", true, -1));//TODO le hashCode n'est pas Bon là
         notifyObservers();
+    }
+
+    public void removeFromDataList(final int id) {
+        Optional<Data> objFind = dataList.stream().filter(objet -> objet.getHashCode() == id).findFirst();
+        dataList.remove(objFind);
     }
 
     /**
@@ -68,13 +70,21 @@ public class MessageProcessor {
         return dataList.get(dataList.size() - 1).getMessage();
     }
 
+    public int getSize() {
+        return dataList.size();
+    }
+
+    public Data get(final int id) {
+        return dataList.get(id);
+    }
+
     /**
      * Traite le message envoyé par l'utilisateur.
      * @param normalizedText
      */
-    public void easyAnswer(final String normalizedText) {
+    public void easyAnswer(final String normalizedText, final int hashCode) {
 
-        dataList.add(new Data(normalizedText, false));
+        dataList.add(new Data(normalizedText, false, hashCode));
 
         Pattern pattern;
         Matcher matcher;
@@ -84,7 +94,7 @@ public class MessageProcessor {
         matcher = pattern.matcher(normalizedText);
         if (matcher.matches()) {
             name = matcher.group(1);
-            dataList.add(new Data(("Bonjour " + matcher.group(1) + "."), true));
+            dataList.add(new Data(("Bonjour " + matcher.group(1) + "."), true, hashCode));
             notifyObservers();
 
             return;
@@ -93,10 +103,10 @@ public class MessageProcessor {
         matcher = pattern.matcher(normalizedText);
         if (matcher.matches()) {
             if (name != null) {
-                dataList.add(new Data(("Votre nom est " + name + "."), true));
+                dataList.add(new Data(("Votre nom est " + name + "."), true, hashCode));
                 notifyObservers();
             } else {
-                dataList.add(new Data(("Je ne connais pas votre nom."), true));
+                dataList.add(new Data(("Je ne connais pas votre nom."), true, hashCode));
                 notifyObservers();
             }
             return;
@@ -106,7 +116,7 @@ public class MessageProcessor {
         if (matcher.matches()) {
             dataList.add(new Data(
                     ("Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !"),
-                    true)
+                    true, hashCode)
             );
             notifyObservers();
             return;
@@ -121,7 +131,7 @@ public class MessageProcessor {
             });
             dataList.add(new Data(
                     (startQuestion + firstToSecondPerson(matcher.group(1)) + " ?"),
-                    true)
+                    true, hashCode)
             );
             notifyObservers();
             return;
@@ -134,34 +144,34 @@ public class MessageProcessor {
                     "Ici, c'est moi qui pose les\n" +  "questions. ",
             });
 
-            dataList.add(new Data((startQuestion), true));
+            dataList.add(new Data((startQuestion), true, hashCode));
             notifyObservers();
             return;
         }
         // Nothing clever to say, answer randomly
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Il faut beau aujourd'hui, vous ne trouvez pas ?"), true));
+            dataList.add(new Data(("Il faut beau aujourd'hui, vous ne trouvez pas ?"), true, hashCode));
             notifyObservers();
             return;
         }
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Je ne comprends pas."), true));
+            dataList.add(new Data(("Je ne comprends pas."), true, hashCode));
             notifyObservers();
             return;
         }
         if (random.nextBoolean()) {
-            dataList.add(new Data(("Hmmm, hmm ..."), true));
+            dataList.add(new Data(("Hmmm, hmm ..."), true, hashCode));
             notifyObservers();
             return;
         }
         // Default answer
         if (name != null) {
-            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela, " + name + " ?"), true));
+            dataList.add(new Data(("Qu'est-ce qui vous fait dire cela, " + name + " ?"), true, hashCode));
             notifyObservers();
         } else {
             dataList.add(new Data(
                     ("Qu'est-ce qui vous fait dire cela ?"),
-                    true)
+                    true, hashCode)
             );
             notifyObservers();
         }

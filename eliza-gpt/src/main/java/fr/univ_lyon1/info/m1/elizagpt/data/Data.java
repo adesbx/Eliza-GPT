@@ -8,14 +8,17 @@ public class Data {
     private String message = null;
     private Boolean isAnswer = null;
 
+    private int hashCode = 0;
+
     /**
      * constructeur de data.
      * @param newMessage
      * @param newIsAnswer
      */
-    public Data(final String newMessage, final Boolean newIsAnswer) {
+    public Data(final String newMessage, final Boolean newIsAnswer, final int newHashCode) {
         message = newMessage;
         isAnswer = newIsAnswer;
+        hashCode = newHashCode;
     }
 
     public String getMessage() {
@@ -24,5 +27,9 @@ public class Data {
 
     public boolean getIsAnswer() {
         return isAnswer;
+    }
+
+    public int getHashCode() {
+        return hashCode;
     }
 }

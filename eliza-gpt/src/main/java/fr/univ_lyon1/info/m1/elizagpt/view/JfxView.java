@@ -115,8 +115,9 @@ public class JfxView implements ProcessorObserver {
         //fonctionnalité pour supprimer le message
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
+            ctrl.removeMessage(label.hashCode());
         });
-        ctrl.treatMessage(text);
+        ctrl.treatMessage(text, label.hashCode());
     }
 
     private Pane createSearchWidget() {
@@ -136,12 +137,34 @@ public class JfxView implements ProcessorObserver {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
-            throw new UnsupportedOperationException("TODO: implement undo for search");
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
         final VBox input = new VBox();
         input.getChildren().addAll(firstLine, secondLine);
         return input;
+    }
+
+    private void undoSearchText(final TextField text) {
+        //parcourir la list des messages
+
+        //si c'est un user faire:
+            // String style = "USER_STYLE";
+            // Pos position = Pos.BASELINE_LEFT;
+        //sinon c'est le robot:
+            // String style = "ELIZA_STYLE";
+            // Pos position = Pos.BASELINE_RIGHT;
+
+        //faire :
+
+//        HBox hBox = new HBox();
+//        final Label label = new Label(text);
+//        hBox.getChildren().add(label);
+//        label.setStyle(ELIZA_STYLE);
+//        hBox.setAlignment(Pos.BASELINE_RIGHT);
+//        dialog.getChildren().add(hBox);
+
+        for(int i = 0; i < processor.getSize(); i++) {
+        }
     }
 
     private void searchText(final TextField text) {
