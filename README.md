@@ -150,7 +150,7 @@ email, ce fichier en contient une copie.
 
 ## CM 6 (18/10/2023, 8h) : Test
 
-* [Transparents de Sandrine Gouraud](http://matthieu-moy.fr/cours/mif01/gouraud_20221005.pdf)
+* Transparents de Sandrine Gouraud, lien disponible sur TOMUSS.
 
 * [Software Fail Watch, 5th
   edition](https://www.tricentis.com/wp-content/uploads/2019/01/Software-Fails-Watch-5th-edition.pdf)
@@ -161,7 +161,11 @@ email, ce fichier en contient une copie.
 * [TD2-uc-style/TD-usecase-et-style.pdf](http://matthieu-moy.fr/cours/mif01/TD2-uc-style/TD-usecase-et-style.pdf)
   (corrigé : [TD2-uc-style/TD-usecase-et-style-corrige.pdf](http://matthieu-moy.fr/cours/mif01/TD2-uc-style/TD-usecase-et-style-corrige.pdf))
 
-* Salles : TODO
+* Salles :
+  - Groupe A : Nautibus TD 1, 9h45 : Matthieu Moy
+  - Groupe B : Nautibus TD 2, 9h45 : Mathieu Hilaire
+  - Groupe C : Nautibus TD 3, 9h45 : Lionel Medini
+  - Groupe D : Nautibus TD 1, 11h30 : Matthieu Moy
 
 ## CM 7 (8/11/2023, 8h) : introduction à l'agilité
 
