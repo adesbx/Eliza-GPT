@@ -1,6 +1,13 @@
 <!-- LTEX: language=fr -->
 Ce fichier contiendra les nouvelles du cours. Un mail sera envoyé quand le fichier est mis à jour.
 
+# 16/10/2023 : TD2 ce mercredi
+
+Nous avons TD ce mercredi, et par manque d'intervenants, j'ai dû modifier
+légèrement le planning : le groupe D aura TD à 11h30 et non 9h45.
+
+La répartition des salles et les horaires sont sur la page du cours et TOMUSS.
+
 # 19/09/2023 : petit bug du squelette
 
 Dans le squelette fourni, on utilise `USER_STYLE` comme style pour les messages
