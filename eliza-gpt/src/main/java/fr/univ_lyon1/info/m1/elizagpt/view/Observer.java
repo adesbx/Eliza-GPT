@@ -7,8 +7,6 @@ public interface Observer {
      * {@code notifyObservers} method to have all the object's
      * observers notified of the change.
      *
-     * @param arg an argument passed to the {@code notifyObservers}
-     *            method.
      */
     void update();
 }

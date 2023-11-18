@@ -29,6 +29,6 @@ public class Controller {
 
     public void removeMessage(final int id) {
         System.out.println("id du removeMessage"+id);
-        messageList.removeFromMessageList(id);
+        messageList.remove(id);
     }
 }

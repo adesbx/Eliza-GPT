@@ -28,7 +28,7 @@ public class MessageProcessor {
 //
 //    }
 //
-//    public void removeFromMessageList(final int id) {
+//    public void remove(final int id) {
 //        Optional<Message> objFind = messageList.stream().filter(objet -> objet.getId() == id).findFirst();
 //        objFind.ifPresent(obj -> {
 //            System.out.println("Object to remove : " + obj.getMessage());
@@ -57,7 +57,7 @@ public class MessageProcessor {
 //     *
 //     * @return réponse du robot.
 //     */
-//    public Message lastResponse() {
+//    public Message pullLastResponse() {
 //        for (Message message : messageList) {
 //            System.out.println(message.getMessage());
 //            System.out.println("\n");

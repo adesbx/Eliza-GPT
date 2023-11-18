@@ -14,7 +14,7 @@ public class MessageList extends Observable {
         this.add("Bonjour", true);
     }
 
-    public void removeFromMessageList(final int id) {
+    public void remove(final int id) {
         Optional<Message> objFind = messageList.stream().filter(objet -> objet.getId() == id).findFirst();
         objFind.ifPresent(obj -> {
             System.out.println("Object to remove : " + obj.getMessage());
@@ -22,7 +22,7 @@ public class MessageList extends Observable {
         });
     }
 
-    public Message lastResponse() {
+    public Message pullLastResponse() {
         return messageList.get(messageList.size() - 1);
     }
 
@@ -37,11 +37,12 @@ public class MessageList extends Observable {
     public void add(final String newMessage, final Boolean newIsAnswer) {
         compteur++;
         messageList.add(new Message(newMessage, newIsAnswer, compteur));
-        for (Message message : messageList) {
-            System.out.println(message.getMessage() + " - " + message.getId());
-            System.out.println("\n");
-        }
-        System.out.println("---------------------------\n");
+        //debug:
+//        for (Message message : messageList) {
+//            System.out.println(message.getMessage() + " - " + message.getId());
+//            System.out.println("\n");
+//        }
+//        System.out.println("---------------------------\n");
         if(newIsAnswer) {
             notifyObservers();
         }

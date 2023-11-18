@@ -48,11 +48,9 @@ public class JfxView implements Observer {
                 final Controller newCtrl
         ) {
         stage.setTitle("Eliza GPT");
-        messageList = newMessageList;
         ctrl = newCtrl;
-
-        //attacher l'observer à l'observable
-            messageList.addObserver(this);
+        messageList = newMessageList;
+        messageList.addObserver(this);
 
         final VBox root = new VBox(10);
 
@@ -87,14 +85,14 @@ public class JfxView implements Observer {
     @Override
     public void  update() {
         replyToUser();
-        System.out.println("update from observer");
+        //System.out.println("update from observer");
     }
 
     /**
      *  La réponse de eliza.
      */
     private void replyToUser() {
-        Message message = messageList.lastResponse();
+        Message message = messageList.pullLastResponse();
         HBox hBox = new HBox();
         final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);

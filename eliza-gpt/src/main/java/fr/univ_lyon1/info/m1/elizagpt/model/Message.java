@@ -2,28 +2,27 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 
 public class Message {
     private String message = null;
-    private Boolean isAnswer = null;//changer nom encore fromElisa avec un type enumerate
-
+    private Boolean isFromEliza = null;
     private int id = 0;
 
     /**
      * constructeur de message.
      *
      * @param newMessage
-     * @param newIsAnswer
+     * @param newIsFromEliza
      */
-    public Message(final String newMessage, final Boolean newIsAnswer, final int newHashCode) {
+    public Message(final String newMessage, final Boolean newIsFromEliza, final int newId) {
         message = newMessage;
-        isAnswer = newIsAnswer;
-        id = newHashCode;
+        isFromEliza = newIsFromEliza;
+        id = newId;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public boolean getIsAnswer() {
-        return isAnswer;
+    public boolean getIsFromEliza() {
+        return isFromEliza;
     }
 
     public int getId() {

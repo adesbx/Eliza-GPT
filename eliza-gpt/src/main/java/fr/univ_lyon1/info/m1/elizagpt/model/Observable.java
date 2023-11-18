@@ -41,32 +41,14 @@ public class Observable {
     /**
      * If this object has changed, as indicated by the
      * {@code hasChanged} method, then notify all of its observers
-     * and then call the {@code clearChanged} method to
-     * indicate that this object has no longer changed.
-     * <p>
-     * Each observer has its {@code update} method called with two
-     * arguments: this observable object and {@code null}. In other
-     * words, this method is equivalent to:
-     * <blockquote>{@code
-     * notifyObservers(null)}</blockquote>
-     *
-     */
-    public void notifyObservers() {
-        notifyObservers(null);
-    }
-
-    /**
-     * If this object has changed, as indicated by the
-     * {@code hasChanged} method, then notify all of its observers
      * and then call the {@code clearChanged} method to indicate
      * that this object has no longer changed.
      * <p>
      * Each observer has its {@code update} method called with two
      * arguments: this observable object and the {@code arg} argument.
      *
-     * @param   arg   any object.
      */
-    public void notifyObservers(Object arg) {
+    public void notifyObservers() {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -74,21 +56,8 @@ public class Observable {
         Object[] arrLocal;
 
         synchronized (this) {
-            /* We don't want the Observer doing callbacks into
-             * arbitrary code while holding its own Monitor.
-             * The code where we extract each Observable from
-             * the Vector and store the state of the Observer
-             * needs synchronization, but notifying observers
-             * does not (should not).  The worst result of any
-             * potential race-condition here is that:
-             * 1) a newly-added Observer will miss a
-             *   notification in progress
-             * 2) a recently unregistered Observer will be
-             *   wrongly notified when it doesn't care
-             */
             arrLocal = obs.toArray();
         }
-
         for (int i = arrLocal.length-1; i>=0; i--)
             ((Observer)arrLocal[i]).update();
     }
