@@ -13,6 +13,14 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     /**
+     * A main method in case the user launches the application using
+     * App as the main class.
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    /**
      * With javafx, start() is called when the application is launched.
      */
     @Override
@@ -23,13 +31,5 @@ public class App extends Application {
         JfxView view = new JfxView(stage, 600, 600, msgList, ctrl);
         // Second view (uncomment to activate)
         // new JfxView(new Stage(), 400, 400);
-    }
-
-    /**
-     * A main method in case the user launches the application using
-     * App as the main class.
-     */
-    public static void main(final String[] args) {
-        Application.launch(args);
     }
 }

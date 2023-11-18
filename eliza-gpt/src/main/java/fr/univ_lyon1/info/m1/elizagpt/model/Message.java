@@ -1,5 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+/**
+ * structure of a message with the content, the author and the id in the list.
+ */
 public class Message {
     private String message = null;
     private Boolean isFromEliza = null;

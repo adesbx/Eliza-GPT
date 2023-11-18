@@ -15,28 +15,13 @@ public class MessageProcessor {
     private MessageList messageList = null;
     private String name = null; //variable tmp pour stocker le nom.
 
-    public MessageProcessor(MessageList msgList) {
+    /**
+     * Constructor of MessageProcessor.
+     * @param msgList
+     */
+    public MessageProcessor(final MessageList msgList) {
         messageList = msgList;
     }
-
-
-    /**
-     * constructor of processor
-     */
-//    public void beginConversation() {
-//        messageList.add("Bonjour", true));//TODO le hashCode n'est pas Bon là
-//
-//    }
-//
-//    public void remove(final int id) {
-//        Optional<Message> objFind = messageList.stream().filter(objet -> objet.getId() == id).findFirst();
-//        objFind.ifPresent(obj -> {
-//            System.out.println("Object to remove : " + obj.getMessage());
-//            messageList.remove(obj);
-//        });
-//    }
-
-    //public Message parcour
 
     /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
@@ -44,7 +29,6 @@ public class MessageProcessor {
      * @param text
      * @return normalized text.
      */
-    //TODO laisser du text
     public Message normalize(final Message text) {
         return new Message(text.getMessage().replaceAll("\\s+", " ")
                 .replaceAll("^\\s+", "")
@@ -78,6 +62,7 @@ public class MessageProcessor {
 
     /**
      * Traite le message envoyé par l'utilisateur.
+     *
      * @param normalizedText
      */
     public void easyAnswer(final Message normalizedText) {
@@ -111,7 +96,8 @@ public class MessageProcessor {
         pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
-            final String answer = "Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !";
+            final String answer = "Le plus " + matcher.group(1)
+                    + " est bien sûr votre enseignant de MIF01 !";
             messageList.add(
                     answer,
                     true
@@ -121,7 +107,7 @@ public class MessageProcessor {
         pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
-            final String startQuestion = pickRandom(new String[] {
+            final String startQuestion = pickRandom(new String[]{
                     "Pourquoi dites-vous que ",
                     "Pourquoi pensez-vous que ",
                     "Êtes-vous sûr que ",
@@ -136,9 +122,9 @@ public class MessageProcessor {
         pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
         matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
-            final String startQuestion = pickRandom(new String[] {
+            final String startQuestion = pickRandom(new String[]{
                     "Je vous renvoie la question ",
-                    "Ici, c'est moi qui pose les\n" +  "questions. ",
+                    "Ici, c'est moi qui pose les\n" + "questions. ",
             });
             messageList.add((startQuestion), true);
             return;
@@ -212,8 +198,6 @@ public class MessageProcessor {
      * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
      * The result is not capitalized to allow forming a new sentence.
      *
-     *
-     *
      * @param text
      * @return The 2nd-person sentence.
      */
@@ -234,7 +218,9 @@ public class MessageProcessor {
         return processedText;
     }
 
-    /** Pick an element randomly in the array. */
+    /**
+     * Pick an element randomly in the array.
+     */
     public <T> T pickRandom(final T[] array) {
         return array[random.nextInt(array.length)];
     }

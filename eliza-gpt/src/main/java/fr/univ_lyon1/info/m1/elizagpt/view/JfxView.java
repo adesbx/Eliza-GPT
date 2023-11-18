@@ -1,12 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
-
+import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -19,9 +15,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Random;
 
 
 /**
@@ -37,16 +35,17 @@ public class JfxView implements Observer {
     private Controller ctrl = null;
 
     private final Random random = new Random();
+
     /**
      * Create the main view of the application.
      */
-        public JfxView(
-                final Stage stage,
-                final int width,
-                final int height,
-                final MessageList newMessageList,
-                final Controller newCtrl
-        ) {
+    public JfxView(
+            final Stage stage,
+            final int width,
+            final int height,
+            final MessageList newMessageList,
+            final Controller newCtrl
+    ) {
         stage.setTitle("Eliza GPT");
         ctrl = newCtrl;
         messageList = newMessageList;
@@ -83,13 +82,13 @@ public class JfxView implements Observer {
 
 
     @Override
-    public void  update() {
+    public void update() {
         replyToUser();
         //System.out.println("update from observer");
     }
 
     /**
-     *  La réponse de eliza.
+     * La réponse de eliza.
      */
     private void replyToUser() {
         Message message = messageList.pullLastResponse();
@@ -107,6 +106,7 @@ public class JfxView implements Observer {
 
     /**
      * Construction de la phrase utilisateur.
+     *
      * @param text
      */
     private void buttonSend(final Message text) {
@@ -155,11 +155,11 @@ public class JfxView implements Observer {
         //parcourir la list des messages
 
         //si c'est un user faire:
-            // String style = "USER_STYLE";
-            // Pos position = Pos.BASELINE_LEFT;
+        // String style = "USER_STYLE";
+        // Pos position = Pos.BASELINE_LEFT;
         //sinon c'est le robot:
-            // String style = "ELIZA_STYLE";
-            // Pos position = Pos.BASELINE_RIGHT;
+        // String style = "ELIZA_STYLE";
+        // Pos position = Pos.BASELINE_RIGHT;
 
         //faire :
 
@@ -169,10 +169,9 @@ public class JfxView implements Observer {
 //        label.setStyle(ELIZA_STYLE);
 //        hBox.setAlignment(Pos.BASELINE_RIGHT);
 //        dialog.getChildren().add(hBox);
-
-        for(int i = 0; i < messageList.getSize(); i++) {
-
-        }
+//
+//        for (int i = 0; i < messageList.getSize(); i++) {
+//        }
     }
 
     private void searchText(final TextField text) {
@@ -207,12 +206,12 @@ public class JfxView implements Observer {
         final Pane input = new HBox();
         text = new TextField();
         text.setOnAction(e -> {
-            buttonSend(new Message(text.getText(), true, messageList.getSize()+1));
+            buttonSend(new Message(text.getText(), true, messageList.getSize() + 1));
             text.setText("");
         });
         final Button send = new Button("Send");
         send.setOnAction(e -> {
-            buttonSend(new Message(text.getText(), false, messageList.getSize()+1));
+            buttonSend(new Message(text.getText(), false, messageList.getSize() + 1));
             text.setText("");
         });
         input.getChildren().addAll(text, send);
