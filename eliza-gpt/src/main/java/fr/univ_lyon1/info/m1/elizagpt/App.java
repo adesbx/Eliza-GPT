@@ -1,6 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt;
 
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
+import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
 import fr.univ_lyon1.info.m1.elizagpt.view.JfxView;
 import javafx.application.Application;
@@ -16,11 +17,10 @@ public class App extends Application {
      */
     @Override
     public void start(final Stage stage) throws Exception {
-        MessageProcessor msgProc = new MessageProcessor();
-        Controller ctrl = new Controller(msgProc);
-        JfxView view = new JfxView(stage, 600, 600, msgProc, ctrl);
-        msgProc.attachObserver(view);
-        msgProc.beginConversation();
+        MessageList msgList = new MessageList();
+        MessageProcessor msgProc = new MessageProcessor(msgList);
+        Controller ctrl = new Controller(msgProc, msgList);
+        JfxView view = new JfxView(stage, 600, 600, msgList, ctrl);
         // Second view (uncomment to activate)
         // new JfxView(new Stage(), 400, 400);
     }

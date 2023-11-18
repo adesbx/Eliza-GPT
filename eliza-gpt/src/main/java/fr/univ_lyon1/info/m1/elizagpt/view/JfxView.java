@@ -3,10 +3,9 @@ package fr.univ_lyon1.info.m1.elizagpt.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
+import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
-import fr.univ_lyon1.info.m1.elizagpt.observer.ProcessorObserver;
-import fr.univ_lyon1.info.m1.elizagpt.data.Data;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Random;
@@ -28,12 +28,12 @@ import java.util.Random;
  * Main class of the View (GUI) of the application,
  * Using Observer to know when a message as been sent.
  */
-public class JfxView implements ProcessorObserver {
+public class JfxView implements Observer {
     private final VBox dialog;
     private TextField text = null;
     private TextField searchText = null;
     private Label searchTextLabel = null;
-    private MessageProcessor processor = null;
+    private MessageList messageList = null;
     private Controller ctrl = null;
 
     private final Random random = new Random();
@@ -44,12 +44,15 @@ public class JfxView implements ProcessorObserver {
                 final Stage stage,
                 final int width,
                 final int height,
-                final MessageProcessor newProcessor,
+                final MessageList newMessageList,
                 final Controller newCtrl
         ) {
         stage.setTitle("Eliza GPT");
-        processor = newProcessor;
+        messageList = newMessageList;
         ctrl = newCtrl;
+
+        //attacher l'observer à l'observable
+            messageList.addObserver(this);
 
         final VBox root = new VBox(10);
 
@@ -82,23 +85,25 @@ public class JfxView implements ProcessorObserver {
 
 
     @Override
-    public void processorUpdated() {
+    public void  update() {
         replyToUser();
+        System.out.println("update from observer");
     }
+
     /**
      *  La réponse de eliza.
      */
     private void replyToUser() {
-        Data data = processor.lastResponse();
+        Message message = messageList.lastResponse();
         HBox hBox = new HBox();
-        final Label label = new Label(data.getMessage());
+        final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);
         label.setStyle(USER_STYLE);
         hBox.setAlignment(Pos.BASELINE_LEFT);
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(data.getHashCode());
+            ctrl.removeMessage(message.getId());
         });
     }
 
@@ -106,7 +111,7 @@ public class JfxView implements ProcessorObserver {
      * Construction de la phrase utilisateur.
      * @param text
      */
-    private void buttonSend(final Data text) {
+    private void buttonSend(final Message text) {
         //création de la phrase utilisateur
         HBox hBox = new HBox();
         final Label label = new Label(text.getMessage());
@@ -118,7 +123,7 @@ public class JfxView implements ProcessorObserver {
         //fonctionnalité pour supprimer le message
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(text.getHashCode());
+            ctrl.removeMessage(text.getId());
         });
         ctrl.treatMessage(text);
     }
@@ -167,7 +172,8 @@ public class JfxView implements ProcessorObserver {
 //        hBox.setAlignment(Pos.BASELINE_RIGHT);
 //        dialog.getChildren().add(hBox);
 
-        for(int i = 0; i < processor.getSize(); i++) {
+        for(int i = 0; i < messageList.getSize(); i++) {
+
         }
     }
 
@@ -203,12 +209,12 @@ public class JfxView implements ProcessorObserver {
         final Pane input = new HBox();
         text = new TextField();
         text.setOnAction(e -> {
-            buttonSend(new Data(text.getText(), true, processor.getSize()+1));
+            buttonSend(new Message(text.getText(), true, messageList.getSize()+1));
             text.setText("");
         });
         final Button send = new Button("Send");
         send.setOnAction(e -> {
-            buttonSend(new Data(text.getText(), false, processor.getSize()+1));
+            buttonSend(new Message(text.getText(), false, messageList.getSize()+1));
             text.setText("");
         });
         input.getChildren().addAll(text, send);

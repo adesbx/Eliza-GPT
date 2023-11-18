@@ -12,7 +12,7 @@ public class MessageProcessorTest {
     @Test
     void testFirstToSecondPerson() {
         // Given
-        MessageProcessor p = new MessageProcessor();
+        MessageProcessor p = new MessageProcessor(new MessageList());
 
         // Then
         assertThat(p.firstToSecondPerson("Je pense à mon chien."),

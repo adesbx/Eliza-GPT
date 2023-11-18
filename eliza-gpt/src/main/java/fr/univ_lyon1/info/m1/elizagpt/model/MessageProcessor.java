@@ -1,10 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-//import javafx.scene.control.Label;
-import fr.univ_lyon1.info.m1.elizagpt.data.Data;
-import fr.univ_lyon1.info.m1.elizagpt.observer.ProcessorObserver;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,42 +12,31 @@ import java.util.regex.Pattern;
 
 public class MessageProcessor {
     private final Random random = new Random();
-    private final List<Data> dataList = new ArrayList<>(); // Liste de message
-    private ProcessorObserver observer = null;
+    private MessageList messageList = null;
     private String name = null; //variable tmp pour stocker le nom.
 
-    /**
-     * Créé un nouveau observer.
-     *
-     * @param newObserver
-     */
-    public void attachObserver(final ProcessorObserver newObserver) {
-        observer = newObserver;
+    public MessageProcessor(MessageList msgList) {
+        messageList = msgList;
     }
 
-    /**
-     * Met a jour l'observer.
-     *
-     */
-    public void notifyObservers() {
-        observer.processorUpdated();
-    }
 
     /**
      * constructor of processor
      */
-    public void beginConversation() {
-        dataList.add(new Data("Bonjour", true, dataList.size()+1));//TODO le hashCode n'est pas Bon là
-        notifyObservers();
-    }
+//    public void beginConversation() {
+//        messageList.add("Bonjour", true));//TODO le hashCode n'est pas Bon là
+//
+//    }
+//
+//    public void removeFromMessageList(final int id) {
+//        Optional<Message> objFind = messageList.stream().filter(objet -> objet.getId() == id).findFirst();
+//        objFind.ifPresent(obj -> {
+//            System.out.println("Object to remove : " + obj.getMessage());
+//            messageList.remove(obj);
+//        });
+//    }
 
-    public void removeFromDataList(final int id) {
-        Optional<Data> objFind = dataList.stream().filter(objet -> objet.getHashCode() == id).findFirst();
-        objFind.ifPresent(obj -> {
-            System.out.println("Object to remove : " + obj.getMessage());
-            dataList.remove(obj);
-        });
-    }
+    //public Message parcour
 
     /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
@@ -57,44 +44,44 @@ public class MessageProcessor {
      * @param text
      * @return normalized text.
      */
-    public Data normalize(final Data text) {
-        return new Data(text.getMessage().replaceAll("\\s+", " ")
+    //TODO laisser du text
+    public Message normalize(final Message text) {
+        return new Message(text.getMessage().replaceAll("\\s+", " ")
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
-                .replaceAll("[^\\.!?:]$", "$0."), text.getIsAnswer(), text.getHashCode());
+                .replaceAll("[^\\.!?:]$", "$0."), null, -1);
     }
-
-    /**
-     * Recupère la dernière réponse du robot.
-     *
-     * @return réponse du robot.
-     */
-    public Data lastResponse() {
-        for (Data data : dataList) {
-            System.out.println(data.getMessage());
-            System.out.println("\n");
-        }
-        return dataList.get(dataList.size() - 1);
-    }
-
-    public int getSize() {for (Data data : dataList) {
-            System.out.println(data.getMessage());
-            System.out.println("\n");
-        }
-        return dataList.size();
-    }
-
-    public Data get(final int id) {
-        return dataList.get(id);
-    }
+//
+//    /**
+//     * Recupère la dernière réponse du robot.
+//     *
+//     * @return réponse du robot.
+//     */
+//    public Message lastResponse() {
+//        for (Message message : messageList) {
+//            System.out.println(message.getMessage());
+//            System.out.println("\n");
+//        }
+//        return messageList.get(messageList.size() - 1);
+//    }
+//
+//    public int getSize() {for (Message message : messageList) {
+//            System.out.println(message.getMessage());
+//            System.out.println("\n");
+//        }
+//        return messageList.size();
+//    }
+//
+//    public Message get(final int id) {
+//        return messageList.get(id);
+//    }
 
     /**
      * Traite le message envoyé par l'utilisateur.
      * @param normalizedText
      */
-    public void easyAnswer(final Data normalizedText) {
-        System.out.println("id normalizedText model" + normalizedText.getHashCode());
-        dataList.add(new Data(normalizedText.getMessage(), false, normalizedText.getHashCode()));
+    public void easyAnswer(final Message normalizedText) {
+        messageList.add(normalizedText.getMessage(), false);
 
         Pattern pattern;
         Matcher matcher;
@@ -105,8 +92,7 @@ public class MessageProcessor {
         if (matcher.matches()) {
             name = matcher.group(1);
             final String answer = "Bonjour " + matcher.group(1) + ".";
-            dataList.add(new Data(answer, true, dataList.size()+1));
-            notifyObservers();
+            messageList.add(answer, true);
 
             return;
         }
@@ -115,12 +101,10 @@ public class MessageProcessor {
         if (matcher.matches()) {
             if (name != null) {
                 final String answer = "Votre nom est " + name + ".";
-                dataList.add(new Data(answer, true, dataList.size()+1));
-                notifyObservers();
+                messageList.add(answer, true);
             } else {
                 final String answer = "Je ne connais pas votre nom.";
-                dataList.add(new Data(answer, true, dataList.size()+1));
-                notifyObservers();
+                messageList.add(answer, true);
             }
             return;
         }
@@ -128,11 +112,10 @@ public class MessageProcessor {
         matcher = pattern.matcher(normalizedText.getMessage());
         if (matcher.matches()) {
             final String answer = "Le plus " + matcher.group(1) + " est bien sûr votre enseignant de MIF01 !";
-            dataList.add(new Data(
+            messageList.add(
                     answer,
-                    true, dataList.size()+1)
+                    true
             );
-            notifyObservers();
             return;
         }
         pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
@@ -144,11 +127,10 @@ public class MessageProcessor {
                     "Êtes-vous sûr que ",
             });
             final String answer = startQuestion + firstToSecondPerson(matcher.group(1)) + " ?";
-            dataList.add(new Data(
+            messageList.add(
                     answer,
-                    true, dataList.size()+1)
+                    true
             );
-            notifyObservers();
             return;
         }
         pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
@@ -158,41 +140,35 @@ public class MessageProcessor {
                     "Je vous renvoie la question ",
                     "Ici, c'est moi qui pose les\n" +  "questions. ",
             });
-            dataList.add(new Data((startQuestion), true, dataList.size()+1));
-            notifyObservers();
+            messageList.add((startQuestion), true);
             return;
         }
         // Nothing clever to say, answer randomly
         if (random.nextBoolean()) {
             final String answer = "Il faut beau aujourd'hui, vous ne trouvez pas ?";
-            dataList.add(new Data(answer, true, dataList.size()+1));
-            notifyObservers();
+            messageList.add(answer, true);
             return;
         }
         if (random.nextBoolean()) {
             final String answer = "Je ne comprends pas.";
-            dataList.add(new Data(answer, true, dataList.size()+1));
-            notifyObservers();
+            messageList.add(answer, true);
             return;
         }
         if (random.nextBoolean()) {
             final String answer = "Hmmm, hmm ...";
-            dataList.add(new Data(answer, true, dataList.size()+1));
-            notifyObservers();
+            messageList.add(answer, true);
             return;
         }
         // Default answer
         if (name != null) {
             final String answer = "Qu'est-ce qui vous fait dire cela, " + name + " ?";
-            dataList.add(new Data(answer, true, dataList.size()+1));
-            notifyObservers();
+            messageList.add(answer, true);
         } else {
             final String answer = "Qu'est-ce qui vous fait dire cela ?";
-            dataList.add(new Data(
+            messageList.add(
                     answer,
-                    true, dataList.size()+1)
+                    true
             );
-            notifyObservers();
         }
     }
 
