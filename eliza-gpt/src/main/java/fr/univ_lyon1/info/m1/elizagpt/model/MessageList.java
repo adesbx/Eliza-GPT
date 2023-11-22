@@ -70,8 +70,6 @@ public class MessageList extends Observable {
 //            System.out.println("\n");
 //        }
 //        System.out.println("---------------------------\n");
-        if (isFromEliza) {
-            notifyObservers();
-        }
+        notifyObservers();
     }
 }

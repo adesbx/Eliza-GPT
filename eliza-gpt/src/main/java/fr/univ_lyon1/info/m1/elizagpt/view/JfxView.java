@@ -95,8 +95,14 @@ public class JfxView implements Observer {
         HBox hBox = new HBox();
         final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);
-        label.setStyle(USER_STYLE);
-        hBox.setAlignment(Pos.BASELINE_LEFT);
+        if (message.getIsFromEliza()) {
+            label.setStyle(USER_STYLE);
+            hBox.setAlignment(Pos.BASELINE_LEFT);
+        }
+        else {
+            label.setStyle(ELIZA_STYLE);
+            hBox.setAlignment(Pos.BASELINE_RIGHT);
+        }
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
@@ -110,19 +116,6 @@ public class JfxView implements Observer {
      * @param text
      */
     private void buttonSend(final Message text) {
-        //création de la phrase utilisateur
-        HBox hBox = new HBox();
-        final Label label = new Label(text.getMessage());
-        hBox.getChildren().add(label);
-        label.setStyle(ELIZA_STYLE);
-        hBox.setAlignment(Pos.BASELINE_RIGHT);
-        dialog.getChildren().add(hBox);
-
-        //fonctionnalité pour supprimer le message
-        hBox.setOnMouseClicked(e -> {
-            dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(text.getId());
-        });
         ctrl.treatMessage(text);
     }
 
