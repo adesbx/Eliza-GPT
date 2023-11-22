@@ -1,5 +1,11 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -29,36 +35,29 @@ public class MessageProcessor {
      * @param text
      * @return normalized text.
      */
-    public Message normalize(final Message text) {
-        return new Message(text.getMessage().replaceAll("\\s+", " ")
+    public Message normalize(final String text) {
+        return new Message(text.replaceAll("\\s+", " ")
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
                 .replaceAll("[^\\.!?:]$", "$0."), null, -1);
     }
-//
-//    /**
-//     * Recupère la dernière réponse du robot.
-//     *
-//     * @return réponse du robot.
-//     */
-//    public Message pullLastResponse() {
-//        for (Message message : messageList) {
-//            System.out.println(message.getMessage());
-//            System.out.println("\n");
-//        }
-//        return messageList.get(messageList.size() - 1);
-//    }
-//
-//    public int getSize() {for (Message message : messageList) {
-//            System.out.println(message.getMessage());
-//            System.out.println("\n");
-//        }
-//        return messageList.size();
-//    }
-//
-//    public Message get(final int id) {
-//        return messageList.get(id);
-//    }
+
+    private void searchText(final Message text) {
+
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(text.getMessage(), Pattern.CASE_INSENSITIVE);
+
+        List<Integer> toDelete = new ArrayList<>();
+        for (Message message : messageList.pullAllMessage()) {
+                matcher = pattern.matcher(text.getMessage());
+                if (!matcher.matches()) {
+                    // Can delete it right now, we're iterating over the list.
+                    toDelete.add(message.getId());
+                }
+        }
+
+    }
 
     /**
      * Traite le message envoyé par l'utilisateur.

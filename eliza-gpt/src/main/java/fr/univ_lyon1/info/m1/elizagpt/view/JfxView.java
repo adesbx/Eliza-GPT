@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +33,6 @@ public class JfxView implements Observer {
     private MessageList messageList = null;
     private Controller ctrl = null;
 
-    private final Random random = new Random();
-
     /**
      * Create the main view of the application.
      */
@@ -47,9 +44,6 @@ public class JfxView implements Observer {
             final Controller newCtrl
     ) {
         stage.setTitle("Eliza GPT");
-        ctrl = newCtrl;
-        messageList = newMessageList;
-        messageList.addObserver(this);
 
         final VBox root = new VBox(10);
 
@@ -72,6 +66,10 @@ public class JfxView implements Observer {
         stage.setScene(scene);
         text.requestFocus();
         stage.show();
+
+        ctrl = newCtrl;
+        messageList = newMessageList;
+        messageList.addObserver(this);
     }
 
     static final String BASE_STYLE = "-fx-padding: 8px; "
@@ -83,15 +81,11 @@ public class JfxView implements Observer {
 
     @Override
     public void update() {
-        replyToUser();
+        printLastMessage();
         //System.out.println("update from observer");
     }
 
-    /**
-     * La réponse de eliza.
-     */
-    private void replyToUser() {
-        Message message = messageList.pullLastResponse();
+    private void printMessage(Message message) {
         HBox hBox = new HBox();
         final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);
@@ -106,8 +100,26 @@ public class JfxView implements Observer {
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(message.getId());
+            ctrl.removeMessage(message.getId());// besoin de recharger l'affiche de tout les messages
         });
+    }
+
+    /**
+     * Le dernier message.
+     */
+    private void printLastMessage() {
+        Message message = messageList.pullLastMessage();
+        printMessage(message);
+    }
+
+    /**
+     * tout les messages
+     */
+    private void printAllMessage() {
+        dialog.getChildren().removeAll(dialog.getChildren());
+        for ( Message message : messageList.pullAllMessage()) {
+            printMessage(message);
+        }
     }
 
     /**
@@ -115,7 +127,7 @@ public class JfxView implements Observer {
      *
      * @param text
      */
-    private void buttonSend(final Message text) {
+    private void buttonSend(final String text) {
         ctrl.treatMessage(text);
     }
 
@@ -136,7 +148,8 @@ public class JfxView implements Observer {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
-
+            printAllMessage();
+            searchTextLabel.setText("");
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
         final VBox input = new VBox();
@@ -144,29 +157,7 @@ public class JfxView implements Observer {
         return input;
     }
 
-    private void undoSearchText(final TextField text) {
-        //parcourir la list des messages
-
-        //si c'est un user faire:
-        // String style = "USER_STYLE";
-        // Pos position = Pos.BASELINE_LEFT;
-        //sinon c'est le robot:
-        // String style = "ELIZA_STYLE";
-        // Pos position = Pos.BASELINE_RIGHT;
-
-        //faire :
-
-//        HBox hBox = new HBox();
-//        final Label label = new Label(text);
-//        hBox.getChildren().add(label);
-//        label.setStyle(ELIZA_STYLE);
-//        hBox.setAlignment(Pos.BASELINE_RIGHT);
-//        dialog.getChildren().add(hBox);
-//
-//        for (int i = 0; i < messageList.getSize(); i++) {
-//        }
-    }
-
+    // à bouger dans le processeur
     private void searchText(final TextField text) {
 
         String currentSearchText = text.getText();
@@ -198,13 +189,13 @@ public class JfxView implements Observer {
     private Pane createInputWidget() {
         final Pane input = new HBox();
         text = new TextField();
-        text.setOnAction(e -> {
-            buttonSend(new Message(text.getText(), true, messageList.getSize() + 1));
+        text.setOnAction(e -> { // entrer sur le texte
+            buttonSend(text.getText());
             text.setText("");
         });
         final Button send = new Button("Send");
-        send.setOnAction(e -> {
-            buttonSend(new Message(text.getText(), false, messageList.getSize() + 1));
+        send.setOnAction(e -> { //click sur button
+            buttonSend(text.getText());
             text.setText("");
         });
         input.getChildren().addAll(text, send);

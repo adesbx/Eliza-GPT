@@ -34,6 +34,7 @@ public class Observable {
         if (!obs.contains(o)) {
             obs.addElement(o);
         }
+        notifyObservers();
     }
 
     /**

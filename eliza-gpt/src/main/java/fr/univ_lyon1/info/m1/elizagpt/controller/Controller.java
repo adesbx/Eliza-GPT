@@ -26,7 +26,7 @@ public class Controller {
      *
      * @param text
      */
-    public void treatMessage(final Message text) {
+    public void treatMessage(final String text) {
         Message normalizedText = processor.normalize(text);
         processor.easyAnswer(normalizedText);
     }

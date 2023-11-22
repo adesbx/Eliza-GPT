@@ -35,8 +35,12 @@ public class MessageList extends Observable {
      * pull the lastResponse from the front.
      * @return message
      */
-    public Message pullLastResponse() {
+    public Message pullLastMessage() {
         return messageList.get(messageList.size() - 1);
+    }
+
+    public List<Message> pullAllMessage() {
+        return messageList;
     }
 
     /**
