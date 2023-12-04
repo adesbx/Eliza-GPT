@@ -16,6 +16,8 @@ public class MessageProcessor {
     private MessageList messageList = null;
     private String name = null; //variable tmp pour stocker le nom.
 
+    private MessagePattern messagePattern = new MessagePattern();
+
     /**
      * Constructor of MessageProcessor.
      * @param msgList
@@ -64,6 +66,16 @@ public class MessageProcessor {
 
         Pattern pattern;
         Matcher matcher;
+
+        //System.out.println(messagePattern.getAnswer(normalizedText.getMessage()));
+        //Object Answer = messagePattern.getAnswer(normalizedText.getMessage());
+        //Si tableau
+        //pickRandom
+        //si Dictionary
+        //test sur quoi retourner
+        //traitement string remplacer %n par matcher.group(1)
+        //ajout à list
+        //return;
 
         // First, try to answer specifically to what the user said
         pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
