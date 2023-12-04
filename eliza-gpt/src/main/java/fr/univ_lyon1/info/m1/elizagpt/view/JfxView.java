@@ -85,22 +85,22 @@ public class JfxView implements Observer {
         //System.out.println("update from observer");
     }
 
-    private void printMessage(Message message) {
+    private void printMessage(final Message message) {
         HBox hBox = new HBox();
         final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);
         if (message.getIsFromEliza()) {
             label.setStyle(USER_STYLE);
             hBox.setAlignment(Pos.BASELINE_LEFT);
-        }
-        else {
+        } else {
             label.setStyle(ELIZA_STYLE);
             hBox.setAlignment(Pos.BASELINE_RIGHT);
         }
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
-            ctrl.removeMessage(message.getId());// besoin de recharger l'affiche de tout les messages
+            ctrl.removeMessage(message.getId());
+            // besoin de recharger l'affiche de tout les messages
         });
     }
 
@@ -113,11 +113,11 @@ public class JfxView implements Observer {
     }
 
     /**
-     * tout les messages
+     * tout les messages.
      */
     private void printAllMessage() {
         dialog.getChildren().removeAll(dialog.getChildren());
-        for ( Message message : messageList.pullAllMessage()) {
+        for (Message message : messageList.pullAllMessage()) {
             printMessage(message);
         }
     }

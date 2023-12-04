@@ -39,6 +39,10 @@ public class MessageList extends Observable {
         return messageList.get(messageList.size() - 1);
     }
 
+    /**
+     * pull all message list.
+     * @return messageList
+     */
     public List<Message> pullAllMessage() {
         return messageList;
     }

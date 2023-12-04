@@ -1,10 +1,5 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
