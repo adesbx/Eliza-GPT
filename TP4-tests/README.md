@@ -11,7 +11,7 @@ Le TP démarre par un « tutorial » (non-noté) sur les tests unitaires en Jav
 Pour cette séance, il est recommandé d'utiliser un IDE. Ce document donne quelques pistes en utilisant VSCode et Eclipse, et vous trouverez ci-dessous des liens vers des pages expliquant les manipulations demandées avec IntelliJ :
 
 - [Création d'un test unitaire](https://www.jetbrains.com/help/idea/create-tests.html)
-- Pour lancer les tests, il faut d'abord [créer une configuration](https://www.jetbrains.com/help/idea/creating-run-debug-configuration-for-tests.html) avant de [les exécuter](https://www.jetbrains.com/help/idea/performing-tests.html)
+- [Exécution d'un test](https://www.jetbrains.com/help/idea/performing-tests.html)
 - Un tutoriel pour le [Test Driven Development](https://www.jetbrains.com/help/idea/tdd-with-intellij-idea.html)
 
 N'hésitez pas à proposer des conseils pour votre IDE préféré en faisant des pull-requests sur le dépôt enseignant.
@@ -359,6 +359,8 @@ L'intérêt est plus évident quand on teste des propriétés plus complexes, co
         assertThat(list, contains("Foo"));
     }
 ```
+
+(Attention, `contains` est trompeur, l'assertion ne passe que si le conteneur contient *exactement* ce contenu, et pas d'autres éléments contrairement à `hasEntry`)
 
 ### Test-Driven Development (TDD)
 
