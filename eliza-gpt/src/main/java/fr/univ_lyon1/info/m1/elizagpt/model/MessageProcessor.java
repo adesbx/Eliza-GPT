@@ -1,11 +1,10 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Map;
+
 
 /**
  * Logic to process a message (and probably reply to it).
@@ -68,100 +67,122 @@ public class MessageProcessor {
         Matcher matcher;
 
         //System.out.println(messagePattern.getAnswer(normalizedText.getMessage()));
-        //Object Answer = messagePattern.getAnswer(normalizedText.getMessage());
-        //Si tableau
-        //pickRandom
-        //si Dictionary
-        //test sur quoi retourner
-        //traitement string remplacer %n par matcher.group(1)
-        //ajout à list
-        //return;
-
-        // First, try to answer specifically to what the user said
-        pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText.getMessage());
-        if (matcher.matches()) {
-            name = matcher.group(1);
-            final String answer = "Bonjour " + matcher.group(1) + ".";
-            messageList.add(answer, true);
-
-            return;
+        final Object Answer = messagePattern.getAnswer(normalizedText.getMessage());
+        String toCleanAnswer = null;
+        if(Answer instanceof String[]) {
+            toCleanAnswer = pickRandom((String[]) Answer);
         }
-        pattern = Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText.getMessage());
-        if (matcher.matches()) {
-            if (name != null) {
-                final String answer = "Votre nom est " + name + ".";
-                messageList.add(answer, true);
+        else if(Answer instanceof Map) {
+            if( name != null ) {
+                toCleanAnswer = ((Map<String, String>) Answer).get("hasName");
             } else {
-                final String answer = "Je ne connais pas votre nom.";
-                messageList.add(answer, true);
+                toCleanAnswer = ((Map<String, String>) Answer).get("hasNoName");
             }
-            return;
         }
-        pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText.getMessage());
-        if (matcher.matches()) {
-            final String answer = "Le plus " + matcher.group(1)
-                    + " est bien sûr votre enseignant de MIF01 !";
-            messageList.add(
-                    answer,
-                    true
-            );
-            return;
+        else if(Answer instanceof String) {
+            toCleanAnswer = (String) Answer;
         }
-        pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText.getMessage());
-        if (matcher.matches()) {
-            final String startQuestion = pickRandom(new String[]{
-                    "Pourquoi dites-vous que ",
-                    "Pourquoi pensez-vous que ",
-                    "Êtes-vous sûr que ",
-            });
-            final String answer = startQuestion + firstToSecondPerson(matcher.group(1)) + " ?";
-            messageList.add(
-                    answer,
-                    true
-            );
-            return;
-        }
-        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText.getMessage());
-        if (matcher.matches()) {
-            final String startQuestion = pickRandom(new String[]{
-                    "Je vous renvoie la question ",
-                    "Ici, c'est moi qui pose les\n" + "questions. ",
-            });
-            messageList.add((startQuestion), true);
-            return;
-        }
-        // Nothing clever to say, answer randomly
-        if (random.nextBoolean()) {
-            final String answer = "Il faut beau aujourd'hui, vous ne trouvez pas ?";
-            messageList.add(answer, true);
-            return;
-        }
-        if (random.nextBoolean()) {
-            final String answer = "Je ne comprends pas.";
-            messageList.add(answer, true);
-            return;
-        }
-        if (random.nextBoolean()) {
-            final String answer = "Hmmm, hmm ...";
-            messageList.add(answer, true);
-            return;
-        }
-        // Default answer
-        if (name != null) {
-            final String answer = "Qu'est-ce qui vous fait dire cela, " + name + " ?";
-            messageList.add(answer, true);
+
+        String cleanAnswer;
+        System.out.println(toCleanAnswer);
+        if(toCleanAnswer.contains("%g")) {
+            cleanAnswer = toCleanAnswer.replace("%g", messagePattern.getMatcher().group(1));
+        } else if(toCleanAnswer.contains("%je")) {
+            cleanAnswer = toCleanAnswer.replace("%je",
+                    firstToSecondPerson(messagePattern.getMatcher().group(1)));
+        } else if(toCleanAnswer.contains("%n")) {
+            return;// faire la classe d'info chat
+            //cleanAnswer = toCleanAnswer.replace("%n", name);
         } else {
-            final String answer = "Qu'est-ce qui vous fait dire cela ?";
-            messageList.add(
-                    answer,
-                    true
-            );
+            cleanAnswer = toCleanAnswer;
         }
+        messageList.add(cleanAnswer, true);
+
+//        // First, try to answer specifically to what the user said
+//        pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
+//        matcher = pattern.matcher(normalizedText.getMessage());
+//        if (matcher.matches()) {
+//            name = matcher.group(1);
+//            final String answer = "Bonjour " + matcher.group(1) + ".";
+//            messageList.add(answer, true);
+//
+//            return;
+//        }
+//        pattern = Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE);
+//        matcher = pattern.matcher(normalizedText.getMessage());
+//        if (matcher.matches()) {
+//            if (name != null) {
+//                final String answer = "Votre nom est " + name + ".";
+//                messageList.add(answer, true);
+//            } else {
+//                final String answer = "Je ne connais pas votre nom.";
+//                messageList.add(answer, true);
+//            }
+//            return;
+//        }
+//        pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
+//        matcher = pattern.matcher(normalizedText.getMessage());
+//        if (matcher.matches()) {
+//            final String answer = "Le plus " + matcher.group(1)
+//                    + " est bien sûr votre enseignant de MIF01 !";
+//            messageList.add(
+//                    answer,
+//                    true
+//            );
+//            return;
+//        }
+//        pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
+//        matcher = pattern.matcher(normalizedText.getMessage());
+//        if (matcher.matches()) {
+//            final String startQuestion = pickRandom(new String[]{
+//                    "Pourquoi dites-vous que ",
+//                    "Pourquoi pensez-vous que ",
+//                    "Êtes-vous sûr que ",
+//            });
+//            final String answer = startQuestion + firstToSecondPerson(matcher.group(1)) + " ?";
+//            messageList.add(
+//                    answer,
+//                    true
+//            );
+//            return;
+//        }
+//        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
+//        matcher = pattern.matcher(normalizedText.getMessage());
+//        if (matcher.matches()) {
+//            final String startQuestion = pickRandom(new String[]{
+//                    "Je vous renvoie la question ",
+//                    "Ici, c'est moi qui pose les\n" + "questions. ",
+//            });
+//            messageList.add((startQuestion), true);
+//            return;
+//        }
+//        // Nothing clever to say, answer randomly
+//        if (random.nextBoolean()) {
+//            final String answer = "Il faut beau aujourd'hui, vous ne trouvez pas ?";
+//            messageList.add(answer, true);
+//            return;
+//        }
+//        if (random.nextBoolean()) {
+//            final String answer = "Je ne comprends pas.";
+//            messageList.add(answer, true);
+//            return;
+//        }
+//        if (random.nextBoolean()) {
+//            final String answer = "Hmmm, hmm ...";
+//            messageList.add(answer, true);
+//            return;
+//        }
+//        // Default answer
+//        if (name != null) {
+//            final String answer = "Qu'est-ce qui vous fait dire cela, " + name + " ?";
+//            messageList.add(answer, true);
+//        } else {
+//            final String answer = "Qu'est-ce qui vous fait dire cela ?";
+//            messageList.add(
+//                    answer,
+//                    true
+//            );
+//        }
     }
 
     /**
@@ -221,7 +242,7 @@ public class MessageProcessor {
                 .replace("ma ", "votre ")
                 .replace("mes ", "vos ")
                 .replace("moi", "vous");
-        return processedText;
+        return processedText ;
     }
 
     /**
