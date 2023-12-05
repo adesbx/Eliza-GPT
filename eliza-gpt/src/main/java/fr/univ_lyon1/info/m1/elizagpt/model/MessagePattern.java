@@ -1,12 +1,12 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Class for low coupling.
- *
+/**
+ * Class for low coupling.
  */
 public class MessagePattern {
     private Map<Pattern, Object> patternDictionary;
@@ -19,9 +19,15 @@ public class MessagePattern {
             "Qu'est-ce qui vous fait dire cela, %n ?",  //récup la réponse sans condition...
             "Qu'est-ce qui vous fait dire cela ?"
     };
+
     MessagePattern() {
-        patternDictionary = new HashMap<>() {{
+        patternDictionary = new LinkedHashMap<>() {{
             put(Pattern.compile("Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE), "Bonjour %g.");
+
+            put(Pattern.compile("Au revoir\\.", Pattern.CASE_INSENSITIVE), "Au revoir...");
+
+            put(Pattern.compile("Que fait une femme devant une page blanche \\?",
+                    Pattern.CASE_INSENSITIVE), "elle lit ses droits...");
 
             Map<String, String> sousMap = Map.of("hasName", "Votre nom est %n.",
                     "hasNoName", "Je ne connais pas votre nom.");

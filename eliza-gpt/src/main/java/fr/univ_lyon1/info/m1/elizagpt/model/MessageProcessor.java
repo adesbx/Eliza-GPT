@@ -1,9 +1,14 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Map;
 
 
 /**
@@ -13,12 +18,14 @@ import java.util.Map;
 public class MessageProcessor {
     private final Random random = new Random();
     private MessageList messageList = null;
-    private String name = null; //variable tmp pour stocker le nom.
+
+    private Map<String, Object> dataApplication = new HashMap<>();
 
     private MessagePattern messagePattern = new MessagePattern();
 
     /**
      * Constructor of MessageProcessor.
+     *
      * @param msgList
      */
     public MessageProcessor(final MessageList msgList) {
@@ -46,13 +53,49 @@ public class MessageProcessor {
 
         List<Integer> toDelete = new ArrayList<>();
         for (Message message : messageList.pullAllMessage()) {
-                matcher = pattern.matcher(text.getMessage());
-                if (!matcher.matches()) {
-                    // Can delete it right now, we're iterating over the list.
-                    toDelete.add(message.getId());
-                }
+            matcher = pattern.matcher(text.getMessage());
+            if (!matcher.matches()) {
+                // Can delete it right now, we're iterating over the list.
+                toDelete.add(message.getId());
+            }
         }
 
+    }
+
+    private String getUncleanAnswer(final Message normalizedText) {
+        final Object answerTmp = messagePattern.getAnswer(normalizedText.getMessage());
+        String toCleanAnswer = null;
+        if (answerTmp instanceof String[]) {
+            toCleanAnswer = pickRandom((String[]) answerTmp);
+        } else if (answerTmp instanceof Map) {
+            if (dataApplication.get("name") != null) {
+                toCleanAnswer = ((Map<String, String>) answerTmp).get("hasName");
+            } else {
+                toCleanAnswer = ((Map<String, String>) answerTmp).get("hasNoName");
+            }
+        } else if (answerTmp instanceof String) {
+            toCleanAnswer = (String) answerTmp;
+        }
+        return toCleanAnswer;
+    }
+
+    private String getCleanAnswer(final String toCleanAnswer) {
+        String cleanAnswer;
+        System.out.println(toCleanAnswer);
+        if (toCleanAnswer.contains("%g")) {
+            if (toCleanAnswer.contains("Bonjour")) {  //matcher.group(1) c'est le nom
+                dataApplication.put("name", messagePattern.getMatcher().group(1));
+            }
+            cleanAnswer = toCleanAnswer.replace("%g", messagePattern.getMatcher().group(1));
+        } else if (toCleanAnswer.contains("%je")) {
+            cleanAnswer = toCleanAnswer.replace("%je",
+                    firstToSecondPerson(messagePattern.getMatcher().group(1)));
+        } else if (toCleanAnswer.contains("%n")) {
+            cleanAnswer = toCleanAnswer.replace("%n", (String) dataApplication.get("name"));
+        } else {
+            cleanAnswer = toCleanAnswer;
+        }
+        return cleanAnswer;
     }
 
     /**
@@ -61,41 +104,13 @@ public class MessageProcessor {
      * @param normalizedText
      */
     public void easyAnswer(final Message normalizedText) {
+
         messageList.add(normalizedText.getMessage(), false);
 
-        Pattern pattern;
-        Matcher matcher;
+        String toCleanAnswer = getUncleanAnswer(normalizedText);
 
-        //System.out.println(messagePattern.getAnswer(normalizedText.getMessage()));
-        final Object Answer = messagePattern.getAnswer(normalizedText.getMessage());
-        String toCleanAnswer = null;
-        if(Answer instanceof String[]) {
-            toCleanAnswer = pickRandom((String[]) Answer);
-        }
-        else if(Answer instanceof Map) {
-            if( name != null ) {
-                toCleanAnswer = ((Map<String, String>) Answer).get("hasName");
-            } else {
-                toCleanAnswer = ((Map<String, String>) Answer).get("hasNoName");
-            }
-        }
-        else if(Answer instanceof String) {
-            toCleanAnswer = (String) Answer;
-        }
+        String cleanAnswer = getCleanAnswer(toCleanAnswer);
 
-        String cleanAnswer;
-        System.out.println(toCleanAnswer);
-        if(toCleanAnswer.contains("%g")) {
-            cleanAnswer = toCleanAnswer.replace("%g", messagePattern.getMatcher().group(1));
-        } else if(toCleanAnswer.contains("%je")) {
-            cleanAnswer = toCleanAnswer.replace("%je",
-                    firstToSecondPerson(messagePattern.getMatcher().group(1)));
-        } else if(toCleanAnswer.contains("%n")) {
-            return;// faire la classe d'info chat
-            //cleanAnswer = toCleanAnswer.replace("%n", name);
-        } else {
-            cleanAnswer = toCleanAnswer;
-        }
         messageList.add(cleanAnswer, true);
 
 //        // First, try to answer specifically to what the user said
@@ -242,7 +257,7 @@ public class MessageProcessor {
                 .replace("ma ", "votre ")
                 .replace("mes ", "vos ")
                 .replace("moi", "vous");
-        return processedText ;
+        return processedText;
     }
 
     /**
