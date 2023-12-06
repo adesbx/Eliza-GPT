@@ -19,9 +19,14 @@ public class MessageProcessor {
     private final Random random = new Random();
     private MessageList messageList = null;
 
+    private MessageList filterMessageList = null;
+
+    private FilterSubstring filterSubstring = new FilterSubstring();
+
     private Map<String, Object> dataApplication = new HashMap<>();
 
     private MessagePattern messagePattern = new MessagePattern();
+
 
     /**
      * Constructor of MessageProcessor.
@@ -198,6 +203,15 @@ public class MessageProcessor {
 //                    true
 //            );
 //        }
+    }
+
+    /**
+     * Apply the right way to filter.
+     */
+    public void doFilterAnswer(final String searchText) {
+        filterMessageList = messageList;
+        messageList = filterSubstring.doFilter(searchText, messageList);
+        messageList.notifyObservers();
     }
 
     /**

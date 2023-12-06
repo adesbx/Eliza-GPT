@@ -4,19 +4,17 @@ import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +79,8 @@ public class JfxView implements Observer {
 
     @Override
     public void update() {
-        printLastMessage();
+        printAllMessage();
+        //printLastMessage();
         //System.out.println("update from observer");
     }
 
@@ -141,6 +140,9 @@ public class JfxView implements Observer {
             searchText(searchText);
         });
         firstLine.getChildren().add(searchText);
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll("Option 1", "Option 2");
+        firstLine.getChildren().add(comboBox);
         final Button send = new Button("Search");
         send.setOnAction(e -> {
             searchText(searchText);
@@ -171,18 +173,19 @@ public class JfxView implements Observer {
         } else {
             searchTextLabel.setText("Searching for: " + currentSearchText);
         }
-        List<HBox> toDelete = new ArrayList<>();
-        for (Node hBox : dialog.getChildren()) {
-            for (Node label : ((HBox) hBox).getChildren()) {
-                String t = ((Label) label).getText();
-                matcher = pattern.matcher(t);
-                if (!matcher.matches()) {
-                    // Can delete it right now, we're iterating over the list.
-                    toDelete.add((HBox) hBox);
-                }
-            }
-        }
-        dialog.getChildren().removeAll(toDelete);
+        ctrl.filterMessage(currentSearchText);
+//        List<HBox> toDelete = new ArrayList<>();
+//        for (Node hBox : dialog.getChildren()) {
+//            for (Node label : ((HBox) hBox).getChildren()) {
+//                String t = ((Label) label).getText();
+//                matcher = pattern.matcher(t);
+//                if (!matcher.matches()) {
+//                    // Can delete it right now, we're iterating over the list.
+//                    toDelete.add((HBox) hBox);
+//                }
+//            }
+//        }
+//        dialog.getChildren().removeAll();
         text.setText("");
     }
 

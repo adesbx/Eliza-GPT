@@ -39,4 +39,12 @@ public class Controller {
         System.out.println("id du removeMessage" + id);
         messageList.remove(id);
     }
+
+    /**
+     * filter All message.
+     * @param searchText
+     */
+    public void filterMessage(final String searchText) {
+        processor.doFilterAnswer(searchText);
+    }
 }
