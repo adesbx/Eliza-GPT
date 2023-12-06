@@ -3,7 +3,11 @@ package fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.DataType;
 import fr.univ_lyon1.info.m1.elizagpt.model.DataApplication;
 
-public class ChoiceAnswer<T> implements SelectAnswer {
+/**
+ * Choice the complex answer if we have the data, else...
+ * @param <T>
+ */
+public class ChoiceAnswer<T> extends SelectAnswer<T> {
     private T choiceOne;
 
     private T choiceTwo;
@@ -12,7 +16,15 @@ public class ChoiceAnswer<T> implements SelectAnswer {
 
     private DataApplication<T> dataApplication;
 
-    public ChoiceAnswer(T newChoiceOne, DataType newTypeOne,T newChoiceTwo, DataApplication<T> newDataApplication) {
+    /**
+     * Constructor of ChoiceAnswer.
+     * @param newChoiceOne
+     * @param newTypeOne
+     * @param newChoiceTwo
+     * @param newDataApplication
+     */
+    public ChoiceAnswer(final T newChoiceOne, final DataType newTypeOne,
+                        final T newChoiceTwo, final DataApplication<T> newDataApplication) {
         choiceOne = newChoiceOne;
         choiceTwo = newChoiceTwo;
         typeOne = newTypeOne;
@@ -21,10 +33,12 @@ public class ChoiceAnswer<T> implements SelectAnswer {
 
     @Override
     public T execute() {
-        if(dataApplication.get(typeOne) != null) {
-            return choiceOne;
+        if (dataApplication.get(typeOne) != null) {
+            this.setCurrentAnswer(choiceOne);
+        } else {
+            this.setCurrentAnswer(choiceTwo);
         }
-        return choiceTwo;
+        return this.getCurrentAnswer();
     }
 
 }

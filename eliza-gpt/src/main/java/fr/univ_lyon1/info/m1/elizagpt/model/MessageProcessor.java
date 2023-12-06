@@ -1,10 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 
 import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +17,6 @@ import java.util.regex.Pattern;
 public class MessageProcessor {
     private final Random random = new Random();
     private MessageList messageList = null;
-
     private DataApplication<String> dataApplication = new DataApplication();
     private MessagePattern messagePattern = new MessagePattern(dataApplication);
 
@@ -63,25 +59,6 @@ public class MessageProcessor {
 
     }
 
-    private String getCleanAnswer(final String toCleanAnswer) {
-        String cleanAnswer;
-        System.out.println(toCleanAnswer);
-        if (toCleanAnswer.contains("%g")) {
-            if (toCleanAnswer.contains("Bonjour")) {  //matcher.group(1) c'est le nom
-                dataApplication.set(DataType.NAME, messagePattern.getMatcher().group(1));
-            }
-            cleanAnswer = toCleanAnswer.replace("%g", messagePattern.getMatcher().group(1));
-        } else if (toCleanAnswer.contains("%je")) {
-            cleanAnswer = toCleanAnswer.replace("%je",
-                    firstToSecondPerson(messagePattern.getMatcher().group(1)));
-        } else if (toCleanAnswer.contains("%n")) {
-            cleanAnswer = toCleanAnswer.replace("%n", (String) dataApplication.get(DataType.NAME));
-        } else {
-            cleanAnswer = toCleanAnswer;
-        }
-        return cleanAnswer;
-    }
-
     /**
      * Traite le message envoyé par l'utilisateur.
      *
@@ -91,9 +68,7 @@ public class MessageProcessor {
 
         messageList.add(normalizedText.getMessage(), false);
 
-        String toCleanAnswer = messagePattern.getAnswer(normalizedText.getMessage());
-
-        String cleanAnswer = getCleanAnswer(toCleanAnswer);
+        String cleanAnswer = messagePattern.getAnswer(normalizedText.getMessage());
 
         messageList.add(cleanAnswer, true);
 
