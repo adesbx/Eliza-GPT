@@ -73,11 +73,11 @@ public class MessageList extends Observable {
         compteur++;
         messageList.add(new Message(newMessage, isFromEliza, compteur));
         //debug:
-//        for (Message message : messageList) {
-//            System.out.println(message.getMessage() + " - " + message.getId());
-//            System.out.println("\n");
-//        }
-//        System.out.println("---------------------------\n");
+        for (Message message : messageList) {
+            System.out.println(message.getMessage() + " - " + message.getId());
+            System.out.println("\n");
+        }
+        System.out.println("---------------------------\n");
         notifyObservers();
     }
 }
