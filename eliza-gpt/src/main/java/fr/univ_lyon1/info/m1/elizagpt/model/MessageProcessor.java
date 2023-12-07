@@ -217,9 +217,12 @@ public class MessageProcessor {
     /**
      * Undo the current filter.
      */
-    public void undoFilterMessageList(){
-        if(filterMessageList != null){
-            messageList = new MessageList(filterMessageList);
+    public void undoFilterMessageList() {
+        if (filterMessageList != null) {
+            messageList.removeAll();
+            for (Message msg : filterMessageList.pullAllMessage()) {
+                messageList.add(msg.getMessage(), msg.getIsFromEliza());
+            }
         }
         System.out.println(messageList.get(1).getMessage());
         messageList.notifyObservers();

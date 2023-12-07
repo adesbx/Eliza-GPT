@@ -10,7 +10,6 @@ public class FilterRegex implements Filter {
      *
      * @param searchText The text to search.
      * @param messageList The list of messages to filter.
-     * @return A filtered MessageList.
      */
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {

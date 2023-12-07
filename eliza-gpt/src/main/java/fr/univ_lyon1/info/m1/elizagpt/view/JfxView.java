@@ -15,9 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 /**
  * Main class of the View (GUI) of the application,
@@ -79,7 +76,6 @@ public class JfxView implements Observer {
 
     @Override
     public void update() {
-        System.out.println("maj");
         printAllMessage();
         //printLastMessage();
         //System.out.println("update from observer");
@@ -190,6 +186,10 @@ public class JfxView implements Observer {
         text.setText("");
     }
 
+    /**
+     * undo the actual search.
+     *
+     */
     public void undoSearch() {
         ctrl.undoFilter();
     }

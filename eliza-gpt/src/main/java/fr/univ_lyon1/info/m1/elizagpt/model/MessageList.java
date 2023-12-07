@@ -18,12 +18,15 @@ public class MessageList extends Observable {
         this.add("Bonjour", true);
     }
 
+    /**
+     * Constructor by copy of the class.
+     */
     public MessageList(final MessageList newMessageList) {
         for (Message msg : newMessageList.messageList) {
             messageList.add(new Message(msg.getMessage(), msg.getIsFromEliza(), msg.getId()));
         }
         compteur = newMessageList.compteur;
-        addObserver(newMessageList.);
+        //addObserver(newMessageList.);
     }
 
     /**
@@ -37,6 +40,13 @@ public class MessageList extends Observable {
             System.out.println("Object to remove : " + obj.getMessage());
             messageList.remove(obj);
         });
+    }
+
+    /**
+     * remove all the message from the messageList .
+     */
+    public void removeAll() {
+        messageList.clear();
     }
 
     /**

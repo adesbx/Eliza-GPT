@@ -12,5 +12,5 @@ public interface Filter {
      * @param messageList
      * @param searchText
      */
-    public abstract void doFilter(String searchText, MessageList messageList);
+    void doFilter(String searchText, MessageList messageList);
 }

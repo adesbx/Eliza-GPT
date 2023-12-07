@@ -21,7 +21,7 @@ public class FilterSubstring implements Filter {
                 listToRemove.add(message.getId());
             }
         }
-        for(Integer id: listToRemove){
+        for (Integer id: listToRemove) {
             messageList.remove(id);
         }
     }
