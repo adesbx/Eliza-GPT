@@ -11,7 +11,7 @@
 * Rendu du TP noté : vous devez avoir rempli le champ URL de TOMUSS avant le 20 septembre 2023 (malus sur la note si ce n'est pas fait sans une raison valable). Le rendu final est le 17/12/2023 à 23h59. Voir
   [projet-note.md](projet-note.md) pour un récapitulatif des consignes.
 
-* Examen : TODO: date à définir. 1h30 (sauf tiers-temps) Consignes : Seules 5
+* Examen : 10 janvier 2024, 8h30, voir amphi sur TOMUSS. 1h30 (sauf tiers-temps) Consignes : Seules 5
   feuilles A4 recto verso (donc 10 pages au total) sont autorisées à
   l’examen. Leur contenu est libre. Elles peuvent être une sélection de
   transparents ou manuscrites, avec une taille de caractère de votre
