@@ -5,10 +5,7 @@ import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.ChoiceAnswer;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import java.util.regex.Matcher;
@@ -22,8 +19,6 @@ public class MessagePattern {
 
     private DataApplication<String> dataApplication;
 
-    private Map<DataType, List<String>> grabData = new HashMap<>();
-
     private Matcher matcher;
 
     private Verb verb = new Verb();
@@ -31,16 +26,13 @@ public class MessagePattern {
             "Il faut beau aujourd'hui, vous ne trouvez pas ?",
             "Je ne comprends pas.",
             "Hmmm, hmm ...",
-            "Qu'est-ce qui vous fait dire cela ?"
-    });
-
-    private static final RandomAnswer<String> RANDOM_ANSWER_WITH_DATA = new RandomAnswer<String>(
-            new String[]{
+            "Qu'est-ce qui vous fait dire cela ?",
             "Il faut beau aujourd'hui, vous ne trouvez pas, $NAME ?",
             "Je ne comprends pas. $NAME",
             "Hmmm, hmm ... $NAME",
             "Qu'est-ce qui vous fait dire cela $NAME ?"
     });
+
 
     /**
      * Constructor of the class, here we initialise the patternDictionary with answer, response.
@@ -49,20 +41,16 @@ public class MessagePattern {
     public MessagePattern(final DataApplication<String> newDataApplication) {
         dataApplication = newDataApplication;
 
-        for (DataType dataType : DataType.values()) {
-            grabData.put(dataType, new ArrayList<>());
-        }
-
         patternDictionary = new LinkedHashMap<>() {{
             String regex1 = "Je m'appelle (.*)\\.";
             put(Pattern.compile(regex1, Pattern.CASE_INSENSITIVE),
                     new SimpleAnswer<String>("Bonjour $GROUP."));
-            grabData.get(DataType.NAME).add(regex1);
+            dataApplication.patternContainData(regex1, DataType.NAME);
 
             String regex2 = "Je me présente (.*)\\.";
             put(Pattern.compile(regex2, Pattern.CASE_INSENSITIVE),
                     new SimpleAnswer<String>("Salut $GROUP."));
-            grabData.get(DataType.NAME).add(regex2);
+            dataApplication.patternContainData(regex2, DataType.NAME);
 
             put(Pattern.compile("Au revoir\\.", Pattern.CASE_INSENSITIVE),
                     new SimpleAnswer<String>("Au revoir..."));
@@ -109,22 +97,16 @@ public class MessagePattern {
      * @return
      */
     private String choiceRandomAnswer() {
-        String answerWithData = RANDOM_ANSWER_WITH_DATA.execute();
-        DataType dataType = getDataType(answerWithData);
-        return new ChoiceAnswer<String>(answerWithData, dataType,
-                RANDOM_ANSWER.execute(), dataApplication).execute();
-    }
-
-    /**
-     * add DATA memory when the pattern is in grabdata.
-     * @param key
-     */
-    private void addInData(final String key) {
-        for (Map.Entry<DataType, List<String>> entry : grabData.entrySet()) {
-            if (entry.getValue().contains(key)) {
-                dataApplication.set(entry.getKey(), matcher.group(1));
+        String randomAnswer = RANDOM_ANSWER.execute();
+        if (getDataType(randomAnswer) != null) {
+            DataType dataType = getDataType(randomAnswer);
+            if (dataApplication.get(dataType) != null) {
+                return randomAnswer;
+            } else {
+                return choiceRandomAnswer();
             }
         }
+            return randomAnswer;
     }
 
     /**
@@ -138,7 +120,7 @@ public class MessagePattern {
                 : patternDictionary.entrySet()) {
             matcher = entry.getKey().matcher(message);
             if (matcher.matches()) {
-                addInData(entry.getKey().toString());
+                dataApplication.addInData(entry.getKey().toString(), matcher);
                 finalAnswer = entry.getValue().execute();
                 break;
             }
@@ -148,6 +130,7 @@ public class MessagePattern {
         }
         if (finalAnswer.contains("$GROUP")) {
             return finalAnswer.replace("$GROUP", verb.firstToSecondPerson(matcher.group(1)));
+            //TODO mieux gérer verb
         }
         return finalAnswer;
     }

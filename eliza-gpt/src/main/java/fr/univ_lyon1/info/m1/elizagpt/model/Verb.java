@@ -21,7 +21,7 @@ public class Verb {
         put("ai", "avez");
         put("fais", "faites");
         put("sais", "savez");
-    }};;
+    }};
 
 
     Verb() {
