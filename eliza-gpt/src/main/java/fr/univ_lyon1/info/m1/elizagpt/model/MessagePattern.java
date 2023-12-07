@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class for low coupling.
+ * Class for low coupling : add Answer.
  */
 public class MessagePattern {
     private Map<Pattern, SelectAnswer<String>> patternDictionary;
@@ -28,9 +28,14 @@ public class MessagePattern {
             "Il faut beau aujourd'hui, vous ne trouvez pas ?",
             "Je ne comprends pas.",
             "Hmmm, hmm ...",
-            "Qu'est-ce qui vous fait dire cela, $NAME ?",
-            //TODO là le name je ne sais pas comment le traiter
             "Qu'est-ce qui vous fait dire cela ?"
+    });
+
+    private RandomAnswer<String> randomAnswerWithData = new RandomAnswer<String>(new String[]{
+            "Il faut beau aujourd'hui, vous ne trouvez pas, $NAME ?",
+            "Je ne comprends pas. $NAME",
+            "Hmmm, hmm ... $NAME",
+            "Qu'est-ce qui vous fait dire cela $NAME ?"
     });
 
     /**
@@ -83,6 +88,27 @@ public class MessagePattern {
     }
 
     /**
+     * Get the DataType.
+     */
+    private DataType getDataType(String answerWithData) {
+        for (DataType dataType : DataType.values()) {
+            String toReplace = "$".concat(dataType.name());
+            if (answerWithData.contains(toReplace)) {
+                return dataType;
+            }
+        }
+        return null;
+    }
+    /**
+     * function for choosing a random Answer with priority to answerWithData.
+     * @return
+     */
+    private String choiceRandomAnswer() {
+        String answerWithData = randomAnswerWithData.execute();
+        DataType dataType = getDataType(answerWithData);
+        return new ChoiceAnswer<String>(answerWithData, dataType, randomAnswer.execute(), dataApplication).execute();
+    }
+    /**
      * add DATA memory when the pattern is in grabdata.
      * @param key
      */
@@ -111,7 +137,7 @@ public class MessagePattern {
             }
         }
         if (finalAnswer == null) {
-            finalAnswer = randomAnswer.execute();
+            finalAnswer = choiceRandomAnswer();
         }
         return  fillWithDataAnswer(finalAnswer);
     }
@@ -136,5 +162,4 @@ public class MessagePattern {
         }
         return answer;
     }
-
 }
