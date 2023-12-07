@@ -1,108 +1,93 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-//import javafx.scene.control.Label;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.ArrayList;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Logic to process a message (and probably reply to it).
  */
+
 public class MessageProcessor {
-    private final Random random = new Random();
+    private MessageList messageList = null;
+    private DataApplication<String> dataApplication = new DataApplication();
+
+    private MessagePattern messagePattern = new MessagePattern(dataApplication);
+
+    /**
+     * Constructor of MessageProcessor.
+     *
+     * @param msgList
+     */
+    public MessageProcessor(final MessageList msgList) {
+        messageList = msgList;
+    }
+
     /**
      * Normlize the text: remove extra spaces, add a final dot if missing.
+     *
      * @param text
      * @return normalized text.
      */
-    public String normalize(final String text) {
-        return text.replaceAll("\\s+", " ")
+    public Message normalize(final String text) {
+        return new Message(text.replaceAll("\\s+", " ")
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
-                .replaceAll("[^\\.!?:]$", "$0.");
+                .replaceAll("[^\\.!?:]$", "$0."), null, -1);
+    }
+
+    private void searchText(final Message text) {
+
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(text.getMessage(), Pattern.CASE_INSENSITIVE);
+
+        List<Integer> toDelete = new ArrayList<>();
+        for (Message message : messageList.pullAllMessage()) {
+            matcher = pattern.matcher(text.getMessage());
+            if (!matcher.matches()) {
+                // Can delete it right now, we're iterating over the list.
+                toDelete.add(message.getId());
+            }
+        }
+
     }
 
     /**
-     * Information about conjugation of a verb.
+     * remplace variable in Answer with Data or other treatment.
+     * @param answer
+     * @return
      */
-    public static class Verb {
-        private final String firstSingular;
-        private final String secondPlural;
-
-        public String getFirstSingular() {
-            return firstSingular;
+    private String fillWithDataAnswer(final String answer) {
+        for (DataType dataType : DataType.values()) {
+            String toReplace = "$".concat(dataType.name());
+            if (answer.contains(toReplace)) {
+                if (dataApplication.get(dataType) != null) {
+                    return answer.replace(toReplace, dataApplication.get(dataType));
+                } else {
+                    return answer.replace(toReplace, "");
+                }
+            }
         }
-
-        public String getSecondPlural() {
-            return secondPlural;
-        }
-
-        Verb(final String firstSingular, final String secondPlural) {
-            this.firstSingular = firstSingular;
-            this.secondPlural = secondPlural;
-        }
+        return answer;
     }
 
     /**
-     * List of 3rd group verbs and their correspondance from 1st person signular
-     * (Je) to 2nd person plural (Vous).
-     */
-    protected static final List<Verb> VERBS = Arrays.asList(
-            new Verb("suis", "êtes"),
-            new Verb("vais", "allez"),
-            new Verb("peux", "pouvez"),
-            new Verb("dois", "devez"),  
-            new Verb("dis", "dites"),
-            new Verb("ai", "avez"),
-            new Verb("fais", "faites"),
-            new Verb("sais", "savez"),
-            new Verb("dois", "devez"));
-
-    /**
-     * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
-     * The result is not capitalized to allow forming a new sentence.
+     * Traite le message envoyé par l'utilisateur.
      *
-     *
-     *
-     * @param text
-     * @return The 2nd-person sentence.
+     * @param normalizedText
      */
-    public String firstToSecondPerson(final String text) {
-        String processedText = text
-                .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
-        for (Verb v : VERBS) {
-            processedText = processedText.replaceAll(
-                    "[Jj]e " + v.getFirstSingular(),
-                    "vous " + v.getSecondPlural());
-        }
-        processedText = processedText
-                .replaceAll("[Jj]e ([a-z]*)s ", "vous $1ssez ")
-                .replace("mon ", "votre ")
-                .replace("ma ", "votre ")
-                .replace("mes ", "vos ")
-                .replace("moi", "vous");
-        return processedText;
-    }
+    public void easyAnswer(final Message normalizedText) {
 
-    /**
-     * Get the name.
-     * @param text
-     * @return The name if found
-     */
-    public String getMatchName(final String text) {
-        Pattern pattern = Pattern.compile("Je m'appelle (.*)\\.",
-                Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.matches()) {
-            return matcher.group(1);
-        }
-        return null;
-    }
-    /** Pick an element randomly in the array. */
-    public <T> T pickRandom(final T[] array) {
-        return array[random.nextInt(array.length)];
+        messageList.add(normalizedText.getMessage(), false);
+
+        String unfilledAnswer = messagePattern.getAnswer(normalizedText.getMessage());
+
+        String cleanAnswer = fillWithDataAnswer(unfilledAnswer);
+
+        messageList.add(cleanAnswer, true);
     }
 }

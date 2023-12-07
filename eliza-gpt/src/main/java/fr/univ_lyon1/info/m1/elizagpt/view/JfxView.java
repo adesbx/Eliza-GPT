@@ -1,9 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
+import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -15,25 +14,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Random;
 
 
 /**
- * Main class of the View (GUI) of the application.
+ * Main class of the View (GUI) of the application,
+ * Using Observer to know when a message as been sent.
  */
-public class JfxView {
+public class JfxView implements Observer {
     private final VBox dialog;
     private TextField text = null;
     private TextField searchText = null;
     private Label searchTextLabel = null;
-    private MessageProcessor processor = new MessageProcessor();
-    private final Random random = new Random();
+    private MessageList messageList = null;
+    private Controller ctrl = null;
+
     /**
      * Create the main view of the application.
      */
-        public JfxView(final Stage stage, final int width, final int height) {
+    public JfxView(
+            final Stage stage,
+            final int width,
+            final int height,
+            final MessageList newMessageList,
+            final Controller newCtrl
+    ) {
         stage.setTitle("Eliza GPT");
 
         final VBox root = new VBox(10);
@@ -51,13 +60,16 @@ public class JfxView {
 
         final Pane input = createInputWidget();
         root.getChildren().add(input);
-        replyToUser("Bonjour");
 
         // Everything's ready: add it to the scene and display it
         final Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         text.requestFocus();
         stage.show();
+
+        ctrl = newCtrl;
+        messageList = newMessageList;
+        messageList.addObserver(this);
     }
 
     static final String BASE_STYLE = "-fx-padding: 8px; "
@@ -66,114 +78,57 @@ public class JfxView {
     static final String USER_STYLE = "-fx-background-color: #A0E0A0; " + BASE_STYLE;
     static final String ELIZA_STYLE = "-fx-background-color: #A0A0E0; " + BASE_STYLE;
 
-    private void replyToUser(final String text) {
+
+    @Override
+    public void update() {
+        printLastMessage();
+        //System.out.println("update from observer");
+    }
+
+    private void printMessage(final Message message) {
         HBox hBox = new HBox();
-        final Label label = new Label(text);
+        final Label label = new Label(message.getMessage());
         hBox.getChildren().add(label);
-        label.setStyle(USER_STYLE);
-        hBox.setAlignment(Pos.BASELINE_LEFT);
+        if (message.getIsFromEliza()) {
+            label.setStyle(USER_STYLE);
+            hBox.setAlignment(Pos.BASELINE_LEFT);
+        } else {
+            label.setStyle(ELIZA_STYLE);
+            hBox.setAlignment(Pos.BASELINE_RIGHT);
+        }
         dialog.getChildren().add(hBox);
         hBox.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
+            ctrl.removeMessage(message.getId());
+            // besoin de recharger l'affiche de tout les messages
         });
     }
-    
-    private void sendMessage(final String text) {
-        HBox hBox = new HBox();
-        final Label label = new Label(text);
-        hBox.getChildren().add(label);
-        label.setStyle(ELIZA_STYLE);
-        hBox.setAlignment(Pos.BASELINE_RIGHT);
-        dialog.getChildren().add(hBox);
-        hBox.setOnMouseClicked(e -> {
-            dialog.getChildren().remove(hBox);
-        });
 
-        String normalizedText = processor.normalize(text);
+    /**
+     * Le dernier message.
+     */
+    private void printLastMessage() {
+        Message message = messageList.pullLastMessage();
+        printMessage(message);
+    }
 
-        Pattern pattern;
-        Matcher matcher;
-
-        // First, try to answer specifically to what the user said
-        pattern = Pattern.compile(".*Je m'appelle (.*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()) {
-            replyToUser("Bonjour " + matcher.group(1) + ".");
-            return;
-        }
-        pattern = Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()) {
-            if (getName() != null) {
-                replyToUser("Votre nom est " + getName() + ".");
-            } else {
-                replyToUser("Je ne connais pas votre nom.");
-            }
-            return;
-        }
-        pattern = Pattern.compile("Qui est le plus (.*) \\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()) {
-            replyToUser("Le plus " + matcher.group(1)
-                        + " est bien sûr votre enseignant de MIF01 !");
-            return;
-        }
-        pattern = Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()) {
-            final String startQuestion = processor.pickRandom(new String[] {
-                "Pourquoi dites-vous que ",
-                "Pourquoi pensez-vous que ",
-                "Êtes-vous sûr que ",
-            });
-            replyToUser(startQuestion + processor.firstToSecondPerson(matcher.group(1)) + " ?");
-            return;
-        }
-        pattern = Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(normalizedText);
-        if (matcher.matches()) {
-            final String startQuestion = processor.pickRandom(new String[] {
-                    "Je vous renvoie la question ",
-                    "Ici, c'est moi qui pose les\n" +  "questions. ",
-            });
-            replyToUser(startQuestion);
-            return;
-        }
-        // Nothing clever to say, answer randomly
-        if (random.nextBoolean()) {
-            replyToUser("Il faut beau aujourd'hui, vous ne trouvez pas ?");
-            return;
-        }
-        if (random.nextBoolean()) {
-            replyToUser("Je ne comprends pas.");
-            return;
-        }
-        if (random.nextBoolean()) {
-            replyToUser("Hmmm, hmm ...");
-            return;
-        }
-        // Default answer
-        if (getName() != null) {
-            replyToUser("Qu'est-ce qui vous fait dire cela, " + getName() + " ?");
-        } else {
-            replyToUser("Qu'est-ce qui vous fait dire cela ?");
+    /**
+     * tout les messages.
+     */
+    private void printAllMessage() {
+        dialog.getChildren().removeAll(dialog.getChildren());
+        for (Message message : messageList.pullAllMessage()) {
+            printMessage(message);
         }
     }
 
     /**
-    * Extract the name of the user from the dialog.
-    *
-    * @return
-    */
-    private String getName() {
-        for (Node hBox : dialog.getChildren()) {
-            for (Node label : ((HBox) hBox).getChildren()) {
-                if (((Label) label).getStyle().equals("-fx-background-color: #A0E0A0;")) {
-                    return  processor.getMatchName(((Label) label).getText());
-                }
-            }
-        }
-        return null;
+     * Construction de la phrase utilisateur.
+     *
+     * @param text
+     */
+    private void buttonSend(final String text) {
+        ctrl.treatMessage(text);
     }
 
     private Pane createSearchWidget() {
@@ -193,7 +148,8 @@ public class JfxView {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
-            throw new UnsupportedOperationException("TODO: implement undo for search");
+            printAllMessage();
+            searchTextLabel.setText("");
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
         final VBox input = new VBox();
@@ -201,6 +157,7 @@ public class JfxView {
         return input;
     }
 
+    // à bouger dans le processeur
     private void searchText(final TextField text) {
 
         String currentSearchText = text.getText();
@@ -232,13 +189,13 @@ public class JfxView {
     private Pane createInputWidget() {
         final Pane input = new HBox();
         text = new TextField();
-        text.setOnAction(e -> {
-            sendMessage(text.getText());
+        text.setOnAction(e -> { // entrer sur le texte
+            buttonSend(text.getText());
             text.setText("");
         });
         final Button send = new Button("Send");
-        send.setOnAction(e -> {
-            sendMessage(text.getText());
+        send.setOnAction(e -> { //click sur button
+            buttonSend(text.getText());
             text.setText("");
         });
         input.getChildren().addAll(text, send);
