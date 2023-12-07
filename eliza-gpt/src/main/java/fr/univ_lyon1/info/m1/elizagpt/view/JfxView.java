@@ -150,7 +150,8 @@ public class JfxView implements Observer {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
-            printAllMessage();
+            //printAllMessage();
+            undoSearch();
             searchTextLabel.setText("");
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
@@ -159,14 +160,13 @@ public class JfxView implements Observer {
         return input;
     }
 
-    // à bouger dans le processeur
     private void searchText(final TextField text) {
 
         String currentSearchText = text.getText();
 
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
+//        Pattern pattern;
+//        Matcher matcher;
+//        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
 
         if (currentSearchText == null) {
             searchTextLabel.setText("No active search");
@@ -187,6 +187,10 @@ public class JfxView implements Observer {
 //        }
 //        dialog.getChildren().removeAll();
         text.setText("");
+    }
+
+    public void undoSearch() {
+        ctrl.undoFilter();
     }
 
     private Pane createInputWidget() {

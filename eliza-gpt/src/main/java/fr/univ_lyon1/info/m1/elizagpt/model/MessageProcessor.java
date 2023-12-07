@@ -210,7 +210,17 @@ public class MessageProcessor {
      */
     public void doFilterAnswer(final String searchText) {
         filterMessageList = messageList;
-        messageList = filterSubstring.doFilter(searchText, messageList);
+        filterSubstring.doFilter(searchText, messageList);
+        messageList.notifyObservers();
+    }
+
+    /**
+     * Undo the current filter.
+     */
+    public void undoFilterMessageList(){
+        messageList = filterMessageList;
+        System.out.println(messageList.get(messageList.getSize()-1).getMessage());
+        System.out.println(filterMessageList.get(filterMessageList.getSize()-1).getMessage());
         messageList.notifyObservers();
     }
 

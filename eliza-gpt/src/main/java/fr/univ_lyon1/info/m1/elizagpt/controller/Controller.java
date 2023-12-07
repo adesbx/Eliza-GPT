@@ -47,4 +47,11 @@ public class Controller {
     public void filterMessage(final String searchText) {
         processor.doFilterAnswer(searchText);
     }
+
+    /**
+     * Undo a filter.
+     */
+    public void undoFilter() {
+        processor.undoFilterMessageList();
+    }
 }

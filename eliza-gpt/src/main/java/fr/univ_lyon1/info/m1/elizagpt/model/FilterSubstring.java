@@ -1,11 +1,12 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
 
+import java.util.ArrayList;
 
 /**
  * Class for filter substring.
  */
-public class FilterSubstring extends Filter {
+public class FilterSubstring implements Filter {
 
     /**
      * Apply a filter with a substring.
@@ -13,12 +14,15 @@ public class FilterSubstring extends Filter {
      * @param searchText
      */
     @Override
-    public MessageList doFilter(final String searchText, final MessageList messageList) {
+    public void doFilter(final String searchText, final MessageList messageList) {
+        ArrayList<Integer> listToRemove = new ArrayList<>();
         for (Message message : messageList.pullAllMessage()) {
-            if (!message.getMessage().equals(searchText)) {
-                messageList.remove(message.getId());
+            if (!message.getMessage().contains(searchText)) {
+                listToRemove.add(message.getId());
             }
         }
-        return messageList;
+        for(Integer id: listToRemove){
+            messageList.remove(id);
+        }
     }
 }
