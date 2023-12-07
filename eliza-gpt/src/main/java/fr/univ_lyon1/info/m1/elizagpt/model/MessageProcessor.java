@@ -209,7 +209,7 @@ public class MessageProcessor {
      * Apply the right way to filter.
      */
     public void doFilterAnswer(final String searchText) {
-        filterMessageList = messageList;
+        filterMessageList = new MessageList(messageList);
         filterSubstring.doFilter(searchText, messageList);
         messageList.notifyObservers();
     }
@@ -218,9 +218,10 @@ public class MessageProcessor {
      * Undo the current filter.
      */
     public void undoFilterMessageList(){
-        messageList = filterMessageList;
-        System.out.println(messageList.get(messageList.getSize()-1).getMessage());
-        System.out.println(filterMessageList.get(filterMessageList.getSize()-1).getMessage());
+        if(filterMessageList != null){
+            messageList = new MessageList(filterMessageList);
+        }
+        System.out.println(messageList.get(1).getMessage());
         messageList.notifyObservers();
     }
 

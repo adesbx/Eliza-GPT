@@ -79,6 +79,7 @@ public class JfxView implements Observer {
 
     @Override
     public void update() {
+        System.out.println("maj");
         printAllMessage();
         //printLastMessage();
         //System.out.println("update from observer");

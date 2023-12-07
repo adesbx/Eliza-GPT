@@ -8,7 +8,7 @@ import java.util.Optional;
  * Classe pour un message, contient le contenue et s'il est envoyé par le robot ou non.
  */
 public class MessageList extends Observable {
-    private final List<Message> messageList = new ArrayList<>();
+    private List<Message> messageList = new ArrayList<>();
     private Integer compteur = 0;
 
     /**
@@ -16,6 +16,14 @@ public class MessageList extends Observable {
      */
     public MessageList() {
         this.add("Bonjour", true);
+    }
+
+    public MessageList(final MessageList newMessageList) {
+        for (Message msg : newMessageList.messageList) {
+            messageList.add(new Message(msg.getMessage(), msg.getIsFromEliza(), msg.getId()));
+        }
+        compteur = newMessageList.compteur;
+        addObserver(newMessageList.);
     }
 
     /**
