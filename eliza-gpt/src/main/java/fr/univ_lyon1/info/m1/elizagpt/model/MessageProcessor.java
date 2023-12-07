@@ -22,6 +22,8 @@ public class MessageProcessor {
     private MessageList filterMessageList = null;
 
     private FilterSubstring filterSubstring = new FilterSubstring();
+    private FilterRegex filterRegex = new FilterRegex();
+
 
     private Map<String, Object> dataApplication = new HashMap<>();
 
@@ -210,7 +212,7 @@ public class MessageProcessor {
      */
     public void doFilterAnswer(final String searchText) {
         filterMessageList = new MessageList(messageList);
-        filterSubstring.doFilter(searchText, messageList);
+        filterRegex.doFilter(searchText, messageList);
         messageList.notifyObservers();
     }
 

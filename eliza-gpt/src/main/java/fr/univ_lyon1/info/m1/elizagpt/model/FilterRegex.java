@@ -1,5 +1,9 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Class for filter regular expression.
  */
@@ -13,6 +17,19 @@ public class FilterRegex implements Filter {
      */
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {
-        // Implement your filtering logic here
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
+
+        ArrayList<Integer> listToRemove = new ArrayList<>();
+        for (Message message : messageList.pullAllMessage()) {
+            matcher = pattern.matcher(message.getMessage());
+            if (!matcher.matches()) {
+                listToRemove.add(message.getId());
+            }
+        }
+        for (Integer id: listToRemove) {
+            messageList.remove(id);
+        }
     }
 }

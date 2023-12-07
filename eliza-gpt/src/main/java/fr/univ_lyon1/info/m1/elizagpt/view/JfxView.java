@@ -138,7 +138,7 @@ public class JfxView implements Observer {
         });
         firstLine.getChildren().add(searchText);
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Option 1", "Option 2");
+        comboBox.getItems().addAll("Regexp", "Substring");
         firstLine.getChildren().add(comboBox);
         final Button send = new Button("Search");
         send.setOnAction(e -> {
