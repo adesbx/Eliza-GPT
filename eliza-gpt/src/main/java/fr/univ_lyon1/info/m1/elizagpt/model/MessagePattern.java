@@ -18,20 +18,24 @@ import java.util.regex.Pattern;
  * Class for low coupling : add Answer.
  */
 public class MessagePattern {
-    private Map<Pattern, SelectAnswer<String>> patternDictionary;
+    private final Map<Pattern, SelectAnswer<String>> patternDictionary;
 
     private DataApplication<String> dataApplication;
 
     private Map<DataType, List<String>> grabData = new HashMap<>();
+
     private Matcher matcher;
-    private RandomAnswer<String> randomAnswer = new RandomAnswer<String>(new String[]{
+
+    private Verb verb = new Verb();
+    private static final RandomAnswer<String> RANDOM_ANSWER = new RandomAnswer<String>(new String[]{
             "Il faut beau aujourd'hui, vous ne trouvez pas ?",
             "Je ne comprends pas.",
             "Hmmm, hmm ...",
             "Qu'est-ce qui vous fait dire cela ?"
     });
 
-    private RandomAnswer<String> randomAnswerWithData = new RandomAnswer<String>(new String[]{
+    private static final RandomAnswer<String> RANDOM_ANSWER_WITH_DATA = new RandomAnswer<String>(
+            new String[]{
             "Il faut beau aujourd'hui, vous ne trouvez pas, $NAME ?",
             "Je ne comprends pas. $NAME",
             "Hmmm, hmm ... $NAME",
@@ -90,7 +94,7 @@ public class MessagePattern {
     /**
      * Get the DataType.
      */
-    private DataType getDataType(String answerWithData) {
+    private DataType getDataType(final String answerWithData) {
         for (DataType dataType : DataType.values()) {
             String toReplace = "$".concat(dataType.name());
             if (answerWithData.contains(toReplace)) {
@@ -99,15 +103,18 @@ public class MessagePattern {
         }
         return null;
     }
+
     /**
      * function for choosing a random Answer with priority to answerWithData.
      * @return
      */
     private String choiceRandomAnswer() {
-        String answerWithData = randomAnswerWithData.execute();
+        String answerWithData = RANDOM_ANSWER_WITH_DATA.execute();
         DataType dataType = getDataType(answerWithData);
-        return new ChoiceAnswer<String>(answerWithData, dataType, randomAnswer.execute(), dataApplication).execute();
+        return new ChoiceAnswer<String>(answerWithData, dataType,
+                RANDOM_ANSWER.execute(), dataApplication).execute();
     }
+
     /**
      * add DATA memory when the pattern is in grabdata.
      * @param key
@@ -139,27 +146,9 @@ public class MessagePattern {
         if (finalAnswer == null) {
             finalAnswer = choiceRandomAnswer();
         }
-        return  fillWithDataAnswer(finalAnswer);
-    }
-
-    /**
-     * remplace variable in Answer with Data or other treatment.
-     * @param answer
-     * @return
-     */
-    private String fillWithDataAnswer(final String answer) {
-        for (DataType dataType : DataType.values()) {
-            String toReplace = "$".concat(dataType.name());
-            if (answer.contains(toReplace)) {
-                if (dataApplication.get(dataType) != null) {
-                    return answer.replace(toReplace, dataApplication.get(dataType));
-                } else {
-                    return answer.replace(toReplace, "");
-                }
-            } else if (answer.contains("$GROUP")) {
-                return answer.replace("$GROUP", matcher.group(1));
-            }
+        if (finalAnswer.contains("$GROUP")) {
+            return finalAnswer.replace("$GROUP", verb.firstToSecondPerson(matcher.group(1)));
         }
-        return answer;
+        return finalAnswer;
     }
 }

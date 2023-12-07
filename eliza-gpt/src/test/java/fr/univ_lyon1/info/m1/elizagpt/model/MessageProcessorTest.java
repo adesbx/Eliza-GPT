@@ -12,35 +12,22 @@ public class MessageProcessorTest {
     @Test
     void testFirstToSecondPerson() {
         // Given
-        MessageProcessor p = new MessageProcessor(new MessageList());
+        Verb v = new Verb();
 
         // Then
-        assertThat(p.firstToSecondPerson("Je pense à mon chien."),
-                // TODO: Obviously wrong, it should be chien
+        assertThat(v.firstToSecondPerson("Je pense à mon chien."),
                 is("vous pensez à votre chien."));
 
-        assertThat(p.firstToSecondPerson("Je suis heureux."),
+        assertThat(v.firstToSecondPerson("Je suis heureux."),
                 is("vous êtes heureux."));
 
-        assertThat(p.firstToSecondPerson("Je dis bonjour."),
+        assertThat(v.firstToSecondPerson("Je dis bonjour."),
                 is("vous dites bonjour."));
 
-        assertThat(p.firstToSecondPerson("Je vais à la mer."),
+        assertThat(v.firstToSecondPerson("Je vais à la mer."),
                 is("vous allez à la mer."));
 
-        assertThat(p.firstToSecondPerson("Je finis mon travail."),
+        assertThat(v.firstToSecondPerson("Je finis mon travail."),
                 is("vous finissez votre travail."));
-    }
-
-    /**
-     * Not so relevant test, but here to give an example of non-trivial
-     * hamcrest assertion.
-     */
-    @Test
-    void testVerbList() {
-        assertThat(MessageProcessor.VERBS, hasItem(
-                allOf(
-                        hasProperty("firstSingular", is("suis")),
-                        hasProperty("secondPlural", is("êtes")))));
     }
 }
