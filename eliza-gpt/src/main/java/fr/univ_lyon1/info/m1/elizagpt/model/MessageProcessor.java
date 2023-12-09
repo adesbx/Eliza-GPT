@@ -3,16 +3,6 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
 /**
  * Logic to process a message (and probably reply to it).
  */
