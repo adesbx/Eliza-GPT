@@ -7,19 +7,19 @@ import java.util.regex.Pattern;
 /**
  * Class for filter complete word.
  */
-public class FilterCompleteWord implements Filter{
+public class FilterCompleteWord implements Filter {
 
     /**
      * Apply a filter, only return if the message contain the complete word.
      *
-     * @param searchText The text to search.
+     * @param searchText  The text to search.
      * @param messageList The list of messages to filter.
      */
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {
         Pattern pattern;
         Matcher matcher;
-        pattern = Pattern.compile(".*\\b"+searchText+"\\b.*", Pattern.CASE_INSENSITIVE);
+        pattern = Pattern.compile(".*\\b" + searchText + "\\b.*", Pattern.CASE_INSENSITIVE);
 
         ArrayList<Integer> listToRemove = new ArrayList<>();
         for (Message message : messageList.pullAllMessage()) {
@@ -28,7 +28,7 @@ public class FilterCompleteWord implements Filter{
                 listToRemove.add(message.getId());
             }
         }
-        for (Integer id: listToRemove) {
+        for (Integer id : listToRemove) {
             messageList.remove(id);
         }
     }
@@ -37,7 +37,7 @@ public class FilterCompleteWord implements Filter{
      * Possibility to print the name of the class.
      */
     @Override
-    public String toString()  {
+    public String toString() {
         return "CompleteWord";
     }
 }
