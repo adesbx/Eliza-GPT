@@ -4,9 +4,6 @@ import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
-import fr.univ_lyon1.info.m1.elizagpt.model.FilterSubstring;
-import fr.univ_lyon1.info.m1.elizagpt.model.FilterRegex;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,6 +43,11 @@ public class JfxView implements Observer {
     ) {
         stage.setTitle("Eliza GPT");
 
+        ctrl = newCtrl;
+        messageList = newMessageList;
+        // De base le filtre sera Substring(défini lors de la méthode createSearchWidget)
+        filter = null;
+
         final VBox root = new VBox(10);
 
         final Pane search = createSearchWidget();
@@ -68,12 +70,7 @@ public class JfxView implements Observer {
         text.requestFocus();
         stage.show();
 
-        ctrl = newCtrl;
-        messageList = newMessageList;
         messageList.addObserver(this);
-
-        // De base le filtre sera Substring(défini lors de la méthode createSearchWidget)
-        filter = null;
     }
 
     static final String BASE_STYLE = "-fx-padding: 8px; "
@@ -148,7 +145,7 @@ public class JfxView implements Observer {
         });
         firstLine.getChildren().add(searchText);
         ComboBox<Filter> comboBox = new ComboBox<>();
-        ObservableList<Filter> list = getFilterList();
+        ObservableList<Filter> list = ctrl.getFilterList();
         comboBox.setItems(list);
         comboBox.setOnAction(event -> {
             filter = comboBox.getValue();
@@ -215,18 +212,5 @@ public class JfxView implements Observer {
         });
         input.getChildren().addAll(text, send);
         return input;
-    }
-
-    /**
-     * get a ObservableList of Filter.
-     */
-    public static ObservableList<Filter> getFilterList() {
-        Filter regex = new FilterRegex();
-        Filter substring = new FilterSubstring();
-
-        ObservableList<Filter> list
-                = FXCollections.observableArrayList(regex, substring);
-
-        return list;
     }
 }

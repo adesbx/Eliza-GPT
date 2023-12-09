@@ -1,6 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import fr.univ_lyon1.info.m1.elizagpt.view.Observer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.Random;
 import java.util.Map;
@@ -214,9 +215,6 @@ public class MessageProcessor {
      */
     public void doFilterAnswer(final String searchText, final Filter filter) {
         filterMessageList = new MessageList(messageList);
-        for (Observer obs : messageList.getObserver()) {
-            filterMessageList.addObserver(obs);
-        }
         filter.doFilter(searchText, filterMessageList);
         filterMessageList.notifyObservers();
     }
@@ -238,6 +236,19 @@ public class MessageProcessor {
         } else {
             return messageList;
         }
+    }
+
+    /**
+     * get a ObservableList of Filter.
+     */
+    public ObservableList<Filter> getFilterList() {
+        Filter regex = new FilterRegex();
+        Filter substring = new FilterSubstring();
+
+        ObservableList<Filter> list
+                = FXCollections.observableArrayList(regex, substring);
+
+        return list;
     }
 
     /**
