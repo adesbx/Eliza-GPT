@@ -1,25 +1,21 @@
 package fr.univ_lyon1.info.m1.elizagpt.view;
 
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
-import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 /**
  * Main class of the View (GUI) of the application,
@@ -33,6 +29,8 @@ public class JfxView implements Observer {
     private MessageList messageList = null;
     private Controller ctrl = null;
 
+    private Filter filter = null;
+
     /**
      * Create the main view of the application.
      */
@@ -44,6 +42,11 @@ public class JfxView implements Observer {
             final Controller newCtrl
     ) {
         stage.setTitle("Eliza GPT");
+
+        ctrl = newCtrl;
+        messageList = newMessageList;
+        // De base le filtre sera Substring(défini lors de la méthode createSearchWidget)
+        filter = null;
 
         final VBox root = new VBox(10);
 
@@ -67,8 +70,6 @@ public class JfxView implements Observer {
         text.requestFocus();
         stage.show();
 
-        ctrl = newCtrl;
-        messageList = newMessageList;
         messageList.addObserver(this);
     }
 
@@ -81,7 +82,8 @@ public class JfxView implements Observer {
 
     @Override
     public void update() {
-        printLastMessage();
+        printAllMessage();
+        //printLastMessage();
         //System.out.println("update from observer");
     }
 
@@ -116,6 +118,7 @@ public class JfxView implements Observer {
      * tout les messages.
      */
     private void printAllMessage() {
+        messageList = ctrl.getMessageList();
         dialog.getChildren().removeAll(dialog.getChildren());
         for (Message message : messageList.pullAllMessage()) {
             printMessage(message);
@@ -141,6 +144,14 @@ public class JfxView implements Observer {
             searchText(searchText);
         });
         firstLine.getChildren().add(searchText);
+        ComboBox<Filter> comboBox = new ComboBox<>();
+        ObservableList<Filter> list = ctrl.getFilterList();
+        comboBox.setItems(list);
+        comboBox.setOnAction(event -> {
+            filter = comboBox.getValue();
+        });
+
+        firstLine.getChildren().add(comboBox);
         final Button send = new Button("Search");
         send.setOnAction(e -> {
             searchText(searchText);
@@ -148,7 +159,8 @@ public class JfxView implements Observer {
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
-            printAllMessage();
+            //printAllMessage();
+            undoSearch();
             searchTextLabel.setText("");
         });
         secondLine.getChildren().addAll(send, searchTextLabel, undo);
@@ -157,33 +169,33 @@ public class JfxView implements Observer {
         return input;
     }
 
-    // à bouger dans le processeur
     private void searchText(final TextField text) {
 
         String currentSearchText = text.getText();
 
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
+//        Pattern pattern;
+//        Matcher matcher;
+//        pattern = Pattern.compile(currentSearchText, Pattern.CASE_INSENSITIVE);
 
         if (currentSearchText == null) {
             searchTextLabel.setText("No active search");
         } else {
             searchTextLabel.setText("Searching for: " + currentSearchText);
         }
-        List<HBox> toDelete = new ArrayList<>();
-        for (Node hBox : dialog.getChildren()) {
-            for (Node label : ((HBox) hBox).getChildren()) {
-                String t = ((Label) label).getText();
-                matcher = pattern.matcher(t);
-                if (!matcher.matches()) {
-                    // Can delete it right now, we're iterating over the list.
-                    toDelete.add((HBox) hBox);
-                }
-            }
+
+        if (filter != null) {
+            ctrl.filterMessage(currentSearchText, filter);
+        } else {
+            System.out.println("Aucune méthode utilisé");
         }
-        dialog.getChildren().removeAll(toDelete);
         text.setText("");
+    }
+
+    /**
+     * undo the actual search.
+     */
+    public void undoSearch() {
+        ctrl.undoFilter();
     }
 
     private Pane createInputWidget() {
