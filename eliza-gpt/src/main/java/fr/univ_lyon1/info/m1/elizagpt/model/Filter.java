@@ -13,4 +13,9 @@ public interface Filter {
      * @param searchText
      */
     void doFilter(String searchText, MessageList messageList);
+
+    /**
+     * Possibility to print the name of the class.
+     */
+    String toString();
 }

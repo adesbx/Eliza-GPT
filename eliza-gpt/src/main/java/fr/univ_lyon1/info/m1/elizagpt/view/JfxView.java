@@ -1,8 +1,13 @@
 package fr.univ_lyon1.info.m1.elizagpt.view;
 
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
-import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import fr.univ_lyon1.info.m1.elizagpt.model.FilterSubstring;
+import fr.univ_lyon1.info.m1.elizagpt.model.FilterRegex;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 /**
  * Main class of the View (GUI) of the application,
  * Using Observer to know when a message as been sent.
@@ -27,6 +31,8 @@ public class JfxView implements Observer {
     private Label searchTextLabel = null;
     private MessageList messageList = null;
     private Controller ctrl = null;
+
+    private Filter filter = null;
 
     /**
      * Create the main view of the application.
@@ -65,6 +71,9 @@ public class JfxView implements Observer {
         ctrl = newCtrl;
         messageList = newMessageList;
         messageList.addObserver(this);
+
+        // De base le filtre sera Substring(défini lors de la méthode createSearchWidget)
+        filter = null;
     }
 
     static final String BASE_STYLE = "-fx-padding: 8px; "
@@ -112,6 +121,7 @@ public class JfxView implements Observer {
      * tout les messages.
      */
     private void printAllMessage() {
+        messageList = ctrl.getMessageList();
         dialog.getChildren().removeAll(dialog.getChildren());
         for (Message message : messageList.pullAllMessage()) {
             printMessage(message);
@@ -137,8 +147,13 @@ public class JfxView implements Observer {
             searchText(searchText);
         });
         firstLine.getChildren().add(searchText);
-        ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Regexp", "Substring");
+        ComboBox<Filter> comboBox = new ComboBox<>();
+        ObservableList<Filter> list = getFilterList();
+        comboBox.setItems(list);
+        comboBox.setOnAction(event -> {
+            filter = comboBox.getValue();
+        });
+
         firstLine.getChildren().add(comboBox);
         final Button send = new Button("Search");
         send.setOnAction(e -> {
@@ -170,25 +185,17 @@ public class JfxView implements Observer {
         } else {
             searchTextLabel.setText("Searching for: " + currentSearchText);
         }
-        ctrl.filterMessage(currentSearchText);
-//        List<HBox> toDelete = new ArrayList<>();
-//        for (Node hBox : dialog.getChildren()) {
-//            for (Node label : ((HBox) hBox).getChildren()) {
-//                String t = ((Label) label).getText();
-//                matcher = pattern.matcher(t);
-//                if (!matcher.matches()) {
-//                    // Can delete it right now, we're iterating over the list.
-//                    toDelete.add((HBox) hBox);
-//                }
-//            }
-//        }
-//        dialog.getChildren().removeAll();
+
+        if (filter != null) {
+            ctrl.filterMessage(currentSearchText, filter);
+        } else {
+            System.out.println("Aucune méthode utilisé");
+        }
         text.setText("");
     }
 
     /**
      * undo the actual search.
-     *
      */
     public void undoSearch() {
         ctrl.undoFilter();
@@ -208,5 +215,18 @@ public class JfxView implements Observer {
         });
         input.getChildren().addAll(text, send);
         return input;
+    }
+
+    /**
+     * get a ObservableList of Filter.
+     */
+    public static ObservableList<Filter> getFilterList() {
+        Filter regex = new FilterRegex();
+        Filter substring = new FilterSubstring();
+
+        ObservableList<Filter> list
+                = FXCollections.observableArrayList(regex, substring);
+
+        return list;
     }
 }

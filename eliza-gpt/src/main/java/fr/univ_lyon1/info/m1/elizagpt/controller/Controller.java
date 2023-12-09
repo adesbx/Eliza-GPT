@@ -1,5 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
@@ -44,8 +45,8 @@ public class Controller {
      * filter All message.
      * @param searchText
      */
-    public void filterMessage(final String searchText) {
-        processor.doFilterAnswer(searchText);
+    public void filterMessage(final String searchText, final Filter filter) {
+        processor.doFilterAnswer(searchText, filter);
     }
 
     /**
@@ -53,5 +54,9 @@ public class Controller {
      */
     public void undoFilter() {
         processor.undoFilterMessageList();
+    }
+
+    public MessageList getMessageList() {
+        return  processor.getMessageList();
     }
 }

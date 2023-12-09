@@ -1,5 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import fr.univ_lyon1.info.m1.elizagpt.view.Observer;
+
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
@@ -210,24 +212,32 @@ public class MessageProcessor {
     /**
      * Apply the right way to filter.
      */
-    public void doFilterAnswer(final String searchText) {
+    public void doFilterAnswer(final String searchText, final Filter filter) {
         filterMessageList = new MessageList(messageList);
-        filterRegex.doFilter(searchText, messageList);
-        messageList.notifyObservers();
+        for (Observer obs : messageList.getObserver()) {
+            filterMessageList.addObserver(obs);
+        }
+        filter.doFilter(searchText, filterMessageList);
+        filterMessageList.notifyObservers();
     }
 
     /**
      * Undo the current filter.
      */
     public void undoFilterMessageList() {
-        if (filterMessageList != null) {
-            messageList.removeAll();
-            for (Message msg : filterMessageList.pullAllMessage()) {
-                messageList.add(msg.getMessage(), msg.getIsFromEliza());
-            }
-        }
-        System.out.println(messageList.get(1).getMessage());
+        filterMessageList = null;
         messageList.notifyObservers();
+    }
+
+    /**
+     * Get the messagelist you whant to see(with filter or not).
+     */
+    public MessageList getMessageList() {
+        if (filterMessageList != null) {
+            return filterMessageList;
+        } else {
+            return messageList;
+        }
     }
 
     /**

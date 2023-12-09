@@ -32,4 +32,12 @@ public class FilterRegex implements Filter {
             messageList.remove(id);
         }
     }
+
+    /**
+     * Possibility to print the name of the class.
+     */
+    @Override
+    public String toString()  {
+        return "Regex";
+    }
 }

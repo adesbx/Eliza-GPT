@@ -37,6 +37,10 @@ public class Observable {
         notifyObservers();
     }
 
+    public synchronized Vector<Observer> getObserver() {
+        return this.obs;
+    }
+
     /**
      * Deletes an observer from the set of observers of this object.
      * Passing {@code null} to this method will have no effect.
