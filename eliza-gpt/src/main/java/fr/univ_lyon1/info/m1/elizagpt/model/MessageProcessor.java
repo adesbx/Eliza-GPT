@@ -1,7 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Logic to process a message (and probably reply to it).
@@ -39,6 +39,7 @@ public class MessageProcessor {
 
     /**
      * remplace variable in Answer with Data or other treatment.
+     *
      * @param answer
      * @return
      */
@@ -102,17 +103,16 @@ public class MessageProcessor {
     }
 
     /**
-     * get a ObservableList of Filter.
+     * get a List of Filter.
      */
-    public ObservableList<Filter> getFilterList() {
-        Filter regex = new FilterRegex();
-        Filter substring = new FilterSubstring();
-
-        ObservableList<Filter> list
-                = FXCollections.observableArrayList(regex, substring);
+    public List<Filter> getFilterList() {
+        List<Filter> list = new ArrayList<>();
+        list.add(new FilterRegex());
+        list.add(new FilterSubstring());
+        list.add(new FilterCompleteWord());
 
         return list;
     }
 
-    
+
 }

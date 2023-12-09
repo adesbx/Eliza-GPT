@@ -4,6 +4,7 @@ import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -145,7 +146,7 @@ public class JfxView implements Observer {
         });
         firstLine.getChildren().add(searchText);
         ComboBox<Filter> comboBox = new ComboBox<>();
-        ObservableList<Filter> list = ctrl.getFilterList();
+        ObservableList<Filter> list = getFilterList();
         comboBox.setItems(list);
         comboBox.setOnAction(event -> {
             filter = comboBox.getValue();
@@ -212,5 +213,15 @@ public class JfxView implements Observer {
         });
         input.getChildren().addAll(text, send);
         return input;
+    }
+
+    /**
+     * Create a ObservableList of Filter.
+     */
+    public ObservableList<Filter> getFilterList() {
+        ObservableList<Filter> list
+                = FXCollections.observableArrayList(ctrl.getFilterList());
+
+        return list;
     }
 }
