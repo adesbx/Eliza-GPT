@@ -1,5 +1,11 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,6 +20,8 @@ import java.util.regex.Pattern;
 public class MessageProcessor {
     private MessageList messageList = null;
     private DataApplication<String> dataApplication = new DataApplication();
+
+    private MessageList filterMessageList = null;
 
     private MessagePattern messagePattern = new MessagePattern(dataApplication);
 
@@ -37,23 +45,6 @@ public class MessageProcessor {
                 .replaceAll("^\\s+", "")
                 .replaceAll("\\s+$", "")
                 .replaceAll("[^\\.!?:]$", "$0."), null, -1);
-    }
-
-    private void searchText(final Message text) {
-
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(text.getMessage(), Pattern.CASE_INSENSITIVE);
-
-        List<Integer> toDelete = new ArrayList<>();
-        for (Message message : messageList.pullAllMessage()) {
-            matcher = pattern.matcher(text.getMessage());
-            if (!matcher.matches()) {
-                // Can delete it right now, we're iterating over the list.
-                toDelete.add(message.getId());
-            }
-        }
-
     }
 
     /**
@@ -89,5 +80,49 @@ public class MessageProcessor {
         String cleanAnswer = fillWithDataAnswer(unfilledAnswer);
 
         messageList.add(cleanAnswer, true);
+
     }
+
+    /**
+     * Apply the right way to filter.
+     */
+    public void doFilterAnswer(final String searchText, final Filter filter) {
+        filterMessageList = new MessageList(messageList);
+        filter.doFilter(searchText, filterMessageList);
+        filterMessageList.notifyObservers();
+    }
+
+    /**
+     * Undo the current filter.
+     */
+    public void undoFilterMessageList() {
+        filterMessageList = null;
+        messageList.notifyObservers();
+    }
+
+    /**
+     * Get the messagelist you whant to see(with filter or not).
+     */
+    public MessageList getMessageList() {
+        if (filterMessageList != null) {
+            return filterMessageList;
+        } else {
+            return messageList;
+        }
+    }
+
+    /**
+     * get a ObservableList of Filter.
+     */
+    public ObservableList<Filter> getFilterList() {
+        Filter regex = new FilterRegex();
+        Filter substring = new FilterSubstring();
+
+        ObservableList<Filter> list
+                = FXCollections.observableArrayList(regex, substring);
+
+        return list;
+    }
+
+    
 }
