@@ -6,6 +6,7 @@ import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
 import fr.univ_lyon1.info.m1.elizagpt.model.FilterSubstring;
 import fr.univ_lyon1.info.m1.elizagpt.model.FilterRegex;
+import fr.univ_lyon1.info.m1.elizagpt.model.FilterCompleteWord;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -223,9 +224,10 @@ public class JfxView implements Observer {
     public static ObservableList<Filter> getFilterList() {
         Filter regex = new FilterRegex();
         Filter substring = new FilterSubstring();
+        Filter completeword = new FilterCompleteWord();
 
         ObservableList<Filter> list
-                = FXCollections.observableArrayList(regex, substring);
+                = FXCollections.observableArrayList(regex, substring, completeword);
 
         return list;
     }
