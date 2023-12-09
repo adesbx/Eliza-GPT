@@ -103,7 +103,7 @@ toujours au moment du rendu.
 Reprenez les transparents du cours et parcourez la liste des patterns GRASP, des patterns de création, de structure, des principes SOLID, et posez-vous la question de leur applicabilité sur votre projet.
 Appliquez ceux qui vous semblent pertinents, et de la même façon que précédemment, documentez cela dans votre rapport (si possible, en suivant la progression du cours : GRASP, création, structure...).
 
-Vous devrez avoir au moins 3 patterns autres que MVC appliqués dans votre projet et décrits dans votre rapport. On considère que le pattern « Observer » fait partie de MVC en ne compte pas dans les 3.
+Vous devrez avoir au moins 3 patterns autres que MVC ou GRASP appliqués dans votre projet et décrits dans votre rapport. On considère que le pattern « Observer » fait partie de MVC en ne compte pas dans les 3.
 
 ### Anticiper sur le TP 4 "test"
 

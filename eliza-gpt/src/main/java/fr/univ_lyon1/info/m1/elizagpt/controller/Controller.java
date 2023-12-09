@@ -1,9 +1,10 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import javafx.collections.ObservableList;
 
 /**
  * Main class of the Controller (GUI) of the application.
@@ -58,5 +59,12 @@ public class Controller {
 
     public MessageList getMessageList() {
         return  processor.getMessageList();
+    }
+
+    /**
+     * get a ObservableList of Filter.
+     */
+    public ObservableList<Filter> getFilterList() {
+        return processor.getFilterList();
     }
 }

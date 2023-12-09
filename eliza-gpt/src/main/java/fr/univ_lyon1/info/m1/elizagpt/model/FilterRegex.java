@@ -12,14 +12,14 @@ public class FilterRegex implements Filter {
     /**
      * Apply a filter with a regular expression.
      *
-     * @param searchText The text to search.
+     * @param searchText  The text to search.
      * @param messageList The list of messages to filter.
      */
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {
         Pattern pattern;
         Matcher matcher;
-        pattern = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
+        pattern = Pattern.compile(".*" + searchText + ".*", Pattern.CASE_INSENSITIVE);
 
         ArrayList<Integer> listToRemove = new ArrayList<>();
         for (Message message : messageList.pullAllMessage()) {
@@ -28,7 +28,7 @@ public class FilterRegex implements Filter {
                 listToRemove.add(message.getId());
             }
         }
-        for (Integer id: listToRemove) {
+        for (Integer id : listToRemove) {
             messageList.remove(id);
         }
     }
@@ -37,7 +37,7 @@ public class FilterRegex implements Filter {
      * Possibility to print the name of the class.
      */
     @Override
-    public String toString()  {
+    public String toString() {
         return "Regex";
     }
 }

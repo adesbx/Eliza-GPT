@@ -1,6 +1,29 @@
 <!-- LTEX: language=fr -->
 Ce fichier contiendra les nouvelles du cours. Un mail sera envoyé quand le fichier est mis à jour.
 
+# 7/12/2023 : Dates (examen, rendu du projet) et précision sur l'énoncé du projet
+
+Je vous rappelle que la deadline de rendu du projet est le 17 décembre 2023,
+23h59. Vous ne devez faire aucun commit ou modification de votre projet après
+cette date. Si vous avez des modifications de dernière minute à faire après la
+deadline, envoyez un mail au responsable d'UE (mais vous aurez alors un malus
+sur la note pour rendu en retard). Si ce n'est pas déjà fait, re-lisez bien
+[tp-note.md](https://forge.univ-lyon1.fr/matthieu.moy/mif01/-/blob/main/projet-note.md)
+et en particulier parcourez le barème pour vérifier que vous n'avez rien oublié.
+
+La date de l'examen est fixée au 10 janvier 2014, 8h30. Les instructions
+(documents autorisés, etc.) sont sur la page du cours (
+https://forge.univ-lyon1.fr/matthieu.moy/mif01#dates-importantes ).
+
+J'ai eu plusieurs questions sur le point
+[« au moins 3 autres patterns que MVC »](https://forge.univ-lyon1.fr/matthieu.moy/mif01/-/tree/main/TP3-patterns?ref_type=heads#autres-patterns)
+du barème. Il y a une autre entrée de barème pour GRASP (dont le P veut
+historiquement dire « Pattern » mais qui sont en réalité plutôt des principes
+généraux). On attend ici des patterns au sens « solution concrète bien connue à
+un problème classique », donc vous ne pouvez pas vous contenter de dire « notre
+code a un faible couplage ». J'ai précisé l'énoncé pour dire « autres patterns
+que MVC ou GRASP ».
+
 # 16/10/2023 : TD2 ce mercredi
 
 Nous avons TD ce mercredi, et par manque d'intervenants, j'ai dû modifier
