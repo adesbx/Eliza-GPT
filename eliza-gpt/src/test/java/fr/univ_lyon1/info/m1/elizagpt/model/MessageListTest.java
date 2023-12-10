@@ -1,7 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
