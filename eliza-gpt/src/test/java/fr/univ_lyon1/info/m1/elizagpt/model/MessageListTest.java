@@ -29,7 +29,6 @@ public class MessageListTest {
 
     @Test
     void testMessageListPull() {
-        MessageList messageList = new MessageList();
         messageList.add("Message 1", true);
         messageList.add("Message 2", false);
         messageList.add("Message 3", true);
@@ -44,8 +43,27 @@ public class MessageListTest {
         assertThat(allMessages.get(3).getMessage(), is("Message 3"));
     }
 
+    @Test
+    void testMessageListRemoveAll() {
+        messageList.add("Message 1", true);
+        messageList.add("Message 2", false);
+        messageList.add("Message 3", true);
 
+        messageList.removeAll();
 
+        assertThat(messageList.getSize(), is(0));
+    }
 
+    @Test
+    void testMessageListRemove() {
+        messageList.add("Message 1", false);
 
+        messageList.remove(1);
+        assertThat(messageList.getSize(), is(1));
+    }
+
+    @Test
+    void testMessageListGet() {
+        assertThat(messageList.get(0).getMessage(),  is("Bonjour"));
+    }
 }
