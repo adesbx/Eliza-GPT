@@ -1,5 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Dao.Verb;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

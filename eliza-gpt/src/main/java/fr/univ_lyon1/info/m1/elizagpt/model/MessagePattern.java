@@ -1,5 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Dao.Verb;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
