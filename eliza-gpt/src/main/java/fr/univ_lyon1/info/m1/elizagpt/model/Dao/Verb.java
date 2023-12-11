@@ -24,7 +24,7 @@ public class Verb {
     }};
 
 
-    Verb() {
+    public Verb() {
     }
 
     /**

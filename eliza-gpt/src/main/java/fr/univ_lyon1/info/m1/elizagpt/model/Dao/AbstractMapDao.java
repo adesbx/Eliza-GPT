@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Classe abstraite qui doit être instanciée en fonction du type d'objet stocké et de clé.
  * @param <T> Le type d'objet auquel s'applique le DAO ; défini dans une sous-classe
  *
- * @author Lionel Médini
+ * @author inspired by Lionel Médini
  */
 public abstract class AbstractMapDao<T> implements Dao<T> {
     protected Map<Serializable, T> collection = new HashMap<>();
