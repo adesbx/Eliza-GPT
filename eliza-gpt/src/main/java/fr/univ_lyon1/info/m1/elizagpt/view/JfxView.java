@@ -80,7 +80,6 @@ public class JfxView implements Observer {
     static final String USER_STYLE = "-fx-background-color: #A0E0A0; " + BASE_STYLE;
     static final String ELIZA_STYLE = "-fx-background-color: #A0A0E0; " + BASE_STYLE;
 
-
     @Override
     public void update() {
         printAllMessage();
@@ -90,17 +89,21 @@ public class JfxView implements Observer {
 
     private void printMessage(final Message message) {
         HBox hBox = new HBox();
+        HBox hBox1 = new HBox();
         final Label label = new Label(message.getMessage());
-        hBox.getChildren().add(label);
+        final Button button = new Button("x");
+        hBox.getChildren().add(hBox1);
+        hBox1.getChildren().add(label);
+        hBox1.getChildren().add(button);
         if (message.getIsFromEliza()) {
-            label.setStyle(USER_STYLE);
+            hBox1.setStyle(USER_STYLE);
             hBox.setAlignment(Pos.BASELINE_LEFT);
         } else {
-            label.setStyle(ELIZA_STYLE);
+            hBox1.setStyle(ELIZA_STYLE);
             hBox.setAlignment(Pos.BASELINE_RIGHT);
         }
         dialog.getChildren().add(hBox);
-        hBox.setOnMouseClicked(e -> {
+        button.setOnMouseClicked(e -> {
             dialog.getChildren().remove(hBox);
             ctrl.removeMessage(message.getId());
             // besoin de recharger l'affiche de tout les messages
