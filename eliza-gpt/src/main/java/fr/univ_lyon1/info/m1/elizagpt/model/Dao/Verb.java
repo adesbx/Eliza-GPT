@@ -1,30 +1,27 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Information about conjugation of a verb.
  */
 public class Verb {
-
-    /**
-     * List of 3rd group verbs and their correspondence from 1st person singular
-     * (Je) to 2nd person plural (Vous).
-     */
-    protected static final Map<String, String> VERBS = new HashMap<>() {{
-        put("suis", "êtes");
-        put("vais", "allez");
-        put("peux", "pouvez");
-        put("dois", "devez");
-        put("dis", "dites");
-        put("ai", "avez");
-        put("fais", "faites");
-        put("sais", "savez");
-    }};
-
+    Map<String, String> verbMap;
 
     public Verb() {
+        verbMap = new HashMap<>();
+    }
+    public Verb(List<String> enTetes) {
+        verbMap = new HashMap<>();
+        for (String key : enTetes) {
+            verbMap.put(key, null);
+        }
+    }
+
+    public String getId() {
+        return verbMap.get("infinitive");
     }
 
     /**
@@ -38,7 +35,7 @@ public class Verb {
         String processedText = text
                 .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
         for (Map.Entry<String, String> entry
-                : VERBS.entrySet()) {
+                : verbMap.entrySet()) {
             processedText = processedText.replaceAll(
                     "[Jj]e " + entry.getKey(),
                     "vous " + entry.getValue());
