@@ -1,5 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Dao;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.util.Map;
  * Information about conjugation of a verb.
  */
 public class Verb {
-    Map<String, String> verbMap;
+    private Map<String, String> verbMap;
 
     public Verb() {
         verbMap = new HashMap<>();
@@ -22,6 +24,18 @@ public class Verb {
 
     public String getId() {
         return verbMap.get("infinitive");
+    }
+
+    public Set<String> getKey() {
+        return this.verbMap.keySet();
+    }
+
+    public void replace(String key, String value) {
+        this.verbMap.replace(key, value);
+    }
+
+    public Collection<String> getLigne() {
+        return this.verbMap.values();
     }
 
     /**
