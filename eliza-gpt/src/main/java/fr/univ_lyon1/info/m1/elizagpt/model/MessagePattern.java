@@ -1,5 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
@@ -20,6 +22,8 @@ public class MessagePattern {
     private DataApplication<String> dataApplication;
 
     private Matcher matcher;
+
+    private WeatherAdapter weatherAdapter = new WeatherAdapter(new Weather());
 
     private Verb verb = new Verb();
     private static final RandomAnswer<String> RANDOM_ANSWER = new RandomAnswer<String>(new String[]{
@@ -74,6 +78,10 @@ public class MessagePattern {
                     "Je vous renvoie la question ",
                     "Ici, c'est moi qui pose les\n" + "questions. "
             };
+
+            put(Pattern.compile("Quelle est la météo \\?", Pattern.CASE_INSENSITIVE),
+                    new SimpleAnswer<String>(weatherAdapter.getResults()));
+
             put(Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE),
                     new RandomAnswer<String>(answerWithQuestion));
         }};
