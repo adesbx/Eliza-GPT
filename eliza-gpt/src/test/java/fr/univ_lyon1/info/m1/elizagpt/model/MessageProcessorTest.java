@@ -83,6 +83,17 @@ public class MessageProcessorTest {
     }
 
     @Test
+    void testMessageProcessorUndoFilterNullSearch() {
+        processor.doFilterAnswer(null, new FilterRegex());
+
+        assertThat(processor.getMessageList().getSize(), is(0));
+
+        processor.undoFilterMessageList();
+
+        assertThat(processor.getMessageList().getSize(), is(1));
+    }
+
+    @Test
     void testMessageProcessorDataApplicationName() {
         Message msg = new Message("Je m'appelle Bob", false, 1);
         Message newMsg = processor.normalize(msg.getMessage());
