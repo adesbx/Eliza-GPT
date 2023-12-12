@@ -94,6 +94,10 @@ public class MessagePattern {
                     "Je vous renvoie la question ",
                     "Ici, c'est moi qui pose les\n" + "questions. "
             };
+
+            put(Pattern.compile("Quelle est la météo \\?", Pattern.CASE_INSENSITIVE),
+                    new SimpleAnswer<String>(weatherAdapter.getResults()));
+
             put(Pattern.compile("(.*)\\?", Pattern.CASE_INSENSITIVE),
                     new RandomAnswer<String>(answerWithQuestion));
         }};
