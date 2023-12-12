@@ -23,6 +23,28 @@ public class FilterSubstringTest {
     }
 
     @Test
+    void testDoFilterSubstringNoFilter() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        substring.doFilter("", messageList);
+        assertThat(messageList.getSize(), is(4));
+    }
+
+    @Test
+    void testDoFilterSubstringNull() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        substring.doFilter(null, messageList);
+        assertThat(messageList.getSize(), is(0));
+    }
+
+    @Test
     void testToString() {
         assertThat(substring.toString(), is("Substring"));
     }
