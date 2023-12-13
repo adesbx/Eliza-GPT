@@ -47,32 +47,6 @@ public class Verb {
         return verbMap.entrySet();
     }
 
-    //    /**
-//     * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
-//     * The result is not capitalized to allow forming a new sentence.
-//     *
-//     * @param text
-//     * @return The 2nd-person sentence.
-//     */
-//    public String firstToSecondPerson(final String text) {
-//        String processedText = text
-//                .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
-//        for (Map.Entry<String, String> entry
-//                : verbMap.entrySet()) {
-//
-//            processedText = processedText.replaceAll(
-//                    "[Jj]e " + entry.getValue(),
-//                    "vous " + entry.getValue());
-//        }
-//        processedText = processedText
-//                .replaceAll("[Jj]e ([a-z]*)s ", "vous $1ssez ")
-//                .replace("mon ", "votre ")
-//                .replace("ma ", "votre ")
-//                .replace("mes ", "vos ")
-//                .replace("moi", "vous");
-//        return processedText;
-//    }
-
     public String changePerson(final String header, final String header2, final String text) {
         String processedText = text
                 .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
