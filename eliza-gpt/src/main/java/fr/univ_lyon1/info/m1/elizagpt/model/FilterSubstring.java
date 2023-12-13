@@ -16,7 +16,7 @@ public class FilterSubstring implements Filter {
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {
         ArrayList<Integer> listToRemove = new ArrayList<>();
-        if(searchText == null) {
+        if (searchText == null) {
             messageList.removeAll();
         }
         for (Message message : messageList.pullAllMessage()) {

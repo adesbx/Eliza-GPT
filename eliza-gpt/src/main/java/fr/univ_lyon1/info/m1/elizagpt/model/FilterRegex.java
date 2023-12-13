@@ -21,7 +21,7 @@ public class FilterRegex implements Filter {
         Matcher matcher;
         pattern = Pattern.compile(".*" + searchText + ".*", Pattern.CASE_INSENSITIVE);
         ArrayList<Integer> listToRemove = new ArrayList<>();
-        if(searchText == null) {
+        if (searchText == null) {
             messageList.removeAll();
         }
         for (Message message : messageList.pullAllMessage()) {
