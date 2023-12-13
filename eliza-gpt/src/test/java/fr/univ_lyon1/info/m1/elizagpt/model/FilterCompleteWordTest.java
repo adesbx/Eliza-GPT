@@ -22,6 +22,28 @@ public class FilterCompleteWordTest {
     }
 
     @Test
+    void testDoFilterCompleteWordNoFilter() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        completeword.doFilter("", messageList);
+        assertThat(messageList.getSize(), is(4));
+    }
+
+    @Test
+    void testDoFilterCompleteWordNull() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        completeword.doFilter(null, messageList);
+        assertThat(messageList.getSize(), is(0));
+    }
+
+    @Test
     void testToString() {
         assertThat(completeword.toString(), is("CompleteWord"));
     }
