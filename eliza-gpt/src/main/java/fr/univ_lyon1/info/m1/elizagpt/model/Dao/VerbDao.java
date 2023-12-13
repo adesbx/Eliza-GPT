@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -87,6 +88,41 @@ public class VerbDao extends AbstractMapDao<Verb> {
     public void update(Serializable id, Verb element) throws InvalidNameException {
         super.update(id, element);
         globalUpdate();
+    }
+
+    public String conjugateVerb(String pronouns1, String pronouns2, String text) {
+        String[] tenseVerb = new String[0];
+        Serializable finalKey = null;
+        outerLoop:
+        for (Verb verb : this.collection.values()) {
+            for (Map.Entry<String, String> entry
+                    : verb.getVerbMap()) {
+                if (entry.getKey().contains(pronouns1)) {
+                    String[] splited = text.split("\\b");
+                    for (String testVerb : splited) {
+                        if (testVerb.equals(entry.getValue()) && !entry.getValue().isEmpty()) {
+                            tenseVerb = entry.getKey().split("\\|");
+                            finalKey = getKeyForElement(verb);
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            String startHeader = tenseVerb[0]+"|"+tenseVerb[1]+"|"+tenseVerb[2];
+            String finalHeader = tenseVerb[0]+"|"+tenseVerb[1]+"|"+pronouns2;
+            Verb verb = this.findOne(finalKey);
+            return verb.changePerson(startHeader,finalHeader,text);
+        } catch (NameNotFoundException e) {
+            return text;
+        } catch (InvalidNameException e) {
+            return text;
+        } catch (IndexOutOfBoundsException e) {
+            return text;
+        }
+
     }
 
     @Override

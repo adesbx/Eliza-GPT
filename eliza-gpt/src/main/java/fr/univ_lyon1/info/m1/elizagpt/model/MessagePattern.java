@@ -1,6 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.Verb;
+import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
@@ -22,7 +23,7 @@ public class MessagePattern {
 
     private Matcher matcher;
 
-    private Verb verb = new Verb();
+    private VerbDao verbDao = new VerbDao();
     private static final RandomAnswer<String> RANDOM_ANSWER = new RandomAnswer<String>(new String[]{
             "Il faut beau aujourd'hui, vous ne trouvez pas ?",
             "Je ne comprends pas.",
@@ -130,8 +131,7 @@ public class MessagePattern {
             finalAnswer = choiceRandomAnswer();
         }
         if (finalAnswer.contains("$GROUP")) {
-            return finalAnswer.replace("$GROUP", verb.firstToSecondPerson(matcher.group(1)));
-            //TODO mieux gérer verb
+            return finalAnswer.replace("$GROUP", verbDao.conjugateVerb("first person singular", "second person plural", matcher.group(1)));
         }
         return finalAnswer;
     }

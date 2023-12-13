@@ -15,6 +15,7 @@ public class Verb {
     public Verb() {
         verbMap = new HashMap<>();
     }
+
     public Verb(List<String> enTetes) {
         verbMap = new HashMap<>();
         for (String key : enTetes) {
@@ -24,6 +25,10 @@ public class Verb {
 
     public String getId() {
         return verbMap.get("infinitive");
+    }
+
+    public String getByHeader(String header) {
+        return verbMap.get(header);
     }
 
     public Set<String> getKey() {
@@ -38,22 +43,43 @@ public class Verb {
         return this.verbMap.values();
     }
 
-    /**
-     * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
-     * The result is not capitalized to allow forming a new sentence.
-     *
-     * @param text
-     * @return The 2nd-person sentence.
-     */
-    public String firstToSecondPerson(final String text) {
+    public Collection<Map.Entry<String, String>> getVerbMap() {
+        return verbMap.entrySet();
+    }
+
+    //    /**
+//     * Turn a 1st-person sentence (Je ...) into a plural 2nd person (Vous ...).
+//     * The result is not capitalized to allow forming a new sentence.
+//     *
+//     * @param text
+//     * @return The 2nd-person sentence.
+//     */
+//    public String firstToSecondPerson(final String text) {
+//        String processedText = text
+//                .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
+//        for (Map.Entry<String, String> entry
+//                : verbMap.entrySet()) {
+//
+//            processedText = processedText.replaceAll(
+//                    "[Jj]e " + entry.getValue(),
+//                    "vous " + entry.getValue());
+//        }
+//        processedText = processedText
+//                .replaceAll("[Jj]e ([a-z]*)s ", "vous $1ssez ")
+//                .replace("mon ", "votre ")
+//                .replace("ma ", "votre ")
+//                .replace("mes ", "vos ")
+//                .replace("moi", "vous");
+//        return processedText;
+//    }
+
+    public String changePerson(final String header, final String header2, final String text) {
         String processedText = text
                 .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
-        for (Map.Entry<String, String> entry
-                : verbMap.entrySet()) {
             processedText = processedText.replaceAll(
-                    "[Jj]e " + entry.getKey(),
-                    "vous " + entry.getValue());
-        }
+                    "[Jj]e " + verbMap.get(header),
+                    "vous " + verbMap.get(header2));
+
         processedText = processedText
                 .replaceAll("[Jj]e ([a-z]*)s ", "vous $1ssez ")
                 .replace("mon ", "votre ")
