@@ -35,7 +35,7 @@ public class WeatherAdapter {
                 "Temperature: " + data.getTemperature() + "°C\n"
                 + "Humidité: " + data.getHumidity() + "%\n"
                 + "Vitesse du vent: " + data.getWinSpeed() + " km/h\n"
-                + "a Lyon pour le: " + data.getDate();
+                + "a Lyon pour le: " + data.getDate().replace("T", " à ").replace("Z", "");
         return weatherString;
     }
 }
