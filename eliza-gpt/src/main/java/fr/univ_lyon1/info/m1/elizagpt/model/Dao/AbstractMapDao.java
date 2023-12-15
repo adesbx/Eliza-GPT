@@ -4,21 +4,34 @@ import javax.naming.InvalidNameException;
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NameNotFoundException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Set;
+import java.util.Objects;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Début d'implémentation de l'interface DAO sous forme d'une Map d'objets.
  * Classe abstraite qui doit être instanciée en fonction du type d'objet stocké et de clé.
- * @param <T> Le type d'objet auquel s'applique le DAO ; défini dans une sous-classe
  *
+ * @param <T> Le type d'objet auquel s'applique le DAO ; défini dans une sous-classe
  * @author inspired by Lionel Médini
  */
 public abstract class AbstractMapDao<T> implements Dao<T> {
-    protected Map<Serializable, T> collection = new HashMap<>();
+    private Map<Serializable, T> collection = new HashMap<>();
+
+    /**
+     * Gets values.
+     *
+     * @return the values
+     */
+    protected Collection<T> getValues() {
+        return collection.values();
+    }
 
     @Override
-    public Serializable add(T element) throws NameAlreadyBoundException {
+    public Serializable add(final T element) throws NameAlreadyBoundException {
         Serializable key = getKeyForElement(element);
         if (this.collection.containsKey(key)) {
             throw new NameAlreadyBoundException(key.toString());
@@ -28,7 +41,7 @@ public abstract class AbstractMapDao<T> implements Dao<T> {
     }
 
     @Override
-    public void delete(T element) throws NameNotFoundException {
+    public void delete(final T element) throws NameNotFoundException {
         Serializable key = getKeyForElement(element);
         if (!this.collection.containsKey(key)) {
             throw new NameNotFoundException(key.toString());
@@ -37,7 +50,8 @@ public abstract class AbstractMapDao<T> implements Dao<T> {
     }
 
     @Override
-    public void deleteById(Serializable id) throws NameNotFoundException, InvalidNameException {
+    public void deleteById(final Serializable id)
+            throws NameNotFoundException, InvalidNameException {
         try {
             if (!this.collection.containsKey(id)) {
                 throw new NameNotFoundException(id.toString());
@@ -49,7 +63,7 @@ public abstract class AbstractMapDao<T> implements Dao<T> {
     }
 
     @Override
-    public void update(Serializable id, T element) throws InvalidNameException {
+    public void update(final Serializable id, final T element) throws InvalidNameException {
         try {
             this.collection.put(id, element);
         } catch (ClassCastException e) {
@@ -59,17 +73,18 @@ public abstract class AbstractMapDao<T> implements Dao<T> {
     }
 
     @Override
-    public Serializable getId(T element) {
+    public Serializable getId(final T element) {
         return getKeyForElement(element);
     }
 
     @Override
     public Set<Serializable> getAllIds() {
-        return this.collection.keySet().stream().filter(Objects::nonNull).collect(Collectors.toSet());
+        return this.collection.keySet().stream().filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     @Override
-    public T findOne(Serializable id) throws NameNotFoundException, InvalidNameException {
+    public T findOne(final Serializable id) throws NameNotFoundException, InvalidNameException {
         try {
             if (!this.collection.containsKey(id)) {
                 throw new NameNotFoundException(id.toString());

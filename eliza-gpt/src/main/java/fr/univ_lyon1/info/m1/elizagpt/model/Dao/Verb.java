@@ -12,47 +12,95 @@ import java.util.Map;
 public class Verb {
     private Map<String, String> verbMap;
 
+    /**
+     * constructor by default of Verb.
+     */
     public Verb() {
         verbMap = new HashMap<>();
     }
 
-    public Verb(List<String> enTetes) {
+    /**
+     * constructor with header of the csv file.
+     *
+     * @param header the header
+     */
+    public Verb(final List<String> header) {
         verbMap = new HashMap<>();
-        for (String key : enTetes) {
+        for (String key : header) {
             verbMap.put(key, null);
         }
     }
 
+    /**
+     * return the id of the verb.
+     *
+     * @return id
+     */
     public String getId() {
         return verbMap.get("infinitive");
     }
 
-    public String getByHeader(String header) {
+    /**
+     * get a specific conjugaison.
+     *
+     * @param header the header
+     * @return by header
+     */
+    public String getByHeader(final String header) {
         return verbMap.get(header);
     }
 
+    /**
+     * get a set of all the key.
+     *
+     * @return key
+     */
     public Set<String> getKey() {
         return this.verbMap.keySet();
     }
 
-    public void replace(String key, String value) {
+    /**
+     * replace the value at the key.
+     *
+     * @param key   the key
+     * @param value the value
+     */
+    public void replace(final String key, final String value) {
         this.verbMap.replace(key, value);
     }
 
+    /**
+     * return all the conjugaison of the current verb.
+     *
+     * @return ligne
+     */
     public Collection<String> getLigne() {
         return this.verbMap.values();
     }
 
+    /**
+     * get the Collection of the map for iterate on it.
+     *
+     * @return verb map
+     */
     public Collection<Map.Entry<String, String>> getVerbMap() {
         return verbMap.entrySet();
     }
 
+    /**
+     * change the first verb to the second conjugaison.
+     *
+     * @param header  the header
+     * @param header2 the header 2
+     * @param text    the text
+     * @return string
+     */
     public String changePerson(final String header, final String header2, final String text) {
         String processedText = text
                 .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
             processedText = processedText.replaceAll(
-                    "[Jj]e " + verbMap.get(header),
-                    "vous " + verbMap.get(header2));
+                    verbMap.get(header),
+                    verbMap.get(header2));
 
         processedText = processedText
                 .replaceAll("[Jj]e ([a-z]*)s ", "vous $1ssez ")
