@@ -60,9 +60,10 @@ public class MessageProcessor {
     /**
      * Traite le message envoyé par l'utilisateur.
      *
-     * @param normalizedText
+     * @param text
      */
-    public void easyAnswer(final Message normalizedText) {
+    public void easyAnswer(final String text) {
+        Message normalizedText = normalize(text);
 
         messageList.add(normalizedText.getMessage(), false);
 
