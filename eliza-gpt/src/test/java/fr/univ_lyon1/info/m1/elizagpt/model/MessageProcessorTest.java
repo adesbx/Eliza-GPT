@@ -39,8 +39,7 @@ public class MessageProcessorTest {
     @Test
     void testMessageProcessorEasyAnswer() {
         Message msg = new Message("Qui est le plus beau ?", false, 1);
-        Message newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         assertThat(processor.getMessageList().pullLastMessage().getMessage(),
                 is("Le plus beau est bien sûr votre enseignant de MIF01 !"));
@@ -70,8 +69,7 @@ public class MessageProcessorTest {
     @Test
     void testMessageProcessorUndoFilter() {
         Message msg = new Message("Qui est le plus beau ?", false, 1);
-        Message newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         processor.doFilterAnswer("Bon.*", new FilterRegex());
 
@@ -86,8 +84,7 @@ public class MessageProcessorTest {
     @Test
     void testMessageProcessorDataApplicationName() {
         Message msg = new Message("Je m'appelle Bob", false, 1);
-        Message newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         assertThat(processor.getMessageList().pullLastMessage().getMessage(), is("Bonjour Bob."));
     }
@@ -95,8 +92,7 @@ public class MessageProcessorTest {
     @Test
     void testMessageProcessorRandomResponse() {
         Message msg = new Message("Greg", false, 1);
-        Message newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
         String[] string = new String[]{"Il fait beau aujourd'hui, vous ne trouvez pas ?",
                 "Je ne comprends pas.",
                 "Hmmm, hmm ...",
@@ -114,19 +110,16 @@ public class MessageProcessorTest {
     @Test
     void testMessageProcessorChoiceAnswer() {
         Message msg = new Message("Quel est mon nom ?", false, 1);
-        Message newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         assertThat(processor.getMessageList().pullLastMessage().getMessage(),
                 is("Je ne connais pas votre nom."));
 
         msg = new Message("Je m'appelle Bob", false, 3);
-        newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         msg = new Message("Quel est mon nom ?", false, 5);
-        newMsg = processor.normalize(msg.getMessage());
-        processor.easyAnswer(newMsg);
+        processor.easyAnswer(msg.getMessage());
 
         assertThat(processor.getMessageList().pullLastMessage().getMessage(),
                 is("Votre nom est Bob."));

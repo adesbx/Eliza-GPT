@@ -1,6 +1,5 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
@@ -30,8 +29,7 @@ public class Controller {
      * @param text
      */
     public void treatMessage(final String text) {
-        Message normalizedText = processor.normalize(text);
-        processor.easyAnswer(normalizedText);
+        processor.easyAnswer(text);
     }
 
     /**
