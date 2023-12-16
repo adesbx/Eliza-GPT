@@ -43,14 +43,14 @@ public class MessageProcessor {
      * @param answer
      * @return
      */
-    private String fillWithDataAnswer(final String answer) {
+    private String fillWithDataAnswer(String answer) {
         for (DataType dataType : DataType.values()) {
             String toReplace = "$".concat(dataType.name());
             if (answer.contains(toReplace)) {
                 if (dataApplication.get(dataType) != null) {
-                    return answer.replace(toReplace, dataApplication.get(dataType));
+                    answer = answer.replace(toReplace, dataApplication.get(dataType));
                 } else {
-                    return answer.replace(toReplace, "");
+                    answer = answer.replace(toReplace, "");
                 }
             }
         }

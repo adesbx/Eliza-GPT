@@ -80,7 +80,7 @@ public class Weather {
                     if (windSpeedObject != null) {
                         if (windSpeedObject instanceof Number) {
                             double windSpeed = ((Number) windSpeedObject).doubleValue();
-                            weatherData.setWinSpeed(windSpeed);
+                            weatherData.setWindSpeed(windSpeed);
                         } else {
                             System.out.println("winspeed is Nan");
                         }

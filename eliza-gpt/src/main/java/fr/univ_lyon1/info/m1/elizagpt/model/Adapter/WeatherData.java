@@ -6,7 +6,7 @@ package fr.univ_lyon1.info.m1.elizagpt.model.Adapter;
 public class WeatherData {
     private double temperature;
     private int humidity;
-    private double winSpeed;
+    private double windSpeed;
     private  String date;
 
     /**
@@ -14,7 +14,7 @@ public class WeatherData {
      */
     public WeatherData() {
         this.temperature = 0;
-        this.winSpeed = 0;
+        this.windSpeed = 0;
         this.humidity = 0;
         this.date = "";
     }
@@ -27,8 +27,8 @@ public class WeatherData {
         return this.humidity;
     }
 
-    double getWinSpeed() {
-        return this.winSpeed;
+    double getWindSpeed() {
+        return this.windSpeed;
     }
 
     String getDate() {
@@ -43,8 +43,8 @@ public class WeatherData {
         this.humidity = humidity;
     }
 
-    void setWinSpeed(final double winSpeed) {
-        this.winSpeed = winSpeed;
+    void setWindSpeed(final double windSpeed) {
+        this.windSpeed = windSpeed;
     }
 
     void setDate(final String date) {

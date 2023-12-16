@@ -1,5 +1,10 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Adapter;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.DataType;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class called to get our data if the request is not null.
  */
@@ -18,12 +23,17 @@ public class WeatherAdapter {
      * Get the result of the weather if different than null else bad request.
      * @return String
      */
-    public String getResults() {
+    public Map<DataType, String> getResults() {
         WeatherData weatherData = weather.getWeather();
-        if (weatherData == null) {
-            return "Problème de connexion avec l'API";
-        }
-        return convertToString(weatherData);
+        Map<DataType, String> res = new HashMap<>();
+        res.put(DataType.TEMPERATURE, Double.toString(weatherData.getTemperature()));
+        res.put(DataType.HUMIDITY, Integer.toString(weatherData.getHumidity()));
+        res.put(DataType.WINDSPEED, Double.toString(weatherData.getWindSpeed()));
+        res.put(DataType.TIME, weatherData.getDate().replace("T", " à ").replace("Z", ""));
+        //        if (weatherData == null) {
+        //            return "Problème de connexion avec l'API";
+        //        }
+        return res;
     }
 
     /**
@@ -34,7 +44,7 @@ public class WeatherAdapter {
         String weatherString =
                 "Temperature: " + data.getTemperature() + "°C\n"
                 + "Humidité: " + data.getHumidity() + "%\n"
-                + "Vitesse du vent: " + data.getWinSpeed() + " km/h\n"
+                + "Vitesse du vent: " + data.getWindSpeed() + " km/h\n"
                 + "a Lyon pour le: " + data.getDate().replace("T", " à ").replace("Z", "");
         return weatherString;
     }
