@@ -24,7 +24,7 @@ public class DaoTest {
      */
     @Test
     void getEnTete() {
-        assert(verbDao.getEnTetes() != null);
+        assert (verbDao.getEnTetes() != null);
         System.out.println(verbDao.getEnTetes());
     }
 
@@ -47,25 +47,32 @@ public class DaoTest {
     void setVerb() throws InvalidNameException, NameNotFoundException, NameAlreadyBoundException {
         Verb newVerb = new Verb(verbDao.getEnTetes());
         Verb getVerb = verbDao.findOne("être");
-        for(Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
-            newVerb.replace(conjugaison.getKey(), conjugaison.getValue()+"_ahah");
+        for (Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
+            newVerb.replace(conjugaison.getKey(), conjugaison.getValue() + "_set");
         }
+        int sizeBeforeAdd = verbDao.findAll().size();
         verbDao.add(newVerb);
+        assertThat(verbDao.findAll().size(), is(sizeBeforeAdd + 1));
+        verbDao.delete(newVerb);
     }
 
     @Test
-    void updateVerb() throws InvalidNameException, NameNotFoundException, NameAlreadyBoundException {
+    void updateVerb() throws InvalidNameException, NameNotFoundException {
         Verb newVerb = new Verb(verbDao.getEnTetes());
-        Verb getVerb = verbDao.findOne("être_ahah");
-        for(Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
-            newVerb.replace(conjugaison.getKey(), conjugaison.getValue()+"_updated");
+        Verb getVerb = verbDao.findOne("être");
+        for (Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
+            newVerb.replace(conjugaison.getKey(), conjugaison.getValue() + "_updated");
         }
-        verbDao.update(getVerb.getId(), newVerb);
+        int sizeBeforeUpdate = verbDao.findAll().size();
+        verbDao.update(newVerb.getId(), newVerb);
+        assertThat(verbDao.findAll().size(), is(sizeBeforeUpdate + 1));
+        verbDao.deleteById(newVerb.getId());
     }
 
     @Test
-    void deleteVerb() throws InvalidNameException, NameNotFoundException {
-        Verb getVerb = verbDao.findOne("être_ahah_updated");
-        verbDao.delete(getVerb);
+    void conjugateVerb() {
+        String text = "Je suis très content de ce projet.";
+        String textConj = verbDao.conjugateVerb(text);
+        assertThat(textConj, is("Je êtes très content de ce projet."));
     }
 }

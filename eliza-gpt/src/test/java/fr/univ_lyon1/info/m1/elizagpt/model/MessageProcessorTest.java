@@ -97,11 +97,14 @@ public class MessageProcessorTest {
         Message msg = new Message("Greg", false, 1);
         Message newMsg = processor.normalize(msg.getMessage());
         processor.easyAnswer(newMsg);
-        String[] string = new String[]{"Il faut beau aujourd'hui, vous ne trouvez pas ?",
-                "Je ne comprends pas.", "Hmmm, hmm ...", "Qu'est-ce qui vous fait dire cela ?",
-                "Il faut beau aujourd'hui, vous ne trouvez pas, $NAME ?",
-                "Je ne comprends pas. $NAME",
-                "Hmmm, hmm ... $NAME", "Qu'est-ce qui vous fait dire cela $NAME ?"
+        String[] string = new String[]{"Il fait beau aujourd'hui, vous ne trouvez pas ?",
+                "Je ne comprends pas.",
+                "Hmmm, hmm ...",
+                "Qu'est-ce qui vous fait dire cela ?",
+                "Il faut beau aujourd'hui, vous ne trouvez pas, Greg ?",
+                "Je ne comprends pas. Greg",
+                "Hmmm, hmm ... Greg",
+                "Qu'est-ce qui vous fait dire cela Greg ?"
         };
         assertThat(Arrays.stream(string).anyMatch(
                 str -> str.equals(processor.getMessageList().pullLastMessage().getMessage())),

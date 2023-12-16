@@ -93,7 +93,8 @@ public class VerbDao extends AbstractMapDao<Verb> {
         }
 
         try {
-            Files.move(Paths.get(csvFileTemp), Paths.get(csvFile), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(Paths.get(csvFileTemp),
+                    Paths.get(csvFile), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

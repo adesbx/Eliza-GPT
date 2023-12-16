@@ -13,13 +13,6 @@ public class Verb {
     private Map<String, String> verbMap;
 
     /**
-     * constructor by default of Verb.
-     */
-    public Verb() {
-        verbMap = new LinkedHashMap<>();
-    }
-
-    /**
      * constructor with header of the csv file.
      *
      * @param header the header
