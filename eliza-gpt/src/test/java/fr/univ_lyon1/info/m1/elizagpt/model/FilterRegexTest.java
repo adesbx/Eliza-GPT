@@ -22,6 +22,28 @@ public class FilterRegexTest {
     }
 
     @Test
+    void testDoFilterRegexNoFilter() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        regex.doFilter("", messageList);
+        assertThat(messageList.getSize(), is(4));
+    }
+
+    @Test
+    void testDoFilterRegexNull() {
+        MessageList messageList = new MessageList();
+        messageList.add("Salut", false);
+        messageList.add("Je ne comprends pas", true);
+        messageList.add("Je sais que tu ne comprends pas", false);
+
+        regex.doFilter(null, messageList);
+        assertThat(messageList.getSize(), is(0));
+    }
+
+    @Test
     void testToString() {
         assertThat(regex.toString(), is("Regex"));
     }

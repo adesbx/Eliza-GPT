@@ -2,6 +2,7 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
+import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
@@ -25,9 +26,11 @@ public class MessagePattern {
 
     private WeatherAdapter weatherAdapter = new WeatherAdapter(new Weather());
 
-    private Verb verb = new Verb();
+    private Pronouns pronouns = new Pronouns();
+
+    private VerbDao verbDao = new VerbDao(pronouns);
     private static final RandomAnswer<String> RANDOM_ANSWER = new RandomAnswer<String>(new String[]{
-            "Il faut beau aujourd'hui, vous ne trouvez pas ?",
+            "Il fait beau aujourd'hui, vous ne trouvez pas ?",
             "Je ne comprends pas.",
             "Hmmm, hmm ...",
             "Qu'est-ce qui vous fait dire cela ?",
@@ -73,6 +76,20 @@ public class MessagePattern {
                     "Êtes-vous sûr que $GROUP ?"};
             put(Pattern.compile("(Je .*)\\.", Pattern.CASE_INSENSITIVE),
                     new RandomAnswer<String>(answerWithJe));
+
+            String[] answerWithTu = new String[]{
+                    "Pourquoi dites-vous que $GROUP ?",
+                    "Pourquoi pensez-vous que $GROUP ?",
+                    "Êtes-vous sûr que $GROUP ?"};
+            put(Pattern.compile("(Tu .*)\\.", Pattern.CASE_INSENSITIVE),
+                    new RandomAnswer<String>(answerWithTu));
+
+            String[] answerWithVous = new String[]{
+                    "Pourquoi dis-tu que $GROUP ?",
+                    "Pourquoi penses-tu que $GROUP ?",
+                    "Êtes-vous sûr que $GROUP ?"};
+            put(Pattern.compile("(Vous .*)\\.", Pattern.CASE_INSENSITIVE),
+                    new RandomAnswer<String>(answerWithVous));
 
             String[] answerWithQuestion = new String[]{
                     "Je vous renvoie la question ",
@@ -137,8 +154,9 @@ public class MessagePattern {
             finalAnswer = choiceRandomAnswer();
         }
         if (finalAnswer.contains("$GROUP")) {
-            return finalAnswer.replace("$GROUP", verb.firstToSecondPerson(matcher.group(1)));
-            //TODO mieux gérer verb
+            String conjugatedMatcher = pronouns.replaceOppositePronoun(
+                    verbDao.conjugateVerb(matcher.group(1)));
+            return finalAnswer.replace("$GROUP", conjugatedMatcher);
         }
         return finalAnswer;
     }

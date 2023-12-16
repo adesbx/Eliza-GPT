@@ -20,8 +20,10 @@ public class FilterRegex implements Filter {
         Pattern pattern;
         Matcher matcher;
         pattern = Pattern.compile(".*" + searchText + ".*", Pattern.CASE_INSENSITIVE);
-
         ArrayList<Integer> listToRemove = new ArrayList<>();
+        if (searchText == null) {
+            messageList.removeAll();
+        }
         for (Message message : messageList.pullAllMessage()) {
             matcher = pattern.matcher(message.getMessage());
             if (!matcher.matches()) {

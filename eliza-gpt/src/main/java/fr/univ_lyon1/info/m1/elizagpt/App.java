@@ -30,6 +30,6 @@ public class App extends Application {
         Controller ctrl = new Controller(msgProc, msgList);
         JfxView view = new JfxView(stage, 600, 600, msgList, ctrl);
         // Second view (uncomment to activate)
-        //new JfxView(new Stage(), 400, 400, msgList, ctrl);
+        new JfxView(new Stage(), 400, 400, msgList, ctrl);
     }
 }

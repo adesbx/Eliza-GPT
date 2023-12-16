@@ -14,7 +14,6 @@ public class MessageListTest {
     @Test
     void testMessageListConstructor() {
         assertThat(messageList.pullLastMessage().getMessage(), is("Bonjour"));
-        assertThat(messageList.pullLastMessage().getIsFromEliza(), is(true));
     }
 
     @Test
@@ -24,6 +23,20 @@ public class MessageListTest {
         MessageList messageListTest = new MessageList(messageList);
 
         assertThat(messageListTest.getSize(), is(3));
+    }
+
+    @Test
+    void testMessageListConstructorCopyNull() {
+        messageList.remove(1);
+        MessageList messageListTest = new MessageList(messageList);
+
+        assertThat(messageListTest.getSize(), is(0));
+    }
+    @Test
+    void testMessageListIsElisa() {
+        assertThat(messageList.pullLastMessage().getIsFromEliza(), is(true));
+        messageList.add("Salut mec", false);
+        assertThat(messageList.pullLastMessage().getIsFromEliza(), is(false));
     }
 
     @Test
@@ -43,6 +56,14 @@ public class MessageListTest {
     }
 
     @Test
+    void testMessageListPullNull() {
+        messageList.remove(1);
+        List<Message> allMessages = messageList.pullAllMessage();
+
+        assertThat(allMessages.size(), is(0));
+    }
+
+    @Test
     void testMessageListRemoveAll() {
         messageList.add("Message 1", true);
         messageList.add("Message 2", false);
@@ -54,11 +75,27 @@ public class MessageListTest {
     }
 
     @Test
+    void testMessageListRemoveAllNull() {
+        messageList.remove(1);
+        messageList.removeAll();
+
+        assertThat(messageList.getSize(), is(0));
+    }
+
+    @Test
     void testMessageListRemove() {
         messageList.add("Message 1", false);
 
         messageList.remove(1);
         assertThat(messageList.getSize(), is(1));
+    }
+
+    @Test
+    void testMessageListRemoveNoExisting() {
+        messageList.remove(1);
+        messageList.remove(1);
+        messageList.remove(-1);
+        assertThat(messageList.getSize(), is(0));
     }
 
     @Test

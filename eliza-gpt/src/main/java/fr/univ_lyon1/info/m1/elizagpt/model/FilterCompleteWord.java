@@ -22,6 +22,9 @@ public class FilterCompleteWord implements Filter {
         pattern = Pattern.compile(".*\\b" + searchText + "\\b.*", Pattern.CASE_INSENSITIVE);
 
         ArrayList<Integer> listToRemove = new ArrayList<>();
+        if (searchText == null) {
+            messageList.removeAll();
+        }
         for (Message message : messageList.pullAllMessage()) {
             matcher = pattern.matcher(message.getMessage());
             if (!matcher.matches()) {
