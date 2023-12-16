@@ -2,7 +2,7 @@ package fr.univ_lyon1.info.m1.elizagpt.model.Dao;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class Verb {
      * constructor by default of Verb.
      */
     public Verb() {
-        verbMap = new HashMap<>();
+        verbMap = new LinkedHashMap<>();
     }
 
     /**
@@ -25,7 +25,7 @@ public class Verb {
      * @param header the header
      */
     public Verb(final List<String> header) {
-        verbMap = new HashMap<>();
+        verbMap = new LinkedHashMap<>();
         for (String key : header) {
             verbMap.put(key, null);
         }
@@ -96,9 +96,7 @@ public class Verb {
      * @return string
      */
     public String changePerson(final String header, final String header2, final String text) {
-        String processedText = text
-                .replaceAll("[Jj]e ([a-z]*)e ", "vous $1ez ");
-            processedText = processedText.replaceAll(
+        String processedText = text.replaceAll(
                     verbMap.get(header),
                     verbMap.get(header2));
 

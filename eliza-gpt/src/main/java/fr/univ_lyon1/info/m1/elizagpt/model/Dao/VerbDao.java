@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +73,7 @@ public class VerbDao extends AbstractMapDao<Verb> {
         Serializable serializable = super.add(element);
         try (Writer writer = new FileWriter(csvFile, true);
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            csvPrinter.printRecord(element.getLigne());
+             csvPrinter.printRecord(element.getLigne());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,9 +84,16 @@ public class VerbDao extends AbstractMapDao<Verb> {
         String csvFileTemp = csvFile + ".tmp";
         try (Writer writer = new FileWriter(csvFileTemp, true);
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(headers);
             for (Verb verb : this.getValues()) {
-                csvPrinter.printRecord(verb.getLigne());
-            }
+                 csvPrinter.printRecord(verb.getLigne());
+             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Files.move(Paths.get(csvFileTemp), Paths.get(csvFile), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

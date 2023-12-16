@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.Objects;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @author inspired by Lionel Médini
  */
 public abstract class AbstractMapDao<T> implements Dao<T> {
-    private Map<Serializable, T> collection = new HashMap<>();
+    private Map<Serializable, T> collection = new LinkedHashMap<>();
 
     /**
      * Gets values.
