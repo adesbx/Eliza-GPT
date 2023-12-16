@@ -6,6 +6,7 @@ import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter.Filter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
  * Using Observer to know when a message as been sent.
  */
 public class JfxView implements Observer {
-    private final VBox dialog;
+    private VBox dialog;
     private TextField text = null;
     private TextField searchText = null;
     private Label searchTextLabel = null;
@@ -32,6 +33,32 @@ public class JfxView implements Observer {
 
     private Filter filter = null;
 
+    //
+    private boolean darkMode = false;
+    static final String DARK_STYLE =
+            "-fx-background-color: #413939;";
+
+    static final String LIGHT_STYLE =
+            "-fx-background-color: #ece9e9;";
+
+    static final String ORANGE_STYLE =
+            "-fx-background-color: #ff720e;";
+
+    static final String DARK_STYLE_SEARCHBAR =
+            "-fx-background-color: #524f4f;";
+
+    static final String LIGHT_STYLE_SEARCHBAR =
+            "-fx-background-color: #fdfafa;";
+
+    static final String LIGHT_COLOR =
+            "-fx-text-fill: #ece9e9;";
+
+    static final String DARK_COLOR =
+            "-fx-text-fill: #000000;";
+
+
+    private VBox root = null;
+    //
     /**
      * Create the main view of the application.
      */
@@ -49,13 +76,14 @@ public class JfxView implements Observer {
         // De base le filtre sera Substring(défini lors de la méthode createSearchWidget)
         filter = null;
 
-        final VBox root = new VBox(10);
+        root = new VBox(10);
 
         final Pane search = createSearchWidget();
         root.getChildren().add(search);
 
         ScrollPane dialogScroll = new ScrollPane();
         dialog = new VBox(10);
+
         dialogScroll.setContent(dialog);
         // scroll to bottom by default:
         dialogScroll.vvalueProperty().bind(dialog.heightProperty());
@@ -141,25 +169,30 @@ public class JfxView implements Observer {
     private Pane createSearchWidget() {
         final HBox firstLine = new HBox();
         final HBox secondLine = new HBox();
-        firstLine.setAlignment(Pos.BASELINE_LEFT);
-        secondLine.setAlignment(Pos.BASELINE_LEFT);
+        final HBox thirdLine = new HBox();
+
+
         searchText = new TextField();
         searchText.setOnAction(e -> {
             searchText(searchText);
         });
-        firstLine.getChildren().add(searchText);
         ComboBox<Filter> comboBox = new ComboBox<>();
         ObservableList<Filter> list = getFilterList();
         comboBox.setItems(list);
         comboBox.setOnAction(event -> {
             filter = comboBox.getValue();
         });
+        comboBox.setMinWidth(75);
+        comboBox.setMaxWidth(75);
+        comboBox.setStyle(ORANGE_STYLE);
+        firstLine.getChildren().addAll(searchText, comboBox);
+        firstLine.setAlignment(Pos.CENTER);
 
-        firstLine.getChildren().add(comboBox);
         final Button send = new Button("Search");
         send.setOnAction(e -> {
             searchText(searchText);
         });
+        send.setStyle(ORANGE_STYLE);
         searchTextLabel = new Label();
         final Button undo = new Button("Undo search");
         undo.setOnAction(e -> {
@@ -167,9 +200,22 @@ public class JfxView implements Observer {
             undoSearch();
             searchTextLabel.setText("");
         });
-        secondLine.getChildren().addAll(send, searchTextLabel, undo);
+        undo.setStyle(ORANGE_STYLE);
+        final Button switchMode = new Button("Mode");
+        switchMode.setOnAction(e -> { //click sur button
+            updateMode();
+        });
+        switchMode.setStyle(ORANGE_STYLE);
+        secondLine.getChildren().addAll(searchTextLabel);
+        secondLine.setAlignment(Pos.CENTER);
+
+        thirdLine.getChildren().addAll(send, undo, switchMode);
+        thirdLine.setAlignment(Pos.CENTER);
+        thirdLine.setSpacing(20);
+        thirdLine.setPadding(new Insets(20));
+
         final VBox input = new VBox();
-        input.getChildren().addAll(firstLine, secondLine);
+        input.getChildren().addAll(firstLine, secondLine, thirdLine);
         return input;
     }
 
@@ -202,8 +248,8 @@ public class JfxView implements Observer {
         ctrl.undoFilter();
     }
 
-    private Pane createInputWidget() {
-        final Pane input = new HBox();
+    private HBox createInputWidget() {
+        final HBox input = new HBox();
         text = new TextField();
         text.setOnAction(e -> { // entrer sur le texte
             buttonSend(text.getText());
@@ -214,8 +260,31 @@ public class JfxView implements Observer {
             buttonSend(text.getText());
             text.setText("");
         });
+        send.setStyle(ORANGE_STYLE);
+        input.setAlignment(Pos.CENTER);
         input.getChildren().addAll(text, send);
         return input;
+    }
+
+
+    /**
+     * Update mode from dark to light and reverse.
+     */
+    public void updateMode() {
+        darkMode = !darkMode;
+        if (darkMode) {
+            root.setStyle(DARK_STYLE);
+            dialog.setStyle(DARK_STYLE);
+            text.setStyle(DARK_STYLE_SEARCHBAR);
+            searchText.setStyle(DARK_STYLE_SEARCHBAR);
+            searchTextLabel.setStyle(LIGHT_COLOR);
+        } else {
+            root.setStyle(LIGHT_STYLE);
+            dialog.setStyle(LIGHT_STYLE);
+            text.setStyle(LIGHT_STYLE_SEARCHBAR);
+            searchText.setStyle(LIGHT_STYLE_SEARCHBAR);
+            searchTextLabel.setStyle(DARK_COLOR);
+        }
     }
 
     /**
