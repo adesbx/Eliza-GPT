@@ -34,7 +34,7 @@ public class DaoTest {
     @Test
     void getVerb() {
         try {
-            Verb verb = verbDao.findOne("être");
+            Verb verb = verbDao.findOne("avoir");
             assertThat(verb.getByHeader("infinitive"), is(verb.getId()));
         } catch (NameNotFoundException e) {
             throw new RuntimeException(e);
@@ -46,7 +46,7 @@ public class DaoTest {
     @Test
     void setVerb() throws InvalidNameException, NameNotFoundException, NameAlreadyBoundException {
         Verb newVerb = new Verb(verbDao.getEnTetes());
-        Verb getVerb = verbDao.findOne("être");
+        Verb getVerb = verbDao.findOne("avoir");
         for (Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
             newVerb.replace(conjugaison.getKey(), conjugaison.getValue() + "_set");
         }
@@ -59,7 +59,7 @@ public class DaoTest {
     @Test
     void updateVerb() throws InvalidNameException, NameNotFoundException {
         Verb newVerb = new Verb(verbDao.getEnTetes());
-        Verb getVerb = verbDao.findOne("être");
+        Verb getVerb = verbDao.findOne("avoir");
         for (Map.Entry<String, String> conjugaison : getVerb.getVerbMap()) {
             newVerb.replace(conjugaison.getKey(), conjugaison.getValue() + "_updated");
         }
@@ -71,8 +71,8 @@ public class DaoTest {
 
     @Test
     void conjugateVerb() {
-        String text = "Je suis très content de ce projet.";
+        String text = "Je ai beaucoup de bonheur.";
         String textConj = verbDao.conjugateVerb(text);
-        assertThat(textConj, is("Je êtes très content de ce projet."));
+        assertThat(textConj, is("Je avez beaucoup de bonheur."));
     }
 }

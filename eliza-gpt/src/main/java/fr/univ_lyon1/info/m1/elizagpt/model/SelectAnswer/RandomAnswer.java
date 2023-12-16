@@ -27,6 +27,7 @@ public class RandomAnswer<T> extends SelectAnswer<T> {
 
     /**
      * Pick an element randomly in the array.
+     * @return T which is the random element
      */
     public <T> T pickRandom(final T[] array) {
         return array[random.nextInt(array.length)];

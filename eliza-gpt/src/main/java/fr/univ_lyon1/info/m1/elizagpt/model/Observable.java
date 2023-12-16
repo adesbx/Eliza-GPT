@@ -37,6 +37,9 @@ public class Observable {
         notifyObservers();
     }
 
+    /**
+     * get the observers.
+     */
     public synchronized Vector<Observer> getObserver() {
         return this.obs;
     }

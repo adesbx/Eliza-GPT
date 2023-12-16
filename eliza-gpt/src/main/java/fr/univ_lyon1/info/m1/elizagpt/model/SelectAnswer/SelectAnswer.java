@@ -9,7 +9,7 @@ public abstract class SelectAnswer<T> {
 
     /**
      * get the currentAnswer.
-     * @return
+     * @return T the answer
      */
     protected T getCurrentAnswer() {
         return currentAnswer;
@@ -25,7 +25,7 @@ public abstract class SelectAnswer<T> {
 
     /**
      * execute return the currentAnswer.
-     * @return
+     * @return T
      */
     public abstract T execute();
 }

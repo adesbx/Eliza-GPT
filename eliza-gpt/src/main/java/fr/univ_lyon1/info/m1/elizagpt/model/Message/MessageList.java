@@ -1,5 +1,6 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Observable;
 import fr.univ_lyon1.info.m1.elizagpt.view.Observer;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Classe pour un message, contient le contenue et s'il est envoyé par le robot ou non.
+ * Class for a message, contains the content and whether it is sent by eliza or not.
  */
 public class MessageList extends Observable {
     private List<Message> messageList = new ArrayList<>();
@@ -22,6 +23,7 @@ public class MessageList extends Observable {
 
     /**
      * Constructor by copy of the class.
+     * @param newMessageList the MessageList to copy
      */
     public MessageList(final MessageList newMessageList) {
         for (Message msg : newMessageList.messageList) {
@@ -36,7 +38,7 @@ public class MessageList extends Observable {
 
     /**
      * remove from the messageList per the Id.
-     * @param id
+     * @param id the id of the message to remove
      */
     public void remove(final int id) {
         Optional<Message> objFind = messageList.stream()
@@ -56,7 +58,7 @@ public class MessageList extends Observable {
 
     /**
      * pull the lastResponse from the front.
-     * @return message
+     * @return Message
      */
     public Message pullLastMessage() {
         return messageList.get(messageList.size() - 1);
@@ -64,7 +66,7 @@ public class MessageList extends Observable {
 
     /**
      * pull all message list.
-     * @return messageList
+     * @return List Message
      */
     public List<Message> pullAllMessage() {
         return messageList;

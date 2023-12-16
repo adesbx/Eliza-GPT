@@ -1,36 +1,34 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+
+
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Class for filter regular expression.
+ * Class for filter substring.
  */
-public class FilterRegex implements Filter {
+public class FilterSubstring implements Filter {
 
     /**
-     * Apply a filter with a regular expression.
+     * Apply a filter with a substring.
      *
      * @param searchText  The text to search.
      * @param messageList The list of messages to filter.
      */
     @Override
     public void doFilter(final String searchText, final MessageList messageList) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(".*" + searchText + ".*", Pattern.CASE_INSENSITIVE);
         ArrayList<Integer> listToRemove = new ArrayList<>();
         if (searchText == null) {
             messageList.removeAll();
         }
         for (Message message : messageList.pullAllMessage()) {
-            matcher = pattern.matcher(message.getMessage());
-            if (!matcher.matches()) {
+            if (!message.getMessage().contains(searchText)) {
                 listToRemove.add(message.getId());
             }
         }
-        for (Integer id : listToRemove) {
+        for (Integer id: listToRemove) {
             messageList.remove(id);
         }
     }
@@ -39,7 +37,7 @@ public class FilterRegex implements Filter {
      * Possibility to print the name of the class.
      */
     @Override
-    public String toString() {
-        return "Regex";
+    public String toString()  {
+        return "Substring";
     }
 }

@@ -1,7 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt;
 
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
 import fr.univ_lyon1.info.m1.elizagpt.view.JfxView;
 import javafx.application.Application;

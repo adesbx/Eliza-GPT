@@ -1,5 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.hamcrest.Matchers.*;

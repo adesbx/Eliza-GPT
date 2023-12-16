@@ -37,7 +37,7 @@ public class Pronouns {
      * process the opposite of the pronouns header.
      *
      * @param pronouns
-     * @return
+     * @return String
      */
     public String getOppositeHeader(final String pronouns) {
         switch (pronouns) {
@@ -57,7 +57,7 @@ public class Pronouns {
      * return the header pronouns identify.
      *
      * @param text
-     * @return
+     * @return String
      */
     public String getPronounHeader(final String text) {
         String[] splitedText = text.split("\\b");
@@ -76,7 +76,7 @@ public class Pronouns {
      * remplace in the text all pronouns with the opposite.
      *
      * @param text
-     * @return
+     * @return String
      */
     public String replaceOppositePronoun(final String text) {
         String firstPronounHeader = getPronounHeader(text);

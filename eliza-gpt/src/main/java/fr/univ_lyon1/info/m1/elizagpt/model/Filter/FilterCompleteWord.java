@@ -1,4 +1,7 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

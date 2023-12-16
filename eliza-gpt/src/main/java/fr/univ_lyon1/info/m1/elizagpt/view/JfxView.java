@@ -1,9 +1,9 @@
 package fr.univ_lyon1.info.m1.elizagpt.view;
 
 import fr.univ_lyon1.info.m1.elizagpt.controller.Controller;
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
-import fr.univ_lyon1.info.m1.elizagpt.model.Message;
-import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter.Filter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;

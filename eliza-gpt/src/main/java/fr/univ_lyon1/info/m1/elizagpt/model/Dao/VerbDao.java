@@ -60,9 +60,9 @@ public class VerbDao extends AbstractMapDao<Verb> {
     }
 
     /**
-     * Gets en tetes.
+     * Gets headers.
      *
-     * @return the en tetes
+     * @return List String
      */
     public List<String> getEnTetes() {
         return headers;
@@ -80,6 +80,10 @@ public class VerbDao extends AbstractMapDao<Verb> {
         return (String) serializable;
     }
 
+    /**
+     * Update the csv with all our conjugation.
+     *
+     */
     private void globalUpdate() {
         String csvFileTemp = csvFile + ".tmp";
         try (Writer writer = new FileWriter(csvFileTemp, true);
@@ -122,7 +126,7 @@ public class VerbDao extends AbstractMapDao<Verb> {
      * Conjugate verb string.
      *
      * @param text the text
-     * @return the string
+     * @return String which is the verb conjugate
      */
     public String conjugateVerb(final String text) {
         String pronouns1 = pronouns.getPronounHeader(text);

@@ -1,6 +1,11 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
 //import fr.univ_lyon1.info.m1.elizagpt.model.Dao.Verb;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterCompleteWord;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterRegex;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterSubstring;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

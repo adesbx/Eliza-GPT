@@ -27,7 +27,7 @@ public class Verb {
     /**
      * return the id of the verb.
      *
-     * @return id
+     * @return String which is the id
      */
     public String getId() {
         return verbMap.get("infinitive");
@@ -37,7 +37,7 @@ public class Verb {
      * get a specific conjugaison.
      *
      * @param header the header
-     * @return by header
+     * @return String which is the header
      */
     public String getByHeader(final String header) {
         return verbMap.get(header);
@@ -46,7 +46,7 @@ public class Verb {
     /**
      * get a set of all the key.
      *
-     * @return key
+     * @return a Set String which is the key
      */
     public Set<String> getKey() {
         return this.verbMap.keySet();
@@ -65,7 +65,7 @@ public class Verb {
     /**
      * return all the conjugaison of the current verb.
      *
-     * @return ligne
+     * @return Collection of String which is a line of the document
      */
     public Collection<String> getLigne() {
         return this.verbMap.values();
@@ -74,7 +74,7 @@ public class Verb {
     /**
      * get the Collection of the map for iterate on it.
      *
-     * @return verb map
+     * @return Collection of Map which is a verb map
      */
     public Collection<Map.Entry<String, String>> getVerbMap() {
         return verbMap.entrySet();
@@ -86,7 +86,7 @@ public class Verb {
      * @param header  the header
      * @param header2 the header 2
      * @param text    the text
-     * @return string
+     * @return String with the text updated
      */
     public String changePerson(final String header, final String header2, final String text) {
         String processedText = text.replaceAll(

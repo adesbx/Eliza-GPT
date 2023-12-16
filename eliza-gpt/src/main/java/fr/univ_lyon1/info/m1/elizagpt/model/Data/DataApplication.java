@@ -1,4 +1,4 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class DataApplication<T> {
     /**
      * get from the hashMap.
      * @param key
-     * @return
+     * @return T the object we want
      */
     public T get(final DataType key) {
         return dataApplication.get(key);
@@ -38,6 +38,8 @@ public class DataApplication<T> {
 
     /**
      * identify a pattern to grab data from.
+     * @param dataType the data we want
+     * @param regex the string we use to get the data
      */
     public void patternContainData(final String regex, final DataType dataType) {
         grabData.get(dataType).add(regex);
@@ -46,6 +48,7 @@ public class DataApplication<T> {
     /**
      * add DATA memory when the pattern is in grabdata.
      * @param key
+     * @param matcher
      */
     public void addInData(final String key, final Matcher matcher) {
         for (Map.Entry<DataType, List<String>> entry : grabData.entrySet()) {

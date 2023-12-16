@@ -1,6 +1,9 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
+import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataApplication;
+import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
+import fr.univ_lyon1.info.m1.elizagpt.model.Pronouns;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
 import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
@@ -98,6 +101,8 @@ public class MessagePattern {
 
     /**
      * Get the DataType.
+     * @param answerWithData the answer without the data replace
+     * @return DataType
      */
     private DataType getDataType(final String answerWithData) {
         for (DataType dataType : DataType.values()) {
@@ -111,7 +116,7 @@ public class MessagePattern {
 
     /**
      * function for choosing a random Answer with priority to answerWithData.
-     * @return
+     * @return String the answer
      */
     private String choiceRandomAnswer() {
         String randomAnswer = RANDOM_ANSWER.execute();
@@ -129,7 +134,7 @@ public class MessagePattern {
     /**
      * return the finalAnswer.
      * @param message
-     * @return
+     * @return String the string you want eliza to say
      */
     public String getAnswer(final String message) {
         String finalAnswer = null;

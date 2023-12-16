@@ -1,8 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.controller;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.MessageList;
+import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
 import fr.univ_lyon1.info.m1.elizagpt.model.MessageProcessor;
-import fr.univ_lyon1.info.m1.elizagpt.model.Filter;
+import fr.univ_lyon1.info.m1.elizagpt.model.Filter.Filter;
 
 import java.util.List;
 
@@ -14,9 +14,10 @@ public class Controller {
     private MessageList messageList = null;
 
     /**
-     * constructeur du controleur avec l'instance de la vue.
+     * Constructor of controller with a MessageList.
      *
      * @param newProcessor
+     * @param newMessageList the messageList to instance with
      */
     public Controller(final MessageProcessor newProcessor, final MessageList newMessageList) {
         processor = newProcessor;
@@ -24,8 +25,7 @@ public class Controller {
     }
 
     /**
-     * fonction qui appelle le model pour répondre au message de l'utilisateur.
-     *
+     * Function that call the model to respond to the user.
      * @param text
      */
     public void treatMessage(final String text) {
@@ -33,8 +33,8 @@ public class Controller {
     }
 
     /**
-     * removeMessage.
-     * @param id
+     * removeMessage from the messageList.
+     * @param id id of the message to remove
      */
     public void removeMessage(final int id) {
         System.out.println("id du removeMessage" + id);
@@ -42,8 +42,9 @@ public class Controller {
     }
 
     /**
-     * filter All message.
-     * @param searchText
+     * filter All messages.
+     * @param searchText the search you want to search
+     * @param filter the filter you are going to use
      */
     public void filterMessage(final String searchText, final Filter filter) {
         processor.doFilterAnswer(searchText, filter);
@@ -56,12 +57,17 @@ public class Controller {
         processor.undoFilterMessageList();
     }
 
+    /**
+     * Get the messagelist you want.
+     * @return MessageList
+     */
     public MessageList getMessageList() {
         return  processor.getMessageList();
     }
 
     /**
      * get a List of Filter.
+     * @return list of filter
      */
     public List<Filter> getFilterList() {
         return processor.getFilterList();
