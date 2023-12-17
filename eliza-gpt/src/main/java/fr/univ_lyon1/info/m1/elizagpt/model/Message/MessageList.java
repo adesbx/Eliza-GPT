@@ -43,7 +43,7 @@ public class MessageList extends Observable {
         Optional<Message> objFind = messageList.stream()
                 .filter(objet -> objet.getId() == id).findFirst();
         objFind.ifPresent(obj -> {
-            System.out.println("Object to remove : " + obj.getMessage());
+            //System.out.println("Object to remove : " + obj.getMessage());
             messageList.remove(obj);
         });
         notifyObservers();
@@ -98,11 +98,11 @@ public class MessageList extends Observable {
         compteur++;
         messageList.add(new Message(newMessage, isFromEliza, compteur));
         //debug:
-        for (Message message : messageList) {
-            System.out.println(message.getMessage() + " - " + message.getId());
-            System.out.println("\n");
-        }
-        System.out.println("---------------------------\n");
+        //for (Message message : messageList) {
+            //System.out.println(message.getMessage() + " - " + message.getId());
+            //System.out.println("\n");
+        //}
+        //System.out.println("---------------------------\n");
         notifyObservers();
     }
 }

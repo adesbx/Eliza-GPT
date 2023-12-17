@@ -112,7 +112,7 @@ public class JfxView implements Observer {
     public void update() {
         printAllMessage();
         //printLastMessage();
-        //System.out.println("update from observer");
+        ////System.out.println("update from observer");
     }
 
     private void printMessage(final Message message) {

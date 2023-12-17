@@ -26,7 +26,7 @@ public class DaoTest {
     @Test
     void getEnTete() {
         assert (verbDao.getEnTetes() != null);
-        System.out.println(verbDao.getEnTetes());
+        //System.out.println(verbDao.getEnTetes());
     }
 
     /**

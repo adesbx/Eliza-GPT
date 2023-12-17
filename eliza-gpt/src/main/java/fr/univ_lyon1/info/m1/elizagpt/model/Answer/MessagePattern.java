@@ -59,8 +59,12 @@ public class MessagePattern {
                     new SimpleAnswer<String>("Salut $GROUP."));
             dataApplication.patternContainData(regex2, DataType.NAME);
 
+            String[] auRevoirAnswer = new String[]{
+                    "Au revoir...",
+                    "Oh non pas déjà $NAME );",
+                    "Ahah à bientôt"};
             put(Pattern.compile("Au revoir\\.", Pattern.CASE_INSENSITIVE),
-                    new SimpleAnswer<String>("Au revoir..."));
+                    new RandomAnswer<>(auRevoirAnswer));
 
             put(Pattern.compile("Quel est mon nom \\?", Pattern.CASE_INSENSITIVE),
                     new ChoiceAnswer<String>("Votre nom est $NAME.", DataType.NAME,

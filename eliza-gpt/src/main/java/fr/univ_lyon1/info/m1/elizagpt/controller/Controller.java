@@ -37,7 +37,7 @@ public class Controller {
      * @param id id of the message to remove
      */
     public void removeMessage(final int id) {
-        System.out.println("id du removeMessage" + id);
+        //System.out.println("id du removeMessage" + id);
         messageList.remove(id);
     }
 
