@@ -201,7 +201,7 @@ public class JfxView implements Observer {
             searchTextLabel.setText("");
         });
         undo.setStyle(ORANGE_STYLE);
-        final Button switchMode = new Button("Mode");
+        final Button switchMode = new Button("dark/light");
         switchMode.setOnAction(e -> { //click sur button
             updateMode();
         });

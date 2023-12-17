@@ -5,7 +5,7 @@ ci-dessous), qui doit comprendre obligatoirement :
 une présentation globale du projet (rapide : ne répétez pas
 l'énoncé), -->
 # **Le projet ELIZA-GPT 2023**
-- Arthur_Jules_Marc Desbiaux, P2006393
+- Arthur Desbiaux, P2006393
 - Valentin Cuzin-Rambaud, P2003442
 
 **Sommaire**
@@ -33,12 +33,12 @@ plats de spaghettis générés automatiquement représentant tout le code.
 ## III. Design Patterns
 
 ### **0. MVC**
-Le projet est structuré avec l'architecture MVC[[2]](./Rapport.md#2-httpsenwikipediaorgwikimodel–view–controller) afin de séparer la logique métier de l'affichage, qui réduit notre couplage (principe de GRASP). Nous avons fais une implémentation pull-based, c'est à dire que la vue tire de l'information de la donnée généré par le model. La vue observera les changements dans le model (observé), c'est l'utilisation du design Patterns Observer[[3]](./Rapport.md#3-httpsenwikipediaorgwikiobserver_pattern). Cela permet par exemple de syncroniser nos vues.
+Le projet est structuré avec l'architecture MVC[[2]](./Rapport.md#2-httpsenwikipediaorgwikimodel–view–controller) afin de séparer la logique métier de l'affichage, qui réduit notre couplage (principe de GRASP). Nous avons fais une implémentation pull-based, c'est à dire que la vue tire de l'information de la donnée généré par le model. La vue observera les changements dans le model (observé), c'est l'utilisation du design Patterns Observer[[3]](./Rapport.md#3-httpsenwikipediaorgwikiobserver_pattern). Cela permet par exemple de synchroniser nos vues.
 
 ### Diagramme de la sequence d'envoie d'un message utilisateur, jusqu'au retour de la list de message rempli
 ![diagramme MVC sequence](./Diagramme_séquence.png)
 
-
+<!--explications sur diagramme-->
 
 ### **1. Stratégie**
 Nous avons décidé d'utiliser Stratégie[[4]](./Rapport.md#4-httpsenwikipediaorgwikistrategy_pattern) pour la réalisation de nos filtres. Nous voulions manipuler un objet Filtre qui s'instancie avec le bon filtre à utiliser (regex, complete word, sub-string). Stratégie est parfait dans ce cas d'utilisation car il permet le changement dynamique de comportement de l'objet.
@@ -60,7 +60,7 @@ L'Adaptateur[[6]](./Rapport.md#6-httpsenwikipediaorgwikiadapter_pattern) à ét�
 
 ![diagramme adaptateur](./Adaptater.png)
 
-Pour l'implémenter, nous avons tout d'abord fait une classe qui possèdera toute nos data sur la météo. Ensuite nous avons une classe Weather qui a une fonction pour faire la requête sur l'api et une autre fonction pour parser correctement nos données. La classe WeatherAdapter quand ta elle ce contente de récupérer la réponse de la rêquete (une instance de WeatherData) et de l'afficher sous forme de String pour l'utilsateur
+Pour l'implémenter, nous avons tout d'abord fait une classe qui possèdera toute nos data sur la météo. Ensuite nous avons une classe Weather qui a une fonction pour faire la requête sur l'api et une autre fonction pour parser correctement nos données. La classe WeatherAdapter quand ta elle se contente de récupérer la réponse de la rêquete (une instance de WeatherData) et de l'afficher sous forme de String pour l'utilsateur
 
 <!--
 Une section « éthique ». Cette section devra discuter de la problématique des
@@ -122,7 +122,14 @@ re-documenter dans le rapport (sauf si vous avez fait des choses
 extraordinaires qui méritent une documentation externe).
 -->
 ## V. Tests
+Nous avons fait des test par cas d'utilisations pour vérifier le bon fonctionnement de l'application.
+Par exemple avec nos deux vues, on a pu vérifier que notre MVC pull-based fonctionne bien car les vues sont synchronisées. Lorsque l'on ajoute/supprime un message, l'affichage se met à jour sur les 2 vues. Cela fonctionne également de la même manière lors de l'application du filtre.
 
+Pour l'interface utilisateur, on s'est assuré que le changement de mode dark/light fonctionne correctement., et que la structure de la fenêtre nous conviennent.
+
+Pour la création de nos test automatique, nous avons fait en sorte de couvrir le plus de code:
+
+![testAuto](testAuto.png)
 <!--
 On vous demande d'appuyer votre rapport sur des références bibliographiques existantes, mais il ne s'agit en aucun cas de vous contenter de copier-coller. Il est rappelé ici que le droit de courte citation impose entre autres de citer vos sources quand vous utilisez un extrait d'un texte existant (il est interdit, pas seulement dans le cadre d'un travail scolaire, de laisser entendre que vous êtes l'auteur d'un texte que vous n'avez pas écrit vous-même). -->
 
