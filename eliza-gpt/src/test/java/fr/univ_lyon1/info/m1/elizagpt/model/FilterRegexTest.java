@@ -13,6 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class FilterRegexTest {
     private Filter regex = new FilterRegex();
 
+    /**
+     * Testing the filter regex
+     * we add message and search for "Je.*"
+     * we should not have "Bonjour" and "Salut"
+     * but the two others message so size 2.
+     */
     @Test
     void testDoFilterRegex() {
         MessageList messageList = new MessageList();
@@ -24,6 +30,11 @@ public class FilterRegexTest {
         assertThat(messageList.getSize(), is(2));
     }
 
+    /**
+     * Testing the filter regex
+     * we add message and search for ""
+     * we should have everything so size 4.
+     */
     @Test
     void testDoFilterRegexNoFilter() {
         MessageList messageList = new MessageList();
@@ -35,6 +46,11 @@ public class FilterRegexTest {
         assertThat(messageList.getSize(), is(4));
     }
 
+    /**
+     * Testing the filter regex
+     * we add message and search but with no search
+     * we should have nothing so size 0.
+     */
     @Test
     void testDoFilterRegexNull() {
         MessageList messageList = new MessageList();
@@ -46,6 +62,11 @@ public class FilterRegexTest {
         assertThat(messageList.getSize(), is(0));
     }
 
+    /**
+     * Testing the filter regex
+     * the toString should return the
+     * name of the Class.
+     */
     @Test
     void testToString() {
         assertThat(regex.toString(), is("Regex"));
