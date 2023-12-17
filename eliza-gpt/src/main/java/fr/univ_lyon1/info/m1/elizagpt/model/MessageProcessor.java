@@ -1,14 +1,14 @@
 package fr.univ_lyon1.info.m1.elizagpt.model;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataApplication;
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.DataApplication;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.DataType;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter.Filter;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterCompleteWord;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterRegex;
 import fr.univ_lyon1.info.m1.elizagpt.model.Filter.FilterSubstring;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message.Message;
 import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessageList;
-import fr.univ_lyon1.info.m1.elizagpt.model.Message.MessagePattern;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.MessagePattern;
 
 import java.util.ArrayList;
 import java.util.List;

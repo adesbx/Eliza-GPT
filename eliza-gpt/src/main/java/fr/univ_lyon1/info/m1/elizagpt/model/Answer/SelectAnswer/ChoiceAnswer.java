@@ -1,7 +1,7 @@
-package fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer;
+package fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataApplication;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.DataType;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.DataApplication;
 
 /**
  * Choice the complex answer if we have the data, else...

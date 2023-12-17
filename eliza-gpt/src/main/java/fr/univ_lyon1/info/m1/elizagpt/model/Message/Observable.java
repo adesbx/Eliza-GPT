@@ -1,4 +1,4 @@
-package fr.univ_lyon1.info.m1.elizagpt.model;
+package fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
 import fr.univ_lyon1.info.m1.elizagpt.view.Observer;
 

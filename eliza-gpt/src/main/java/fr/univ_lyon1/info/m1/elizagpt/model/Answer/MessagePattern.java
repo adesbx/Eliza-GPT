@@ -1,15 +1,12 @@
-package fr.univ_lyon1.info.m1.elizagpt.model.Message;
+package fr.univ_lyon1.info.m1.elizagpt.model.Answer;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataApplication;
-import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
-import fr.univ_lyon1.info.m1.elizagpt.model.Pronouns;
-import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SelectAnswer;
-import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.RandomAnswer;
-import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.SimpleAnswer;
-import fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer.ChoiceAnswer;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer.SelectAnswer;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer.RandomAnswer;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer.SimpleAnswer;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer.ChoiceAnswer;
 
 import java.util.Map;
 import java.util.LinkedHashMap;

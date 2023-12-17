@@ -1,4 +1,4 @@
-package fr.univ_lyon1.info.m1.elizagpt.model.SelectAnswer;
+package fr.univ_lyon1.info.m1.elizagpt.model.Answer.SelectAnswer;
 
 import java.util.Random;
 

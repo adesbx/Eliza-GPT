@@ -1,7 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Dao;
 
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Pronouns;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.Pronouns;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;

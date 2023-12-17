@@ -1,6 +1,5 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.Observable;
 import fr.univ_lyon1.info.m1.elizagpt.view.Observer;
 
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ public class MessageList extends Observable {
             System.out.println("Object to remove : " + obj.getMessage());
             messageList.remove(obj);
         });
+        notifyObservers();
     }
 
     /**

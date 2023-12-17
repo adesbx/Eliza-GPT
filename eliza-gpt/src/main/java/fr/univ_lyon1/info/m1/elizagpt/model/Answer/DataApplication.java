@@ -1,4 +1,4 @@
-package fr.univ_lyon1.info.m1.elizagpt.model.Data;
+package fr.univ_lyon1.info.m1.elizagpt.model.Answer;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;

@@ -2,6 +2,7 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.Verb;
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
+import fr.univ_lyon1.info.m1.elizagpt.model.Answer.Pronouns;
 import org.junit.jupiter.api.Test;
 
 import javax.naming.InvalidNameException;
