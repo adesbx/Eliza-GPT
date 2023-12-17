@@ -108,6 +108,7 @@ Quelles sont les mesures, légales et techniques, pour limiter ou éliminer les 
 - Faire comprendre au gens ce que c'est que l'IA avec de la transparence et des réponse claire quand on demande à l'IA ce qu'il est quitte à être froid.
 
 Lesquels sont mis en œuvre dans la réalité ?
+- Bien montrer au acteur de l'IA que la question éthique est importante comme en italie.
 
 
 <!--
