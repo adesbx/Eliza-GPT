@@ -51,9 +51,12 @@ Chaque Filtre est un extends de l'interface Filter qui possède deux méthodes, 
 
 
 ### **2. DAO**
-L'utilisation de DAO[[5]](./Rapport.md#5-httpsenwikipediaorgwikidata_access_object) pour la conjugaison des verbes permet d'implémenter l'accès à un dictionnaire en synchronisant avec un fichier de configuration. Ainsi, le fichier de configuration peut être modifier à partir du code, pour rajouter, modifier, supprimer des verbes. On peut aussi charger un autre fichier de configuration par exemple si on veux conjuger des verbes en anglais.
+L'utilisation de DAO[[5]](./Rapport.md#5-httpsenwikipediaorgwikidata_access_object) pour la conjugaison des verbes permet d'implémenter l'accès à un dictionnaire en synchronisant avec un fichier de configuration. Ainsi, le fichier de configuration peut être modifier à partir du code, pour rajouter, modifier, supprimer des verbes. On peut aussi charger un autre fichier de configuration par exemple si on veux conjuger des verbes en anglais. Le Dao implémenté nous permet ainsi une configuration persistante et complémente le modèle MVC en séparrant encore plus la donnée du modèle.
 
-<!-- mettre un diagramme -->
+### Diagramme des classes pour Dao et la gestion de la conjugaison
+![Dao Diagramme](./Dao.png)
+
+Nous avons repris le code de Lionel Médini afin de partir sur un Dao propre. on extends la classe VerbDao pour ré-écrire le CRUD (Creator, Read, Update, Delete) afin de gérer à la fois le fichier de configuration et la map. Pour le csv nous utilisons la biliothèque *commons-csv de apache*. la fonction ConjugateVerb cherche dans la phrases les verbes conjuguées dans le temps 1 puis les remplaces par le temps 2 en accedant à la collection de Verb.
 
 ### **3. Adaptateur**
 L'Adaptateur[[6]](./Rapport.md#6-httpsenwikipediaorgwikiadapter_pattern) à été utilisé pour implémenter la météo. Lorsque nous voulons faire des requêtes sur l'api de météo, il faut pouvoir récupérer les données et les transformer pour les utiliser.
@@ -86,8 +89,28 @@ ChatGPT et Bard sur Wikipedia
 
 
 Sept choses à savoir sur la suspension de ChatGPT en Italie
+-->
+
+Quels sont les enjeux ? 
+
+- Violation de donnée (RGPD) afin du deep lerning.
+- Parler à son meilleur pote faut faire gaffe.
+- Information fausse, prise comme vrai. 
+
+Quels sont les risques et les bénéfices, pour la société qui édite un tel programme, et pour ses utilisateurs ? 
+
+- Pour les utilisateur on a du temps à gagné sur une recherche google, et une information bien expliqué, au risque qu'elle soit fausse.
+- Pour la société, c'est l'argent biensûr mais surtout la donnée utilisateur afin d'améliorer son chatbot et donc faire plus d'argent, au risque juridique de ne pas respecter la loi.
+
+Quelles sont les mesures, légales et techniques, pour limiter ou éliminer les risques ?
+- Besoin de temps et de reflexion pour éviter de faire n'importe quoi comme dit elon Musk.
+- Bien montrer au acteur de l'IA que la question éthique est importante comme en italie.
+- Faire comprendre au gens ce que c'est que l'IA avec de la transparence et des réponse claire quand on demande à l'IA ce qu'il est quitte à être froid.
+
+Lesquels sont mis en œuvre dans la réalité ?
 
 
+<!--
 Un ingénieur de Google mis à pied après avoir affirmé que l’intelligence artificielle était "sensible"
 
 
