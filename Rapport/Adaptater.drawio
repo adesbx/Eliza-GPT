@@ -1,6 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="wgAyOXhD21uO2ZQ7kcxS">
+<<<<<<< HEAD
         <mxGraphModel dx="1336" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+=======
+        <mxGraphModel dx="1130" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+>>>>>>> 94067f27b25735adadd7ff1010827d8214f0cbd8
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
