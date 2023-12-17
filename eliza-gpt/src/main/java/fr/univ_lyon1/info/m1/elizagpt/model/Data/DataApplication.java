@@ -1,5 +1,8 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Data;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +18,8 @@ public class DataApplication<T> {
     private Map<DataType, T> dataApplication;
 
     private Map<DataType, List<String>> grabData = new HashMap<>();
+
+    private WeatherAdapter weatherAdapter = new WeatherAdapter(new Weather());
 
     /**
      * constructor of class by hashMap.
@@ -54,6 +59,23 @@ public class DataApplication<T> {
         for (Map.Entry<DataType, List<String>> entry : grabData.entrySet()) {
             if (entry.getValue().contains(key)) {
                 dataApplication.put(entry.getKey(), (T) matcher.group(1));
+            }
+        }
+    }
+
+    /**
+     * add meteo DATA memory when the pattern is in grabdata.
+     * @param key
+     */
+    public void addInDataMeteo(final String key) {
+        for (Map.Entry<DataType, List<String>> entry : grabData.entrySet()) {
+            if (entry.getValue().contains(key)) {
+               if (dataApplication.get(entry.getKey()) == null) {
+                   Map<DataType, String> data = weatherAdapter.getResults();
+                   for (Map.Entry<DataType, String> entry2 : data.entrySet()) {
+                       dataApplication.put(entry2.getKey(), (T) entry2.getValue());
+                   }
+               }
             }
         }
     }

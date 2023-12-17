@@ -5,4 +5,8 @@ package fr.univ_lyon1.info.m1.elizagpt.model.Data;
  */
 public enum DataType {
     NAME,
+    TEMPERATURE,
+    WINDSPEED,
+    HUMIDITY,
+    TIME
 }
