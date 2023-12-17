@@ -1,5 +1,7 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Message;
 
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
+import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
 import fr.univ_lyon1.info.m1.elizagpt.model.Dao.VerbDao;
 import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataApplication;
 import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
@@ -24,6 +26,8 @@ public class MessagePattern {
     private DataApplication<String> dataApplication;
 
     private Matcher matcher;
+
+    private WeatherAdapter weatherAdapter = new WeatherAdapter(new Weather());
 
     private Pronouns pronouns = new Pronouns();
 
