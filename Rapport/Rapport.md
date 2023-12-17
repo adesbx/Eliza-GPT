@@ -63,7 +63,7 @@ L'Adaptateur[[6]](./Rapport.md#6-httpsenwikipediaorgwikiadapter_pattern) à ét�
 
 ![diagramme adaptateur](./Adaptater.png)
 
-Pour l'implémenter, nous avons tout d'abord fait une classe qui possèdera toute nos data sur la météo. Ensuite nous avons une classe Weather qui a une fonction pour faire la requête sur l'api et une autre fonction pour parser correctement nos données. La classe WeatherAdapter quand ta elle se contente de récupérer la réponse de la rêquete (une instance de WeatherData) et de l'afficher sous forme de String pour l'utilsateur
+Pour l'implémenter, nous avons tout d'abord fait une classe qui possèdera toute nos data sur la météo. Ensuite nous avons une classe Weather qui a une fonction pour faire la requête sur l'api et une autre fonction pour parser correctement nos données. La classe WeatherAdapter quand ta elle se contente de récupérer la réponse de la rêquete (une instance de WeatherData) et de la transformer en Map. En procédant ainsi on peut stocker nos données dans notre type DataType et ainsi les récupérés et réutilisés quand on veut dans l'application. Cela permet également de faire une seul requête API par moment où l'application est utilisé.
 
 <!--
 Une section « éthique ». Cette section devra discuter de la problématique des

@@ -13,6 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class FilterCompleteWordTest {
     private Filter completeword = new FilterCompleteWord();
 
+    /**
+     * Testing the filter compleword
+     * we add message and search for "jour"
+     * we should not have "Bonjour" and "Salut"
+     * but the two others message so size 2.
+     */
     @Test
     void testDoFilterCompleteWord() {
         MessageList messageList = new MessageList();
@@ -24,6 +30,11 @@ public class FilterCompleteWordTest {
         assertThat(messageList.getSize(), is(2));
     }
 
+    /**
+     * Testing the filter compleword
+     * we add message and search for ""
+     * we should have everything so size 4.
+     */
     @Test
     void testDoFilterCompleteWordNoFilter() {
         MessageList messageList = new MessageList();
@@ -35,6 +46,11 @@ public class FilterCompleteWordTest {
         assertThat(messageList.getSize(), is(4));
     }
 
+    /**
+     * Testing the filter compleword
+     * we add message and search but with no search
+     * we should have nothing so size 0.
+     */
     @Test
     void testDoFilterCompleteWordNull() {
         MessageList messageList = new MessageList();
@@ -46,6 +62,11 @@ public class FilterCompleteWordTest {
         assertThat(messageList.getSize(), is(0));
     }
 
+    /**
+     * Testing the filter compleword
+     * the toString should return the
+     * name of the Class.
+     */
     @Test
     void testToString() {
         assertThat(completeword.toString(), is("CompleteWord"));

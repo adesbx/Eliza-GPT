@@ -44,6 +44,7 @@ public class DaoTest {
         }
     }
 
+
     @Test
     void setVerb() throws InvalidNameException, NameNotFoundException, NameAlreadyBoundException {
         Verb newVerb = new Verb(verbDao.getEnTetes());

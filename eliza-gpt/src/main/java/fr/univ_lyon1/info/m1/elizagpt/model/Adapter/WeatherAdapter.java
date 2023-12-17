@@ -35,17 +35,4 @@ public class WeatherAdapter {
         //        }
         return res;
     }
-
-    /**
-     * Take all the data and make it a string.
-     * @return String
-     */
-    private String convertToString(final WeatherData data) {
-        String weatherString =
-                "Temperature: " + data.getTemperature() + "°C\n"
-                + "Humidité: " + data.getHumidity() + "%\n"
-                + "Vitesse du vent: " + data.getWindSpeed() + " km/h\n"
-                + "a Lyon pour le: " + data.getDate().replace("T", " à ").replace("Z", "");
-        return weatherString;
-    }
 }
