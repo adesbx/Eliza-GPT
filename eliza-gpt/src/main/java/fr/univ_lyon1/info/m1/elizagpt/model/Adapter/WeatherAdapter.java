@@ -1,6 +1,6 @@
 package fr.univ_lyon1.info.m1.elizagpt.model.Adapter;
 
-import fr.univ_lyon1.info.m1.elizagpt.model.DataType;
+import fr.univ_lyon1.info.m1.elizagpt.model.Data.DataType;
 
 import java.util.HashMap;
 import java.util.Map;
