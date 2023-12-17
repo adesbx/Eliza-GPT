@@ -43,18 +43,19 @@ public class MessageProcessor {
      * @param answer
      * @return
      */
-    private String fillWithDataAnswer(String answer) {
+    private String fillWithDataAnswer(final String answer) {
+        String returnAnswer = answer;
         for (DataType dataType : DataType.values()) {
             String toReplace = "$".concat(dataType.name());
-            if (answer.contains(toReplace)) {
+            if (returnAnswer.contains(toReplace)) {
                 if (dataApplication.get(dataType) != null) {
-                    answer = answer.replace(toReplace, dataApplication.get(dataType));
+                    returnAnswer = returnAnswer.replace(toReplace, dataApplication.get(dataType));
                 } else {
-                    answer = answer.replace(toReplace, "");
+                    returnAnswer = returnAnswer.replace(toReplace, "");
                 }
             }
         }
-        return answer;
+        return returnAnswer;
     }
 
     /**

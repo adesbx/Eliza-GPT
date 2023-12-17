@@ -98,10 +98,10 @@ public class MessagePattern {
 
             String regex3 = "Quelle est la météo \\?";
             put(Pattern.compile(regex3, Pattern.CASE_INSENSITIVE),
-                    new SimpleAnswer<String>("Temperature: $TEMPERATURE °C\n " +
-                            "Humidité: $HUMIDITY %\n" +
-                            "Vitesse du vent: $WINDSPEED km/h\n" +
-                            "a Lyon pour le: $TIME"));
+                    new SimpleAnswer<String>("Temperature: $TEMPERATURE °C\n "
+                            + "Humidité: $HUMIDITY %\n"
+                            + "Vitesse du vent: $WINDSPEED km/h\n"
+                            + "a Lyon pour le: $TIME"));
             dataApplication.patternContainData(regex3, DataType.TEMPERATURE);
             dataApplication.patternContainData(regex3, DataType.HUMIDITY);
             dataApplication.patternContainData(regex3, DataType.WINDSPEED);
@@ -142,14 +142,19 @@ public class MessagePattern {
             return randomAnswer;
     }
 
+    /**
+     * this function search if we need to use the meteo data.
+     * @param message
+     * @return Boolean
+     */
     public Boolean verifyMeteo(final String message) {
-        if(getDataType(message) == null) {
+        if (getDataType(message) == null) {
             return false;
         }
-        return getDataType(message).equals(DataType.TEMPERATURE) ||
-                getDataType(message).equals(DataType.HUMIDITY)||
-                getDataType(message).equals(DataType.WINDSPEED)||
-                getDataType(message).equals(DataType.TIME);
+        return getDataType(message).equals(DataType.TEMPERATURE)
+                || getDataType(message).equals(DataType.HUMIDITY)
+                || getDataType(message).equals(DataType.WINDSPEED)
+                || getDataType(message).equals(DataType.TIME);
     }
 
     /**
@@ -163,10 +168,9 @@ public class MessagePattern {
                 : patternDictionary.entrySet()) {
             matcher = entry.getKey().matcher(message);
             if (matcher.matches()) {
-                if(verifyMeteo(entry.getValue().execute())) {
+                if (verifyMeteo(entry.getValue().execute())) {
                     dataApplication.addInDataMeteo(entry.getKey().toString());
-                }
-                else {
+                } else {
                     dataApplication.addInData(entry.getKey().toString(), matcher);
                 }
                 finalAnswer = entry.getValue().execute();

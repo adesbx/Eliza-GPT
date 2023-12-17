@@ -2,7 +2,6 @@ package fr.univ_lyon1.info.m1.elizagpt.model;
 
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.Weather;
 import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherAdapter;
-import fr.univ_lyon1.info.m1.elizagpt.model.Adapter.WeatherData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,12 +60,16 @@ public class DataApplication<T> {
         }
     }
 
+    /**
+     * add meteo DATA memory when the pattern is in grabdata.
+     * @param key
+     */
     public void addInDataMeteo(final String key) {
         for (Map.Entry<DataType, List<String>> entry : grabData.entrySet()) {
             if (entry.getValue().contains(key)) {
-               if(dataApplication.get(entry.getKey()) == null) {
+               if (dataApplication.get(entry.getKey()) == null) {
                    Map<DataType, String> data = weatherAdapter.getResults();
-                   for(Map.Entry<DataType, String> entry2 : data.entrySet()) {
+                   for (Map.Entry<DataType, String> entry2 : data.entrySet()) {
                        dataApplication.put(entry2.getKey(), (T) entry2.getValue());
                    }
                }
